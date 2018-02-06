@@ -1,18 +1,46 @@
 package main;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import main.board.Board;
 
 public class ChessGame extends Application {
 
+    private Group root;
+
+    private Board board;
+
+    private GridPane pane;
+/*
+    Player player1;
+
+    Player player2;
+*/
+    private int boardLength;
+
+    public ChessGame() {
+        root = new Group();
+        boardLength = 430;
+        pane = new GridPane();
+
+        root.getChildren().addAll(pane);
+
+
+        board = new Board();
+        pane = board.getPane();
+
+        boardLength = board.getBoardLength();
+
+        root.getChildren().addAll(pane);
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("chessGame.fxml"));
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("Chess");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, boardLength, boardLength));
         primaryStage.show();
     }
 

@@ -1,14 +1,8 @@
 package main.board;
 
-import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
-public class Board extends Application {
-
-    private Group group;
+public class Board {
 
     private GridPane pane;
 
@@ -17,10 +11,8 @@ public class Board extends Application {
     private int boardLength;
 
     public Board() {
-        group = new Group();
         pane = new GridPane();
         buildBoard();
-        group.getChildren().addAll(pane);
     }
 
     /**
@@ -39,22 +31,12 @@ public class Board extends Application {
         }
     }
 
-    public Group getGroup() {
-        return group;
-    }
-
     public int getBoardLength() {
         return boardLength;
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Chess");
-        primaryStage.setScene(new Scene(group, boardLength, boardLength));
-        primaryStage.show();
+    public GridPane getPane() {
+        return pane;
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }

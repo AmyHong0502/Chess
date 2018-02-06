@@ -17,7 +17,7 @@ public class Tile extends Rectangle{
 
     Color color;
 
-    Tile(int x, int y, int length, boolean hasPiece, boolean white) {
+    public Tile(int x, int y, int length, boolean hasPiece, boolean white) {
         super(length, length);
         xCoordinate = x;
         yCoordinate = y;
