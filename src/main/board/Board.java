@@ -2,10 +2,9 @@ package main.board;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import main.pieces.Pawn;
 
-public class Board {
-
-    private GridPane pane;
+public class Board extends GridPane {
 
     private int tileLength;
 
@@ -14,7 +13,6 @@ public class Board {
     private Color color;
 
     public Board() {
-        pane = new GridPane();
         buildBoard();
     }
 
@@ -26,7 +24,7 @@ public class Board {
                 tileLength = 60;
                 boardLength = tileLength * 8;
 
-                pane.add(new Tile(column, row, tileLength, false, white), column, row);
+                add(new Tile(column, row, tileLength, false, white), column, row);
             }
         }
     }
@@ -35,15 +33,16 @@ public class Board {
         return boardLength;
     }
 
-    public GridPane getPane() {
-        return pane;
-    }
-
     public void setBlack() {
         color = Color.web("#231704");
     }
 
     public void setWhite() {
         color = Color.FLORALWHITE;
+    }
+
+    public void highlightMovable(Pawn piece, int x, int y) {
+        int[][] movable = piece.movable(x, y);
+
     }
 }

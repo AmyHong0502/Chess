@@ -1,18 +1,15 @@
 package main;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import main.board.Board;
-import main.pieces.Pawn;
 import main.pieces.Piece;
 
 public class ChessGame extends Application {
@@ -20,8 +17,6 @@ public class ChessGame extends Application {
     private Group root;
 
     private Board board;
-
-    private GridPane pane;
 
     Player player1;
 
@@ -32,13 +27,12 @@ public class ChessGame extends Application {
     public ChessGame() {
         root = new Group();
         board = new Board();
-        pane = board.getPane();
         player1 = new Player(true);
         player2 = new Player(false);
 
         boardLength = board.getBoardLength();
 
-        root.getChildren().addAll(pane);
+        root.getChildren().addAll(board);
         drawPieces();
     }
 
@@ -57,19 +51,16 @@ public class ChessGame extends Application {
                 text.setFill(color);
                 text.setTextAlignment(TextAlignment.CENTER);
 
-
                 text.addEventFilter(MouseEvent.MOUSE_CLICKED,
                         event -> System.out.println(
-                                "row " + pane.getRowIndex(text)
-                                        + ", col: " + pane.getColumnIndex(text)));
+                                "row " + board.getRowIndex(text)
+                                        + ", col: " + board.getColumnIndex(text)));
+                text.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                        event -> piece.movable());
 
-                pane.add(text, column, row);
+                board.add(text, column, row);
             }
         }
-    }
-
-    private void alignPane() {
-        pane.setAlignment(Pos.CENTER);
     }
 
     @Override
