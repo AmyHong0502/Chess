@@ -13,6 +13,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import main.board.Board;
 import main.pieces.Pawn;
+import main.pieces.Piece;
 
 public class ChessGame extends Application {
 
@@ -46,8 +47,9 @@ public class ChessGame extends Application {
         Color color;
         for (int row = 6; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
-                type = player1.getPieces().get(column).getType();
-                color = player1.getColor();
+                Piece piece = player1.getPieces().get(column);
+                type = piece.getType();
+                color = piece.getColor();
 
                 Text text = new Text(Character.toString(type));
 

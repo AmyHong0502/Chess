@@ -1,6 +1,7 @@
 package main.board;
 
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 public class Board {
 
@@ -9,6 +10,8 @@ public class Board {
     private int tileLength;
 
     private int boardLength;
+
+    private Color color;
 
     public Board() {
         pane = new GridPane();
@@ -34,5 +37,13 @@ public class Board {
 
     public GridPane getPane() {
         return pane;
+    }
+
+    public void setBlack() {
+        color = Color.web("#231704");
+    }
+
+    public void setWhite() {
+        color = Color.FLORALWHITE;
     }
 }

@@ -1,27 +1,30 @@
 package main;
 
-import javafx.scene.paint.Color;
+import main.pieces.Pawn;
+import main.pieces.Piece;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
 
-    Color color;
+    private List<Piece> pieces;
+
+    boolean white;
 
     Player(boolean white) {
+        this.white = white;
+        pieces = new ArrayList<>();
+        addPieces();
+    }
 
-        if (white) {
-            setWhite();
-        } else {
-            setBlack();
+    public List<Piece> getPieces() {
+        return pieces;
+    }
+
+    private void addPieces() {
+        for (int i = 0; i < 8; i++) {
+            pieces.add(new Pawn(i, 6, !white));
         }
-
     }
-
-    public void setBlack() {
-        color = Color.web("#231704");
-    }
-
-    public void setWhite() {
-        color = Color.FLORALWHITE;
-    }
-
 }
