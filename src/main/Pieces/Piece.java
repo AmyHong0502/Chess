@@ -1,6 +1,8 @@
-package main.Pieces;
+package main.pieces;
 
-public abstract class Piece {
+import main.Movement;
+
+public abstract class Piece implements Movement {
 
     char type;
 
@@ -32,6 +34,10 @@ public abstract class Piece {
 
     public void setType(char type) {
         this.type = type;
+    }
+
+    public char getType() {
+        return type;
     }
 
     public abstract int[][] moveable();
