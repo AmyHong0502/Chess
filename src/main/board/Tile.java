@@ -29,9 +29,9 @@ public class Tile extends Rectangle{
 
     public void setColor(boolean white) {
         if (white) {
-            super.setFill(Color.WHITE);
+            super.setFill(Color.web("0xFFF8E7"));
         } else {
-            super.setFill(Color.BLACK);
+            super.setFill(Color.web("0x47423c"));
         }
     }
 
