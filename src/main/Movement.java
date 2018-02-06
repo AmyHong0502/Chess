@@ -1,7 +1,7 @@
 package main;
 
 public interface Movement {
-    int[][] moveable(int x, int y);
+    int[][] movable();
 
-    int[][] catchable(int x, int y);
+    int[][] catchable();
 }

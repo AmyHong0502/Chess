@@ -40,7 +40,7 @@ public abstract class Piece implements Movement {
         return type;
     }
 
-    public abstract int[][] moveable();
+    public abstract int[][] movable();
 
     public abstract int[][] catchable();
 }
