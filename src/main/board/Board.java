@@ -15,18 +15,15 @@ public class Board {
         buildBoard();
     }
 
-    /**
-     * rows are called ranks (1 - 8), columns are called files (a - h)
-     */
     public void buildBoard() {
-        for (int rank = 0; rank < 8; rank++) {
-            for (int file = 0; file < 8; file++) {
-                boolean white = (rank + file) % 2 == 0;
+        for (int row = 0; row < 8; row++) {
+            for (int column = 0; column < 8; column++) {
+                boolean white = (row + column) % 2 == 0;
 
                 tileLength = 60;
                 boardLength = tileLength * 8;
 
-                pane.add(new Tile(file, rank, tileLength, false, white), file, rank);
+                pane.add(new Tile(column, row, tileLength, false, white), column, row);
             }
         }
     }
@@ -38,5 +35,4 @@ public class Board {
     public GridPane getPane() {
         return pane;
     }
-
 }
