@@ -35,8 +35,19 @@ public class Tile extends Rectangle{
         }
     }
 
+    public void paintHighlight() {
+        super.setFill(Color.web("0xFF6"));
+    }
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public int getxCoordinate() {
+        return xCoordinate;
+    }
+
+    public int getyCoordinate() {
+        return yCoordinate;
     }
 
 }

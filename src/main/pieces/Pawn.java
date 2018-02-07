@@ -51,7 +51,7 @@ public class Pawn extends main.pieces.Piece {
      * @return
      */
     @Override
-    public int[][] catchable() {
+    public int[][] capturable() {
         int[][] destination;
 
         int x = super.getxCoordinate();
@@ -63,6 +63,25 @@ public class Pawn extends main.pieces.Piece {
 
         destination = new int[][] {{x - 1, y - 1}, {x + 1, y - 1}};
         return destination;
+    }
+
+    public int[][] movable (int x, int y) {
+        int destination;
+        int[][] result;
+
+        destination = firstmove ? 2 : 1;
+
+        int yCoordinate = y - destination;
+
+        if (yCoordinate == 0) {
+            result = new int[0][0];
+        } else {
+            result = new int[1][2];
+            result[0][0] = x;
+            result[0][1] = y;
+        }
+
+        return result;
     }
 
 }

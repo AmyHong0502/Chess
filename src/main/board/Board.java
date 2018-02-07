@@ -1,10 +1,12 @@
 package main.board;
 
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import main.pieces.Pawn;
 
 public class Board extends GridPane {
+
+    public static int NUMBER_OF_CELLS = 8;
 
     private int tileLength;
 
@@ -14,17 +16,44 @@ public class Board extends GridPane {
 
     public Board() {
         buildBoard();
+        setMaxWidth(Double.MAX_VALUE);
+        setMaxHeight(Double.MAX_VALUE);
+    }
+
+    private void fillBackgroundColumn() {
+        ColumnConstraints cc = new ColumnConstraints();
+
+        cc.setPercentWidth(100 / NUMBER_OF_CELLS);
+
+        cc.setHgrow(Priority.ALWAYS);
+        cc.setFillWidth(true);
+        getColumnConstraints().add(cc);
+    }
+
+    private void fillBackgroundRow() {
+        RowConstraints rc = new RowConstraints();
+
+        rc.setPercentHeight(100 / NUMBER_OF_CELLS);
+
+        rc.setVgrow(Priority.ALWAYS);
+        rc.setFillHeight(true);
+        getRowConstraints().add(rc);
     }
 
     public void buildBoard() {
-        for (int row = 0; row < 8; row++) {
-            for (int column = 0; column < 8; column++) {
+        for (int row = 0; row < NUMBER_OF_CELLS; row++) {
+            for (int column = 0; column < NUMBER_OF_CELLS; column++) {
+                fillBackgroundColumn();
+                fillBackgroundRow();
+
                 boolean white = (row + column) % 2 == 0;
 
                 tileLength = 60;
-                boardLength = tileLength * 8;
+                boardLength = tileLength * NUMBER_OF_CELLS;
 
-                add(new Tile(column, row, tileLength, false, white), column, row);
+                Tile tile = new Tile(column, row, tileLength, false, white);
+
+                add(tile, column, row);
             }
         }
     }

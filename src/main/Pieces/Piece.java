@@ -13,6 +13,8 @@ public abstract class Piece implements Movement {
 
     boolean white;
 
+    boolean highlighted;
+
     Color color;
 
     Piece(boolean white) {
@@ -49,7 +51,4 @@ public abstract class Piece implements Movement {
         return type;
     }
 
-    public abstract int[][] movable();
-
-    public abstract int[][] catchable();
 }

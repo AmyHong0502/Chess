@@ -2,6 +2,7 @@ package main;
 
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -10,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import main.board.Board;
+import main.board.Tile;
 import main.pieces.Piece;
 
 public class ChessGame extends Application {
@@ -56,10 +58,45 @@ public class ChessGame extends Application {
                                 "row " + board.getRowIndex(text)
                                         + ", col: " + board.getColumnIndex(text)));
                 text.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> piece.movable());
+                        event -> {
+                            findChildren(piece.movable());
+                        });
 
                 board.add(text, column, row);
             }
+        }
+    }
+
+    public void highlightMovable(int[][] movable) {
+        if (movable.length == 0)
+            return;
+
+        for (int cell = 0; cell < movable.length; cell++) {
+            int x = movable[cell][0];
+            int y = movable[cell][1];
+        }
+
+    }
+
+    private void findChildren(final int[][] movable) {
+        for (int i = 0; i < movable.length; i++) {
+            int x = movable[i][0];
+            int y = movable[i][1];
+
+            System.out.println("x: " + x + ", y: " + y);
+
+            board.getChildren().forEach(
+                    (Node c) -> {
+                        if (c.getClass().equals(new Tile(0, 0 , 0, false, false).getClass())) {
+                            System.out.println(c.toString());
+
+                            if (((Tile) c).getxCoordinate() == x && ((Tile) c).getyCoordinate() == y) {
+                ((Tile) c).paintHighlight();
+                            }
+
+                        }
+                    }
+            );
         }
     }
 
