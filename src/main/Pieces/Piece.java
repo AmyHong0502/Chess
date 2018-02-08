@@ -17,6 +17,8 @@ public abstract class Piece extends Text implements Movement {
 
     Color color;
 
+    Color clickedColor;
+
     Piece(boolean white) {
         super();
         hover = false;
@@ -27,6 +29,8 @@ public abstract class Piece extends Text implements Movement {
         setFont(new Font(45));
         setTextAlignment(TextAlignment.CENTER);
         addClickListener();
+
+        clickedColor = Color.web("0x00F");
     }
 
     public void addClickListener() {
@@ -49,6 +53,15 @@ public abstract class Piece extends Text implements Movement {
         addEventFilter(MouseEvent.MOUSE_EXITED, event -> hover = false);
 
         addEventFilter(MouseEvent.MOUSE_CLICKED, event -> clicked = !clicked);
+
+        addEventFilter(MouseEvent.MOUSE_CLICKED, event -> highlightClickedPiece());
     }
 
+    public void highlightClickedPiece() {
+        if (clicked) {
+            setFill(clickedColor);
+        } else {
+            setFill(color);
+        }
+    }
 }
