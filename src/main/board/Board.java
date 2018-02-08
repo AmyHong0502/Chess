@@ -1,5 +1,6 @@
 package main.board;
 
+import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import main.pieces.Pawn;
@@ -60,6 +61,20 @@ public class Board extends GridPane {
 
     public int getBoardLength() {
         return boardLength;
+    }
+
+    public void paintDefault() {
+        for (int row = 0; row < NUMBER_OF_CELLS; row++) {
+            for (int column = 0; column < NUMBER_OF_CELLS; column++) {
+                getChildren().forEach(
+                        (Node c) -> {
+                            if (c.getClass().equals(new Tile(0, 0, 0, false, false).getClass())) {
+                                ((Tile) c).setColor(((Tile) c).white);
+                            }
+                        }
+                );
+            }
+        }
     }
 
     public void setBlack() {

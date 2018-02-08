@@ -2,46 +2,20 @@ package main.pieces;
 
 public class Pawn extends main.pieces.Piece {
 
-    private boolean firstmove;
+    private final char type = '\u265F';
 
-    public Pawn(int x, int y, boolean white) {
+    private boolean firstMove;
+
+    public Pawn(boolean white) {
         super(white);
-        super.setXCoordinate(x);
-        super.setYCoordinate(y);
-        setType(super.white);
-        firstmove = true;
-    }
-
-    private void setType(boolean white) {
-        char result;
-
-        final char blackPawn = '\u265F';
-        final char whitePawn = '\u2659';
-
-        result = white ? whitePawn : blackPawn;
-
-        super.setType(result);
+        setText(Character.toString(type));
+        firstMove = true;
     }
 
     @Override
-    public int[][] movable() {
-        int destination;
-        int[][] result;
-
-        destination = firstmove ? 2 : 1;
-
-        int x = super.xCoordinate;
-        int y = super.yCoordinate - destination;
-
-        if (y == 0) {
-            result = new int[0][0];
-        } else {
-            result = new int[1][2];
-            result[0][0] = x;
-            result[0][1] = y;
-        }
-
-        return result;
+    public int[][] capturable(final int x, final int y) {
+        return new int[0][0];
+        // TODO Implement this method
     }
 
     /**
@@ -50,35 +24,43 @@ public class Pawn extends main.pieces.Piece {
      *
      * @return
      */
+    /*
     @Override
     public int[][] capturable() {
         int[][] destination;
-
-        int x = super.getxCoordinate();
-        int y = super.getyCoordinate();
 
         if (y == 0) {
             return new int[0][0];
         }
 
-        destination = new int[][] {{x - 1, y - 1}, {x + 1, y - 1}};
+        destination = new int[][]{{x - 1, y - 1}, {x + 1, y - 1}};
         return destination;
     }
+*/
 
-    public int[][] movable (int x, int y) {
-        int destination;
+    @Override
+    public int[][] movable(final int x, final int y) {
+        System.out.println("START MOVABLE");
+        if (y == 0) {
+            return new int[0][0];
+        }
+
         int[][] result;
 
-        destination = firstmove ? 2 : 1;
+        if (firstMove) {
+            System.out.println("FIRSTMOVE");
+            result = new int[2][2];
 
-        int yCoordinate = y - destination;
-
-        if (yCoordinate == 0) {
-            result = new int[0][0];
-        } else {
-            result = new int[1][2];
             result[0][0] = x;
-            result[0][1] = y;
+            result[0][1] = y - 1;
+            result[1][0] = x;
+            result[1][1] = y - 2;
+        } else {
+            System.out.println("NOT FIRSTMOVE");
+            result = new int[1][2];
+
+            result[0][0] = x;
+            result[0][1] = y - 1;
         }
 
         return result;

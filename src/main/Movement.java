@@ -1,7 +1,7 @@
 package main;
 
 public interface Movement {
-    int[][] movable();
+    int[][] movable(final int x, final int y);
 
-    int[][] capturable();
+    int[][] capturable(final int x, final int y);
 }

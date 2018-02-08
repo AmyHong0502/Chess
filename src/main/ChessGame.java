@@ -1,18 +1,18 @@
 package main;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import main.board.Board;
 import main.board.Tile;
 import main.pieces.Piece;
+
+import java.util.ArrayList;
 
 public class ChessGame extends Application {
 
@@ -20,84 +20,87 @@ public class ChessGame extends Application {
 
     private Board board;
 
-    Player player1;
+    private Player player1;
 
-    Player player2;
+    private Player player2;
 
     private int boardLength;
 
     public ChessGame() {
         root = new Group();
         board = new Board();
-        player1 = new Player(true);
-        player2 = new Player(false);
+        player1 = new Player(false);
+        player2 = new Player(true);
 
         boardLength = board.getBoardLength();
 
         root.getChildren().addAll(board);
-        drawPieces();
+        initializePieces();
     }
 
-    public void drawPieces() {
-        char type;
-        Color color;
+    public void initializePieces() {
+        ArrayList<Piece> pieces = player1.getPieces();
+        int pieceCount = 0;
+
         for (int row = 6; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
-                Piece piece = player1.getPieces().get(column);
-                type = piece.getType();
-                color = piece.getColor();
+                Piece piece = pieces.get(pieceCount);
+                pieceCount++;
 
-                Text text = new Text(Character.toString(type));
-
-                text.setFont(new Font(40));
-                text.setFill(color);
-                text.setTextAlignment(TextAlignment.CENTER);
-
-                text.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                piece.addEventFilter(MouseEvent.MOUSE_CLICKED,
                         event -> System.out.println(
-                                "row " + board.getRowIndex(text)
-                                        + ", col: " + board.getColumnIndex(text)));
-                text.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                                "row " + GridPane.getRowIndex(piece)
+                                        + ", col: " + GridPane.getColumnIndex(piece)));
+              /*  piece.addEventFilter(MouseEvent.MOUSE_CLICKED,
                         event -> {
-                            findChildren(piece.movable());
-                        });
+                            highlightMovable(piece.movable());
+                        });*/
 
-                board.add(text, column, row);
+                board.add(piece, column, row);
             }
         }
     }
 
-    public void highlightMovable(int[][] movable) {
-        if (movable.length == 0)
-            return;
-
-        for (int cell = 0; cell < movable.length; cell++) {
-            int x = movable[cell][0];
-            int y = movable[cell][1];
-        }
-
-    }
-
-    private void findChildren(final int[][] movable) {
+    private void highlightMovable(final int[][] movable) {
+        System.out.println("length: " + movable.length);
         for (int i = 0; i < movable.length; i++) {
             int x = movable[i][0];
             int y = movable[i][1];
 
             System.out.println("x: " + x + ", y: " + y);
-
             board.getChildren().forEach(
                     (Node c) -> {
-                        if (c.getClass().equals(new Tile(0, 0 , 0, false, false).getClass())) {
-                            System.out.println(c.toString());
-
+                        if (c.getClass().equals("main.board.Tile")) {
                             if (((Tile) c).getxCoordinate() == x && ((Tile) c).getyCoordinate() == y) {
+                                board.paintDefault();
                 ((Tile) c).paintHighlight();
                             }
-
                         }
                     }
             );
         }
+    }
+
+    /**
+     * Returns a piece if found by index. Otherwise returns null.
+     * @param x
+     * @param y
+     * @return
+     */
+    public Piece findPieceByIndex(final int x, final int y) {
+        Piece result;
+
+        ObservableList<Node> children = board.getChildren();
+
+        for (Node node : children) {
+            if (node.getClass().equals("main.pieces.Piece")) {
+                if (GridPane.getRowIndex(node) == x && GridPane.getRowIndex(node) == y) {
+                    return (Piece) node;
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override

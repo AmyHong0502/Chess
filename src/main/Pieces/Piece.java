@@ -1,54 +1,25 @@
 package main.pieces;
 
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import main.Movement;
 
-public abstract class Piece implements Movement {
-
-    char type;
-
-    int xCoordinate;
-
-    int yCoordinate;
-
+public abstract class Piece extends Text implements Movement {
     boolean white;
 
-    boolean highlighted;
+    boolean selected;
 
     Color color;
 
     Piece(boolean white) {
+        super();
         this.white = white;
-        color = white ? Color.web("0xFFF") : Color.web("0x000");
-    }
-
-    public void setXCoordinate(int x) {
-        xCoordinate = x;
-    }
-
-    public void setYCoordinate(int y) {
-        yCoordinate = y;
-    }
-
-    public int getxCoordinate() {
-        return xCoordinate;
-    }
-
-    public int getyCoordinate() {
-        return yCoordinate;
-    }
-
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setType(char type) {
-        this.type = type;
-    }
-
-    public char getType() {
-        return type;
+        color = white ? Color.WHITE : Color.BLACK;
+        setFill(color);
+        setFont(new Font(45));
+        setTextAlignment(TextAlignment.CENTER);
     }
 
 }
