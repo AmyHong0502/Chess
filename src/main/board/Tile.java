@@ -2,6 +2,7 @@ package main.board;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import main.pieces.Piece;
 
 public class Tile extends Rectangle{
 
@@ -17,6 +18,8 @@ public class Tile extends Rectangle{
 
     Color color;
 
+    boolean highlighted;
+
     public Tile(int x, int y, int length, boolean hasPiece, boolean white) {
         super(length, length);
         xCoordinate = x;
@@ -29,25 +32,23 @@ public class Tile extends Rectangle{
 
     public void setColor(boolean white) {
         if (white) {
-            super.setFill(Color.web("0xFFF8E7"));
+            setFill(Color.web("0xFFF8E7"));
         } else {
-            super.setFill(Color.web("0x47423c"));
+            setFill(Color.web("0x47423c"));
         }
     }
 
-    public void paintHighlight() {
-        super.setFill(Color.web("0xFF6"));
-    }
-    public void setColor(Color color) {
-        this.color = color;
+    private void setHighlight() {
+        setFill(Color.web("0xFF6"));
     }
 
-    public int getxCoordinate() {
-        return xCoordinate;
+    public void paintHighlight(final Piece piece, final int columnIndex, final int rowIndex) {
+        piece.movable(columnIndex, rowIndex);
+        setHighlight();
     }
 
-    public int getyCoordinate() {
-        return yCoordinate;
+    public boolean isWhite() {
+        return white;
     }
 
 }

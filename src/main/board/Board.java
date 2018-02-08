@@ -5,8 +5,8 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import main.Player;
-import main.pieces.Pawn;
 import main.pieces.Piece;
 
 import java.util.ArrayList;
@@ -21,10 +21,12 @@ public class Board extends GridPane {
 
     private Color color;
 
-    public Board() {
+    public Board(Player player1, Player player2) {
         buildBoard();
         setMaxWidth(Double.MAX_VALUE);
         setMaxHeight(Double.MAX_VALUE);
+        initializePieces(player1, player2);
+        initializeHighlighter(player1.getPieces(), player2.getPieces());
     }
 
     private void fillBackgroundColumn() {
@@ -65,7 +67,7 @@ public class Board extends GridPane {
         }
     }
 
-    public void initializePieces(Player player1, Player player2) {
+    private void initializePieces(Player player1, Player player2) {
         ArrayList<Piece> pieces = player1.getPieces();
         int pieceCount = 0;
 
@@ -73,16 +75,6 @@ public class Board extends GridPane {
             for (int column = 0; column < 8; column++) {
                 Piece piece = pieces.get(pieceCount);
                 pieceCount++;
-
-                piece.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> System.out.println(
-                                "row " + GridPane.getRowIndex(piece)
-                                        + ", col: " + GridPane.getColumnIndex(piece)));
-              /*  piece.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> {
-                            highlightMovable(piece.movable());
-                        });*/
-
                 add(piece, column, row);
             }
         }
@@ -90,13 +82,12 @@ public class Board extends GridPane {
 
     /**
      * Returns a piece if found by index. Otherwise returns null.
+     *
      * @param x
      * @param y
      * @return
      */
     public Piece findPieceByIndex(final int x, final int y) {
-        Piece result;
-
         ObservableList<Node> children = getChildren();
 
         for (Node node : children) {
@@ -110,25 +101,26 @@ public class Board extends GridPane {
         return null;
     }
 
+    public Tile findTileByIndex(final int x, final int y) {
+        ObservableList<Node> children = getChildren();
 
-    private void highlightMovable(final int[][] movable) {
-        System.out.println("length: " + movable.length);
-        for (int i = 0; i < movable.length; i++) {
-            int x = movable[i][0];
-            int y = movable[i][1];
+        for (Node node : children) {
+            System.out.println("Node: " + node.toString());
 
-            System.out.println("x: " + x + ", y: " + y);
-            getChildren().forEach(
-                    (Node c) -> {
-                        if (c.getClass().equals("main.board.Tile")) {
-                            if (((Tile) c).getxCoordinate() == x && ((Tile) c).getyCoordinate() == y) {
-                                paintDefault();
-                                ((Tile) c).paintHighlight();
-                            }
-                        }
-                    }
-            );
+            if (GridPane.getRowIndex(node) == x && GridPane.getRowIndex(node) == y) {
+                if (node.getClass().equals(new Rectangle())) {
+                    return (Tile) node;
+                }
+            }
+
+            if (GridPane.getRowIndex(node) == x && GridPane.getRowIndex(node) == y) {
+                if (node.getClass().equals(new Tile(0, 0, 0, false, false))) {
+                    return (Tile) node;
+                }
+            }
         }
+
+        return null;
     }
 
     public int getBoardLength() {
@@ -149,16 +141,53 @@ public class Board extends GridPane {
         }
     }
 
-    public void setBlack() {
-        color = Color.web("#231704");
+    private void initializeHighlighter(final ArrayList<Piece> pieces1, final ArrayList<Piece> pieces2) {
+        for (Piece p : pieces1) {
+            p.addEventFilter(MouseEvent.MOUSE_ENTERED,
+                    event -> {
+                        highlightMovable(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
+                    });
+        }
+
+        for (Piece p : pieces1) {
+            p.addEventFilter(MouseEvent.MOUSE_EXITED,
+                    event -> {
+                        paintDefault();
+                    });
+        }
+
+        for (Piece p : pieces2) {
+            p.addEventFilter(MouseEvent.MOUSE_ENTERED,
+                    event -> {
+                        highlightMovable(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
+                    });
+        }
+
+        for (Piece p : pieces1) {
+            p.addEventFilter(MouseEvent.MOUSE_EXITED,
+                    event -> {
+                        paintDefault();
+                    });
+        }
     }
 
-    public void setWhite() {
-        color = Color.FLORALWHITE;
+    private void highlightMovable(Piece piece, int columnIndex, int rowIndex) {
+        System.out.println("START HIGHLIGHT_MOVABLE");
+
+        int[][] movable = piece.movable(columnIndex, rowIndex);
+
+        for (int i = 0; i < movable.length; i++) {
+            int col = movable[i][0];
+            int row = movable[i][1];
+
+            System.out.println("Highlight Movable - col: " + col + ", row: " + row);
+
+            Tile tile = findTileByIndex(col, row);
+            if (tile == null) {
+                System.out.println("Tile is null");
+            }
+            tile.paintHighlight(piece, columnIndex, rowIndex);
+        }
     }
 
-    public void highlightMovable(Pawn piece, int x, int y) {
-        int[][] movable = piece.movable(x, y);
-
-    }
 }

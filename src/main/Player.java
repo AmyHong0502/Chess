@@ -1,30 +1,37 @@
 package main;
 
-import main.pieces.Pawn;
-import main.pieces.Piece;
+import main.pieces.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Player {
 
-    private List<Piece> pieces;
+    private ArrayList<Piece> pieces;
 
     boolean white;
 
     Player(boolean white) {
         this.white = white;
         pieces = new ArrayList<>();
-        addPieces();
+        initializePieces();
     }
 
-    public List<Piece> getPieces() {
+    public ArrayList<Piece> getPieces() {
         return pieces;
     }
 
-    private void addPieces() {
+    private void initializePieces() {
         for (int i = 0; i < 8; i++) {
-            pieces.add(new Pawn(i, 6, !white));
+            pieces.add(new Pawn(white));
         }
+
+        pieces.add(new Rook(white));
+        pieces.add(new Knight(white));
+        pieces.add(new Bishop(white));
+        pieces.add(new Queen(white));
+        pieces.add(new King(white));
+        pieces.add(new Bishop(white));
+        pieces.add(new Knight(white));
+        pieces.add(new Rook(white));
     }
 }

@@ -16,24 +16,18 @@ public class ChessGame extends Application {
 
     private Player player2;
 
-    private int boardLength;
-
     public ChessGame() {
         root = new Group();
-        board = new Board();
         player1 = new Player(false);
         player2 = new Player(true);
-
-        boardLength = board.getBoardLength();
-
+        board = new Board(player1, player2);
         root.getChildren().addAll(board);
-        board.initializePieces(player1, player2);
     }
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Chess");
-        primaryStage.setScene(new Scene(root, boardLength, boardLength));
+        primaryStage.setScene(new Scene(root, board.getBoardLength(), board.getBoardLength()));
         primaryStage.show();
     }
 
