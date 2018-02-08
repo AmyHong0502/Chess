@@ -33,6 +33,10 @@ public abstract class Piece extends Text implements Movement {
         clickedColor = Color.web("0x00F");
     }
 
+    public boolean isClicked() {
+        return clicked;
+    }
+
     public void addClickListener() {
         addEventFilter(MouseEvent.MOUSE_ENTERED,
                 event ->

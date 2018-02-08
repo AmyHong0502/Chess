@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public class Board extends GridPane {
 
+    Piece clickedPiece;
+
     public static int NUMBER_OF_CELLS = 8;
 
     private int tileLength;
@@ -19,11 +21,15 @@ public class Board extends GridPane {
 
     private Color color;
 
+    private boolean clickedToMove;
+
     public Board(Player player1, Player player2) {
+
         buildBoard();
         setMaxWidth(Double.MAX_VALUE);
         setMaxHeight(Double.MAX_VALUE);
         initializePieces(player1, player2);
+        clickedToMove = false;
     }
 
     private void fillBackgroundColumn() {
@@ -58,6 +64,7 @@ public class Board extends GridPane {
                 boardLength = tileLength * NUMBER_OF_CELLS;
 
                 Tile tile = new Tile(column, row, tileLength, false, white);
+                tile.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> { moveClickedPiece(clickedPiece, GridPane.getColumnIndex(tile), GridPane.getRowIndex(tile)); });
 
                 add(tile, column, row);
             }
@@ -88,7 +95,7 @@ public class Board extends GridPane {
             }
         }
 
-        initializeHighlighter(player1.getPieces(), player2.getPieces());
+        initializeHoverHighlighter(player1.getPieces(), player2.getPieces());
     }
 
     public Tile findTileByIndex(final int columnIndex, final int rowIndex) {
@@ -121,37 +128,42 @@ public class Board extends GridPane {
         }
     }
 
-    private void initializeHighlighter(final ArrayList<Piece> pieces1, final ArrayList<Piece> pieces2) {
+    private void initializeHoverHighlighter(final ArrayList<Piece> pieces1, final ArrayList<Piece> pieces2) {
         for (Piece p : pieces1) {
             p.addEventFilter(MouseEvent.MOUSE_ENTERED,
                     event -> {
-                        highlightMovable(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
+                        highlightHovered(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
                     });
         }
 
-        for (Piece p : pieces1) {
-            p.addEventFilter(MouseEvent.MOUSE_EXITED,
-                    event -> {
-                        paintDefault();
-                    });
-        }
+        for (Piece p : pieces1) { p.addEventFilter(MouseEvent.MOUSE_EXITED, event -> { paintDefault(); }); }
 
         for (Piece p : pieces2) {
             p.addEventFilter(MouseEvent.MOUSE_ENTERED,
                     event -> {
-                        highlightMovable(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
+                        highlightHovered(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
                     });
         }
 
-        for (Piece p : pieces2) {
-            p.addEventFilter(MouseEvent.MOUSE_EXITED,
-                    event -> {
-                        paintDefault();
-                    });
-        }
+        for (Piece p : pieces2) { p.addEventFilter(MouseEvent.MOUSE_EXITED, event -> { paintDefault(); }); }
+
+        for (Piece p : pieces1) { p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> { moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p)); }); }
+
+        for (Piece p : pieces2) { p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> { moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p)); }); }
     }
 
-    private void highlightMovable(Piece piece, int columnIndex, int rowIndex) {
+    private void moveClickedPiece(Piece piece, final int columnIndex, final int rowIndex) {
+        System.out.println("MOVE_CLICKED_ACTIVATED");
+        if (clickedToMove) {
+            setColumnIndex(clickedPiece, columnIndex);
+            setRowIndex(clickedPiece, rowIndex);
+        } else {
+            clickedPiece = piece;
+        }
+        clickedToMove = !clickedToMove;
+    }
+
+    private void highlightHovered(Piece piece, int columnIndex, int rowIndex) {
         int[][] movable = piece.movable(columnIndex, rowIndex);
 
         for (int i = 0; i < movable.length; i++) {

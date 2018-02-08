@@ -10,10 +10,13 @@ public class Player {
 
     boolean white;
 
+    boolean clickedPiece;
+
     Player(boolean white) {
         this.white = white;
         pieces = new ArrayList<>();
         initializePieces();
+        clickedPiece = false;
     }
 
     public ArrayList<Piece> getPieces() {
