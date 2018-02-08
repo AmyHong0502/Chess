@@ -26,7 +26,6 @@ public class Pawn extends Piece {
 
     @Override
     public int[][] movable(final int columnIndex, final int rowIndex) {
-        System.out.println("START MOVABLE");
         if (rowIndex == 0) {
             return new int[0][0];
         }

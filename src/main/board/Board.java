@@ -1,11 +1,9 @@
 package main.board;
 
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import main.Player;
 import main.pieces.Piece;
 
@@ -26,7 +24,6 @@ public class Board extends GridPane {
         setMaxWidth(Double.MAX_VALUE);
         setMaxHeight(Double.MAX_VALUE);
         initializePieces(player1, player2);
-        initializeHighlighter(player1.getPieces(), player2.getPieces());
     }
 
     private void fillBackgroundColumn() {
@@ -68,53 +65,36 @@ public class Board extends GridPane {
     }
 
     private void initializePieces(Player player1, Player player2) {
-        ArrayList<Piece> pieces = player1.getPieces();
+        ArrayList<Piece> pieces1 = player1.getPieces();
+        ArrayList<Piece> pieces2 = player2.getPieces();
+
         int pieceCount = 0;
 
-        for (int row = 6; row < 8; row++) {
-            for (int column = 0; column < 8; column++) {
-                Piece piece = pieces.get(pieceCount);
+        for (int row = 1; row >= 0; row--) {
+            for (int column = 7; column >= 0; column--) {
+                Piece piece = pieces1.get(pieceCount);
                 pieceCount++;
                 add(piece, column, row);
             }
         }
-    }
 
-    /**
-     * Returns a piece if found by index. Otherwise returns null.
-     *
-     * @param x
-     * @param y
-     * @return
-     */
-    public Piece findPieceByIndex(final int x, final int y) {
-        ObservableList<Node> children = getChildren();
+        pieceCount = 0;
 
-        for (Node node : children) {
-            if (node.getClass().equals("main.pieces.Piece")) {
-                if (GridPane.getRowIndex(node) == x && GridPane.getRowIndex(node) == y) {
-                    return (Piece) node;
-                }
+        for (int row = 6; row < 8; row++) {
+            for (int column = 0; column < 8; column++) {
+                Piece piece = pieces2.get(pieceCount);
+                pieceCount++;
+                add(piece, column, row);
             }
         }
 
-        return null;
+        initializeHighlighter(player1.getPieces(), player2.getPieces());
     }
 
-    public Tile findTileByIndex(final int x, final int y) {
-        ObservableList<Node> children = getChildren();
-
-        for (Node node : children) {
-            System.out.println("Node: " + node.toString());
-
-            if (GridPane.getRowIndex(node) == x && GridPane.getRowIndex(node) == y) {
-                if (node.getClass().equals(new Rectangle())) {
-                    return (Tile) node;
-                }
-            }
-
-            if (GridPane.getRowIndex(node) == x && GridPane.getRowIndex(node) == y) {
-                if (node.getClass().equals(new Tile(0, 0, 0, false, false))) {
+    public Tile findTileByIndex(final int columnIndex, final int rowIndex) {
+        for (Node node : getChildren()) {
+            if (node.getClass().equals(new Tile(0, 0, 0, false, false).getClass())) {
+                if (GridPane.getColumnIndex(node) == columnIndex && GridPane.getRowIndex(node) == rowIndex) {
                     return (Tile) node;
                 }
             }
@@ -163,7 +143,7 @@ public class Board extends GridPane {
                     });
         }
 
-        for (Piece p : pieces1) {
+        for (Piece p : pieces2) {
             p.addEventFilter(MouseEvent.MOUSE_EXITED,
                     event -> {
                         paintDefault();
@@ -172,22 +152,14 @@ public class Board extends GridPane {
     }
 
     private void highlightMovable(Piece piece, int columnIndex, int rowIndex) {
-        System.out.println("START HIGHLIGHT_MOVABLE");
-
         int[][] movable = piece.movable(columnIndex, rowIndex);
 
         for (int i = 0; i < movable.length; i++) {
             int col = movable[i][0];
             int row = movable[i][1];
 
-            System.out.println("Highlight Movable - col: " + col + ", row: " + row);
-
             Tile tile = findTileByIndex(col, row);
-            if (tile == null) {
-                System.out.println("Tile is null");
-            }
             tile.paintHighlight(piece, columnIndex, rowIndex);
         }
     }
-
 }

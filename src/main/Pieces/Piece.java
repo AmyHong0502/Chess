@@ -13,11 +13,14 @@ public abstract class Piece extends Text implements Movement {
 
     boolean hover;
 
+    boolean clicked;
+
     Color color;
 
     Piece(boolean white) {
         super();
         hover = false;
+        clicked = false;
         this.white = white;
         color = white ? Color.WHITE : Color.BLACK;
         setFill(color);
@@ -44,6 +47,8 @@ public abstract class Piece extends Text implements Movement {
                                         + ", col: " + GridPane.getColumnIndex(this)));
 
         addEventFilter(MouseEvent.MOUSE_EXITED, event -> hover = false);
+
+        addEventFilter(MouseEvent.MOUSE_CLICKED, event -> clicked = !clicked);
     }
 
 }
