@@ -3,7 +3,6 @@ package main.board;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import main.Player;
 import main.pieces.Piece;
 
@@ -18,8 +17,6 @@ public class Board extends GridPane {
     private int tileLength;
 
     private int boardLength;
-
-    private Color color;
 
     private boolean clickedToMove;
 
@@ -64,7 +61,9 @@ public class Board extends GridPane {
                 boardLength = tileLength * NUMBER_OF_CELLS;
 
                 Tile tile = new Tile(column, row, tileLength, false, white);
-                tile.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> { moveClickedPiece(clickedPiece, GridPane.getColumnIndex(tile), GridPane.getRowIndex(tile)); });
+                tile.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                    moveClickedPiece(clickedPiece, GridPane.getColumnIndex(tile), GridPane.getRowIndex(tile));
+                });
 
                 add(tile, column, row);
             }
@@ -100,7 +99,7 @@ public class Board extends GridPane {
 
     public Tile findTileByIndex(final int columnIndex, final int rowIndex) {
         for (Node node : getChildren()) {
-            if (node.getClass().equals(new Tile(0, 0, 0, false, false).getClass())) {
+            if (node.getClass().equals(Tile.class)) {
                 if (GridPane.getColumnIndex(node) == columnIndex && GridPane.getRowIndex(node) == rowIndex) {
                     return (Tile) node;
                 }
@@ -119,7 +118,7 @@ public class Board extends GridPane {
             for (int column = 0; column < NUMBER_OF_CELLS; column++) {
                 getChildren().forEach(
                         (Node c) -> {
-                            if (c.getClass().equals(new Tile(0, 0, 0, false, false).getClass())) {
+                            if (c.getClass().equals(Tile.class)) {
                                 ((Tile) c).setColor(((Tile) c).white);
                             }
                         }
@@ -147,13 +146,16 @@ public class Board extends GridPane {
 
         for (Piece p : pieces2) { p.addEventFilter(MouseEvent.MOUSE_EXITED, event -> { paintDefault(); }); }
 
-        for (Piece p : pieces1) { p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> { moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p)); }); }
+        for (Piece p : pieces1) { p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
+        }); }
 
-        for (Piece p : pieces2) { p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> { moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p)); }); }
+        for (Piece p : pieces2) { p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
+        }); }
     }
 
     private void moveClickedPiece(Piece piece, final int columnIndex, final int rowIndex) {
-        System.out.println("MOVE_CLICKED_ACTIVATED");
         if (clickedToMove) {
             setColumnIndex(clickedPiece, columnIndex);
             setRowIndex(clickedPiece, rowIndex);
