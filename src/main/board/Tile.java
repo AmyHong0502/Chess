@@ -2,9 +2,10 @@ package main.board;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import main.pieces.Piece;
 
-public class Tile extends Rectangle{
+import java.io.Serializable;
+
+public class Tile extends Rectangle implements Serializable {
 
     int xCoordinate;
 
@@ -38,13 +39,8 @@ public class Tile extends Rectangle{
         }
     }
 
-    private void setHighlight() {
+    void setHighlight() {
         setFill(Color.web("0xFF6"));
-    }
-
-    public void paintHighlight(final Piece piece, final int columnIndex, final int rowIndex) {
-        piece.movable(columnIndex, rowIndex);
-        setHighlight();
     }
 
     public boolean isWhite() {

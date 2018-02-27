@@ -6,9 +6,10 @@ import javafx.scene.layout.*;
 import main.Player;
 import main.pieces.Piece;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Board extends GridPane {
+public class Board extends GridPane implements Serializable {
 
     Piece clickedPiece;
 
@@ -135,7 +136,11 @@ public class Board extends GridPane {
                     });
         }
 
-        for (Piece p : pieces1) { p.addEventFilter(MouseEvent.MOUSE_EXITED, event -> { paintDefault(); }); }
+        for (Piece p : pieces1) {
+            p.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
+                paintDefault();
+            });
+        }
 
         for (Piece p : pieces2) {
             p.addEventFilter(MouseEvent.MOUSE_ENTERED,
@@ -144,18 +149,26 @@ public class Board extends GridPane {
                     });
         }
 
-        for (Piece p : pieces2) { p.addEventFilter(MouseEvent.MOUSE_EXITED, event -> { paintDefault(); }); }
+        for (Piece p : pieces2) {
+            p.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
+                paintDefault();
+            });
+        }
 
-        for (Piece p : pieces1) { p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
-        }); }
+        for (Piece p : pieces1) {
+            p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
+            });
+        }
 
-        for (Piece p : pieces2) { p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
-        }); }
+        for (Piece p : pieces2) {
+            p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
+            });
+        }
     }
 
-    private void moveClickedPiece(Piece piece, final int columnIndex, final int rowIndex) {
+    private void moveClickedPiece(final Piece piece, final int columnIndex, final int rowIndex) {
         if (clickedToMove) {
             setColumnIndex(clickedPiece, columnIndex);
             setRowIndex(clickedPiece, rowIndex);
@@ -165,7 +178,7 @@ public class Board extends GridPane {
         clickedToMove = !clickedToMove;
     }
 
-    private void highlightHovered(Piece piece, int columnIndex, int rowIndex) {
+    private void highlightHovered(final Piece piece, final int columnIndex, final int rowIndex) {
         int[][] movable = piece.movable(columnIndex, rowIndex);
 
         for (int i = 0; i < movable.length; i++) {
@@ -173,7 +186,8 @@ public class Board extends GridPane {
             int row = movable[i][1];
 
             Tile tile = findTileByIndex(col, row);
-            tile.paintHighlight(piece, columnIndex, rowIndex);
+            tile.setHighlight();
         }
     }
+
 }

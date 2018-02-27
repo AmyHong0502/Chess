@@ -8,7 +8,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import main.Movement;
 
-public abstract class Piece extends Text implements Movement {
+import java.io.Serializable;
+
+public abstract class Piece extends Text implements Movement, Serializable {
     boolean white;
 
     boolean hover;

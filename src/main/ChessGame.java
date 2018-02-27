@@ -6,7 +6,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import main.board.Board;
 
-public class ChessGame extends Application {
+import java.io.Serializable;
+
+public class ChessGame extends Application implements Serializable {
 
     private Group root;
 

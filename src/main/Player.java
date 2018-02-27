@@ -2,9 +2,10 @@ package main;
 
 import main.pieces.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements Serializable {
 
     private ArrayList<Piece> pieces;
 

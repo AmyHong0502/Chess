@@ -1,6 +1,8 @@
 package main.pieces;
 
-public class Queen extends Piece {
+import java.io.Serializable;
+
+public class Queen extends Piece implements Serializable {
 
     private final char type = '\u265B';
 

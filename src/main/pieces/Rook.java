@@ -2,7 +2,9 @@ package main.pieces;
 
 import main.board.Board;
 
-public class Rook extends Piece {
+import java.io.Serializable;
+
+public class Rook extends Piece implements Serializable {
 
     private final char type = '\u265C';
 

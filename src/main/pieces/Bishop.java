@@ -2,7 +2,9 @@ package main.pieces;
 
 import main.board.Board;
 
-public class Bishop extends Piece {
+import java.io.Serializable;
+
+public class Bishop extends Piece implements Serializable {
 
     private final char type = '\u265D';
 
