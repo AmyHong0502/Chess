@@ -34,22 +34,40 @@ public class Pawn extends Piece implements Serializable {
 
         int[][] result;
 
-        if (firstMove) {
-            System.out.println("FIRSTMOVE");
-            result = new int[2][2];
+        if (white) {
+            if (firstMove) {
+                System.out.println("FIRSTMOVE");
+                result = new int[2][2];
 
-            result[0][0] = columnIndex;
-            result[0][1] = rowIndex - 1;
-            result[1][0] = columnIndex;
-            result[1][1] = rowIndex - 2;
+                result[0][0] = columnIndex;
+                result[0][1] = rowIndex - 1;
+                result[1][0] = columnIndex;
+                result[1][1] = rowIndex - 2;
+            } else {
+                System.out.println("NOT FIRSTMOVE");
+                result = new int[1][2];
+
+                result[0][0] = columnIndex;
+                result[0][1] = rowIndex - 1;
+            }
         } else {
-            System.out.println("NOT FIRSTMOVE");
-            result = new int[1][2];
+            if (firstMove) {
+                System.out.println("FIRSTMOVE");
+                result = new int[2][2];
 
-            result[0][0] = columnIndex;
-            result[0][1] = rowIndex - 1;
+                result[0][0] = columnIndex;
+                result[0][1] = rowIndex + 1;
+                result[1][0] = columnIndex;
+                result[1][1] = rowIndex + 2;
+            } else {
+                System.out.println("NOT FIRSTMOVE");
+                result = new int[1][2];
+
+                result[0][0] = columnIndex;
+                result[0][1] = rowIndex + 1;
+            }
         }
-
+        
         return result;
     }
 
