@@ -6,18 +6,14 @@ public class Queen extends Piece implements Serializable {
 
     private final char type = '\u265B';
 
-    private boolean firstMove;
-
     public Queen(boolean white) {
         super(white);
         setText(Character.toString(type));
-        firstMove = true;
     }
 
     @Override
-    public int[][] capturable(final int x, final int y) {
-        return new int[0][0];
-        // TODO Implement this method
+    public int[][] capturable(final int columnIndex, final int rowIndex) {
+        return movable(columnIndex, rowIndex);
     }
 
     @Override

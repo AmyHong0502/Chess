@@ -19,20 +19,25 @@ public class Pawn extends Piece implements Serializable {
     }
 
     @Override
-    public int[][] capturable(final int x, final int y) {
+    public int[][] capturable(final int columnIndex, final int rowIndex) {
         int[][] destination;
 
-        if (y == 0) {
+        if (rowIndex == 0 || rowIndex == 7) {
             return new int[0][0];
         }
 
-        destination = new int[][]{{x - 1, y - 1}, {x + 1, y - 1}};
+        if (white) {
+            destination = new int[][]{{columnIndex - 1, rowIndex - 1}, {columnIndex + 1, rowIndex - 1}};
+        } else {
+            destination = new int[][]{{columnIndex - 1, rowIndex + 1}, {columnIndex + 1, rowIndex + 1}};
+        }
+
         return destination;
     }
 
     @Override
     public int[][] movable(final int columnIndex, final int rowIndex) {
-        if (rowIndex == 0) {
+        if (rowIndex == 0 || rowIndex == 7) {
             return new int[0][0];
         }
 
@@ -40,7 +45,6 @@ public class Pawn extends Piece implements Serializable {
 
         if (white) {
             if (firstMove) {
-                System.out.println("FIRSTMOVE");
                 result = new int[2][2];
 
                 result[0][0] = columnIndex;
@@ -48,7 +52,6 @@ public class Pawn extends Piece implements Serializable {
                 result[1][0] = columnIndex;
                 result[1][1] = rowIndex - 2;
             } else {
-                System.out.println("NOT FIRSTMOVE");
                 result = new int[1][2];
 
                 result[0][0] = columnIndex;
@@ -56,7 +59,6 @@ public class Pawn extends Piece implements Serializable {
             }
         } else {
             if (firstMove) {
-                System.out.println("FIRSTMOVE");
                 result = new int[2][2];
 
                 result[0][0] = columnIndex;
@@ -64,7 +66,6 @@ public class Pawn extends Piece implements Serializable {
                 result[1][0] = columnIndex;
                 result[1][1] = rowIndex + 2;
             } else {
-                System.out.println("NOT FIRSTMOVE");
                 result = new int[1][2];
 
                 result[0][0] = columnIndex;

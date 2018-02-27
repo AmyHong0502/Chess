@@ -16,9 +16,8 @@ public class King extends Piece implements Serializable {
     }
 
     @Override
-    public int[][] capturable(final int x, final int y) {
-        return new int[0][0];
-        // TODO Implement this method
+    public int[][] capturable(final int columnIndex, final int rowIndex) {
+        return movable(columnIndex, rowIndex);
     }
 
     @Override
