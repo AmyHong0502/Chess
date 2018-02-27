@@ -23,54 +23,39 @@ public class King extends Piece implements Serializable {
 
     @Override
     public int[][] movable(final int columnIndex, final int rowIndex) {
-        ArrayList<int[]> availability = new ArrayList<>();
+        ArrayList<int[]> move = new ArrayList<>();
 
         if (rowIndex != 7) {
-            int[] s = {columnIndex, rowIndex + 1};
-            availability.add(s);
+            move.add(new int[] {columnIndex, rowIndex + 1});
 
             if (columnIndex != 7) {
-                int[] se = {columnIndex + 1, rowIndex + 1};
-                availability.add(se);
+                move.add(new int[] {columnIndex + 1, rowIndex + 1});
             }
             if (columnIndex != 0) {
-                int[] sw = {columnIndex - 1, rowIndex + 1};
-                availability.add(sw);
+                move.add(new int[] {columnIndex - 1, rowIndex + 1});
             }
         }
 
         if (rowIndex != 0) {
-            int[] n = {columnIndex, rowIndex - 1};
-            availability.add(n);
+            move.add(new int[] {columnIndex, rowIndex - 1});
 
             if (columnIndex != 7) {
-                int[] ne = {columnIndex + 1, rowIndex - 1};
-                availability.add(ne);
+                move.add(new int[] {columnIndex + 1, rowIndex - 1});
             }
             if (columnIndex != 0) {
-                int[] nw = {columnIndex - 1, rowIndex - 1};
-                availability.add(nw);
+                move.add(new int[] {columnIndex - 1, rowIndex - 1});
             }
         }
 
         if (columnIndex != 7) {
-            int[] e = {columnIndex + 1, rowIndex};
-            availability.add(e);
+            move.add(new int[] {columnIndex + 1, rowIndex});
         }
 
         if (columnIndex != 0) {
-            int[] w = {columnIndex - 1, rowIndex};
-            availability.add(w);
+            move.add(new int[] {columnIndex - 1, rowIndex});
         }
 
-        int[][] result = new int[availability.size()][2];
-
-        for (int i = 0; i < availability.size(); i++) {
-            result[i][0] = availability.get(i)[0];
-            result[i][1] = availability.get(i)[1];
-        }
-
-        return result;
+        return move.toArray(new int[move.size()][2]);
     }
 
 }
