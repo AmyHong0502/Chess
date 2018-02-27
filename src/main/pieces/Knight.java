@@ -20,8 +20,6 @@ public class Knight extends Piece implements Serializable {
 
     @Override
     public int[][] movable(final int columnIndex, final int rowIndex) {
-        System.out.println("KNIGHT MOVABLE CALLED");
-
         ArrayList<int[]> move = new ArrayList<>();
 
         move.add(new int[]{columnIndex - 1, rowIndex - 2});
@@ -36,11 +34,11 @@ public class Knight extends Piece implements Serializable {
         for (int i = 0; i < move.size(); i++) {
             if (move.get(i)[0] < 0 || move.get(i)[0] > 7 || move.get(i)[1] < 0 || move.get(i)[1] > 7) {
                 move.remove(i);
+                i--;
             }
         }
 
-        int[][] result = move.toArray(new int[move.size()][2]);
-        return result;
+        return move.toArray(new int[move.size()][2]);
     }
 
 }
