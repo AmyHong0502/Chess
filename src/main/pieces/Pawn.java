@@ -14,6 +14,10 @@ public class Pawn extends Piece implements Serializable {
         firstMove = true;
     }
 
+    public void setFirstMove() {
+        firstMove = false;
+    }
+
     @Override
     public int[][] capturable(final int x, final int y) {
         int[][] destination;
@@ -67,7 +71,7 @@ public class Pawn extends Piece implements Serializable {
                 result[0][1] = rowIndex + 1;
             }
         }
-        
+
         return result;
     }
 

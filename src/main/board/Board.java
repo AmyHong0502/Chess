@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import main.Player;
+import main.pieces.Pawn;
 import main.pieces.Piece;
 
 import java.io.Serializable;
@@ -172,6 +173,9 @@ public class Board extends GridPane implements Serializable {
         if (clickedToMove) {
             setColumnIndex(clickedPiece, columnIndex);
             setRowIndex(clickedPiece, rowIndex);
+            if (clickedPiece.getClass().equals(Pawn.class)) {
+                ((Pawn)clickedPiece).setFirstMove();
+            }
         } else {
             clickedPiece = piece;
         }
