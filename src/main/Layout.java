@@ -2,6 +2,7 @@ package main;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -27,11 +28,13 @@ public class Layout extends BorderPane {
         board = new Board(player1, player2);
         board.setStyle("-fx-background-color: #066;");
 
-        addHBox(board);
+        this.setRight(addAnchorPane(board));
         this.setCenter(board);
     }
 
-    private void addHBox(GridPane board) {
+    private AnchorPane addAnchorPane(GridPane board) {
+        AnchorPane anchorPane = new AnchorPane();
+
         saveButton = new Button("Save");
         loadButton = new Button("Load");
 
@@ -43,7 +46,13 @@ public class Layout extends BorderPane {
         hbox.setSpacing(10);
         hbox.getChildren().addAll(saveButton, loadButton);
 
-        board.add(hbox, 8, 0);
+        hbox.setStyle("-fx-background-color: #ff6");
+        anchorPane.getChildren().addAll(board, hbox);
+        AnchorPane.setRightAnchor(hbox, 10.0);
+        AnchorPane.setBottomAnchor(hbox, 5.0);
+        AnchorPane.setTopAnchor(board, 0.0);
+
+        return anchorPane;
     }
 
     private void save() {

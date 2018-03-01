@@ -33,8 +33,8 @@ public class Board extends GridPane implements Serializable {
     public void buildBoard() {
         for (int row = 0; row < NUMBER_OF_CELLS; row++) {
             for (int column = 0; column < NUMBER_OF_CELLS; column++) {
-                fillBackgroundColumn();
-                fillBackgroundRow();
+//                fillBackgroundColumn();
+//                fillBackgroundRow();
 
                 boolean white = (row + column) % 2 == 0;
 
@@ -49,7 +49,7 @@ public class Board extends GridPane implements Serializable {
             }
         }
     }
-
+/*
     private void fillBackgroundColumn() {
         ColumnConstraints cc = new ColumnConstraints();
 
@@ -68,7 +68,7 @@ public class Board extends GridPane implements Serializable {
         rc.setVgrow(Priority.ALWAYS);
         rc.setFillHeight(true);
         getRowConstraints().add(rc);
-    }
+    }*/
 
     public Tile findTileByIndex(final int columnIndex, final int rowIndex) {
         for (Node node : getChildren()) {
