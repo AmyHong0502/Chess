@@ -17,15 +17,16 @@ public class Rook extends Piece implements Serializable {
     }
 
     @Override
-    public int[][] capturable(final int columnIndex, final int rowIndex) {
-        return movable(columnIndex, rowIndex);
+    public int[][] capturable() {
+        return movable();
     }
 
     @Override
-    public int[][] movable(final int columnIndex, final int rowIndex) {
+    public int[][] movable() {
         int[][] result = new int[(Board.NUMBER_OF_CELLS - 1) * 2][2];
-
         int cellCount = 0;
+        final int columnIndex = super.getColumnIndex();
+        final int rowIndex = super.getRowIndex();
 
         for (int row = 0; row < Board.NUMBER_OF_CELLS; row++) {
             if (row == rowIndex) {

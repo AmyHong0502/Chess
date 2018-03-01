@@ -2,7 +2,7 @@ package main;
 
 public interface Movement {
 
-    int[][] movable(final int columnIndex, final int rowIndex);
+    int[][] movable();
 
-    int[][] capturable(final int columnIndex, final int rowIndex);
+    int[][] capturable();
 }

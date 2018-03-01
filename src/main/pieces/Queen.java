@@ -12,14 +12,17 @@ public class Queen extends Piece implements Serializable {
     }
 
     @Override
-    public int[][] capturable(final int columnIndex, final int rowIndex) {
-        return movable(columnIndex, rowIndex);
+    public int[][] capturable() {
+        return movable();
     }
 
     @Override
-    public int[][] movable(final int columnIndex, final int rowIndex) {
-        int[][] bishop = new Bishop(white).movable(columnIndex, rowIndex);
-        int[][] rook = new Rook(white).movable(columnIndex, rowIndex);
+    public int[][] movable() {
+        final int columnIndex = super.getColumnIndex();
+        final int rowIndex = super.getRowIndex();
+
+        int[][] bishop = new Bishop(white, super.getColumnIndex(), super.getRowIndex()).movable();
+        int[][] rook = new Rook(white, super.getColumnIndex(), super.getRowIndex()).movable();
 
         int resultSize = bishop.length + rook.length;
         int[][] result = new int[resultSize][2];

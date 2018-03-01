@@ -17,12 +17,15 @@ public class Bishop extends Piece implements Serializable {
     }
 
     @Override
-    public int[][] capturable(final int columnIndex, final int rowIndex) {
-        return movable(columnIndex, rowIndex);
+    public int[][] capturable() {
+        return movable();
     }
 
     @Override
-    public int[][] movable(final int columnIndex, final int rowIndex) {
+    public int[][] movable() {
+        final int columnIndex = super.getColumnIndex();
+        final int rowIndex = super.getRowIndex();
+
         final int northToSouthCount = rowIndex;
         final int southToNorthCount = Board.NUMBER_OF_CELLS - rowIndex - 1;
         final int westToEastCount = columnIndex;

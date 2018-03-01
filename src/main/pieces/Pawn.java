@@ -19,8 +19,11 @@ public class Pawn extends Piece implements Serializable {
     }
 
     @Override
-    public int[][] capturable(final int columnIndex, final int rowIndex) {
+    public int[][] capturable() {
         int[][] destination;
+
+        final int rowIndex = super.getRowIndex();
+        final int columnIndex = super.getColumnIndex();
 
         if (rowIndex == 0 || rowIndex == 7) {
             return new int[0][0];
@@ -36,7 +39,10 @@ public class Pawn extends Piece implements Serializable {
     }
 
     @Override
-    public int[][] movable(final int columnIndex, final int rowIndex) {
+    public int[][] movable() {
+        final int rowIndex = super.getRowIndex();
+        final int columnIndex = super.getColumnIndex();
+
         if (rowIndex == 0 || rowIndex == 7) {
             return new int[0][0];
         }

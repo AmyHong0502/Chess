@@ -20,22 +20,15 @@ public class Board extends GridPane implements Serializable {
 
     private boolean clickedToMove;
 
-    private int pieceColumnIndex;
-
-    private int pieceRowIndex;
-
     public Board(Player player1, Player player2) {
-        buildBoard();
+        putTiles();
         initializePieces(player1, player2);
         clickedToMove = false;
     }
 
-    public void buildBoard() {
+    public void putTiles() {
         for (int row = 0; row < NUMBER_OF_CELLS; row++) {
             for (int column = 0; column < NUMBER_OF_CELLS; column++) {
-//                fillBackgroundColumn();
-//                fillBackgroundRow();
-
                 boolean white = (row + column) % 2 == 0;
 
                 tileLength = 60;
@@ -49,26 +42,6 @@ public class Board extends GridPane implements Serializable {
             }
         }
     }
-/*
-    private void fillBackgroundColumn() {
-        ColumnConstraints cc = new ColumnConstraints();
-
-        cc.setPercentWidth(100 / NUMBER_OF_CELLS);
-
-        cc.setHgrow(Priority.ALWAYS);
-        cc.setFillWidth(true);
-        getColumnConstraints().add(cc);
-    }
-
-    private void fillBackgroundRow() {
-        RowConstraints rc = new RowConstraints();
-
-        rc.setPercentHeight(100 / NUMBER_OF_CELLS);
-
-        rc.setVgrow(Priority.ALWAYS);
-        rc.setFillHeight(true);
-        getRowConstraints().add(rc);
-    }*/
 
     public Tile findTileByIndex(final int columnIndex, final int rowIndex) {
         for (Node node : getChildren()) {
@@ -96,9 +69,9 @@ public class Board extends GridPane implements Serializable {
         }
     }
 
-    private void moveClickedPiece(Piece piece, final int columnIndex, final int rowIndex) {
+    private void moveClickedPiece(final Piece piece, final int columnIndex, final int rowIndex) {
         if (clickedToMove) {
-            int[][] movable = piece.movable(pieceColumnIndex, pieceRowIndex);
+            final int[][] movable = piece.movable();
             boolean allowedToMove = false;
 
             for (int i = 0; i < movable.length; i++) {
@@ -108,8 +81,10 @@ public class Board extends GridPane implements Serializable {
             }
 
             if (allowedToMove) {
-                setColumnIndex(clickedPiece, columnIndex);
-                setRowIndex(clickedPiece, rowIndex);
+                clickedPiece.setColumnIndex(columnIndex);
+                clickedPiece.setRowIndex(rowIndex);
+                setColumnIndex(clickedPiece, clickedPiece.getColumnIndex());
+                setRowIndex(clickedPiece, clickedPiece.getRowIndex());
                 piece.setClicked(false);
                 piece.highlightClickedPiece();
                 if (clickedPiece.getClass().equals(Pawn.class)) {
@@ -117,15 +92,15 @@ public class Board extends GridPane implements Serializable {
                 }
             }
         } else {
-            pieceColumnIndex = columnIndex;
-            pieceRowIndex = rowIndex;
+            piece.setColumnIndex(columnIndex);
+            piece.setRowIndex(rowIndex);
             clickedPiece = piece;
         }
         clickedToMove = !clickedToMove;
     }
 
-    private void highlightHovered(final Piece piece, final int columnIndex, final int rowIndex) {
-        int[][] movable = piece.movable(columnIndex, rowIndex);
+    private void highlightHovered(final Piece piece) {
+        int[][] movable = piece.movable();
 
         for (int i = 0; i < movable.length; i++) {
             int col = movable[i][0];
@@ -140,24 +115,12 @@ public class Board extends GridPane implements Serializable {
         ArrayList<Piece> pieces1 = player1.getPieces();
         ArrayList<Piece> pieces2 = player2.getPieces();
 
-        int pieceCount = 0;
-
-        for (int row = 1; row >= 0; row--) {
-            for (int column = 7; column >= 0; column--) {
-                Piece piece = pieces1.get(pieceCount);
-                pieceCount++;
-                add(piece, column, row);
-            }
+        for (int i = 0; i < pieces1.size(); i++) {
+            add(pieces1.get(i), pieces1.get(i).getColumnIndex(), pieces1.get(i).getRowIndex());
         }
 
-        pieceCount = 0;
-
-        for (int row = 6; row < 8; row++) {
-            for (int column = 0; column < 8; column++) {
-                Piece piece = pieces2.get(pieceCount);
-                pieceCount++;
-                add(piece, column, row);
-            }
+        for (int i = 0; i < pieces2.size(); i++) {
+            add(pieces2.get(i), pieces2.get(i).getColumnIndex(), pieces2.get(i).getRowIndex());
         }
 
         initializeHoverHighlighter(player1.getPieces(), player2.getPieces());
@@ -167,7 +130,7 @@ public class Board extends GridPane implements Serializable {
         for (Piece p : pieces1) {
             p.addEventFilter(MouseEvent.MOUSE_ENTERED,
                     event -> {
-                        highlightHovered(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
+                        highlightHovered(p);
                     });
         }
 
@@ -180,7 +143,7 @@ public class Board extends GridPane implements Serializable {
         for (Piece p : pieces2) {
             p.addEventFilter(MouseEvent.MOUSE_ENTERED,
                     event -> {
-                        highlightHovered(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
+                        highlightHovered(p);
                     });
         }
 

@@ -13,13 +13,15 @@ public class Knight extends Piece implements Serializable {
     }
 
     @Override
-    public int[][] capturable(final int columnIndex, final int rowIndex) {
-        return movable(columnIndex, rowIndex);
+    public int[][] capturable() {
+        return movable();
     }
 
     @Override
-    public int[][] movable(final int columnIndex, final int rowIndex) {
+    public int[][] movable() {
         ArrayList<int[]> move = new ArrayList<>();
+        final int columnIndex = super.getColumnIndex();
+        final int rowIndex = super.getRowIndex();
 
         move.add(new int[]{columnIndex - 1, rowIndex - 2});
         move.add(new int[]{columnIndex + 1, rowIndex - 2});
