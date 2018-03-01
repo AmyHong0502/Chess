@@ -7,8 +7,8 @@ public class Knight extends Piece implements Serializable {
 
     private final char type = '\u265E';
 
-    public Knight(boolean white) {
-        super(white);
+    public Knight(boolean white, int colIndex, int rowIndex) {
+        super(white, colIndex, rowIndex);
         setText(Character.toString(type));
     }
 

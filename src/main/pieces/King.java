@@ -9,8 +9,8 @@ public class King extends Piece implements Serializable {
 
     private boolean firstMove;
 
-    public King(boolean white) {
-        super(white);
+    public King(boolean white, int colIndex, int rowIndex) {
+        super(white, colIndex, rowIndex);
         setText(Character.toString(type));
         firstMove = true;
     }

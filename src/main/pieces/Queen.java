@@ -6,8 +6,8 @@ public class Queen extends Piece implements Serializable {
 
     private final char type = '\u265B';
 
-    public Queen(boolean white) {
-        super(white);
+    public Queen(boolean white, int colIndex, int rowIndex) {
+        super(white, colIndex, rowIndex);
         setText(Character.toString(type));
     }
 
@@ -18,8 +18,6 @@ public class Queen extends Piece implements Serializable {
 
     @Override
     public int[][] movable(final int columnIndex, final int rowIndex) {
-        System.out.println("QUEEN MOVABLE CALLED");
-
         int[][] bishop = new Bishop(white).movable(columnIndex, rowIndex);
         int[][] rook = new Rook(white).movable(columnIndex, rowIndex);
 

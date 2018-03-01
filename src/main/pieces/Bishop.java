@@ -10,8 +10,8 @@ public class Bishop extends Piece implements Serializable {
 
     private boolean firstMove;
 
-    public Bishop(boolean white) {
-        super(white);
+    public Bishop(boolean white, int colIndex, int rowIndex) {
+        super(white, colIndex, rowIndex);
         setText(Character.toString(type));
         firstMove = true;
     }

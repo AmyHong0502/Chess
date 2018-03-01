@@ -10,8 +10,8 @@ public class Rook extends Piece implements Serializable {
 
     private boolean firstMove;
 
-    public Rook(boolean white) {
-        super(white);
+    public Rook(boolean white, int colIndex, int rowIndex) {
+        super(white, colIndex, rowIndex);
         setText(Character.toString(type));
         firstMove = true;
     }
@@ -23,8 +23,6 @@ public class Rook extends Piece implements Serializable {
 
     @Override
     public int[][] movable(final int columnIndex, final int rowIndex) {
-        System.out.println("ROOK MOVABLE CALLED");
-
         int[][] result = new int[(Board.NUMBER_OF_CELLS - 1) * 2][2];
 
         int cellCount = 0;

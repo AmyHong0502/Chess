@@ -8,8 +8,8 @@ public class Pawn extends Piece implements Serializable {
 
     private boolean firstMove;
 
-    public Pawn(boolean white) {
-        super(white);
+    public Pawn(boolean white, int colIndex, int rowIndex) {
+        super(white, colIndex, rowIndex);
         setText(Character.toString(type));
         firstMove = true;
     }
