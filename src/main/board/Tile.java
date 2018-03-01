@@ -39,8 +39,12 @@ public class Tile extends Rectangle implements Serializable {
         }
     }
 
-    void setHighlight() {
+    void setMovableHighlight() {
         setFill(Color.web("0xFF6"));
+    }
+
+    void setCapturableHighlight() {
+        setFill(Color.web("0x6F6"));
     }
 
     public boolean isWhite() {

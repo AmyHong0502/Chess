@@ -18,8 +18,6 @@ public class Board extends GridPane implements Serializable {
 
     private int tileLength;
 
-    private int boardLength;
-
     private boolean clickedToMove;
 
     private int pieceColumnIndex;
@@ -27,10 +25,7 @@ public class Board extends GridPane implements Serializable {
     private int pieceRowIndex;
 
     public Board(Player player1, Player player2) {
-
         buildBoard();
-        setMaxWidth(Double.MAX_VALUE);
-        setMaxHeight(Double.MAX_VALUE);
         initializePieces(player1, player2);
         clickedToMove = false;
     }
@@ -44,7 +39,6 @@ public class Board extends GridPane implements Serializable {
                 boolean white = (row + column) % 2 == 0;
 
                 tileLength = 60;
-                boardLength = tileLength * NUMBER_OF_CELLS;
 
                 Tile tile = new Tile(column, row, tileLength, false, white);
                 tile.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
@@ -88,10 +82,6 @@ public class Board extends GridPane implements Serializable {
         return null;
     }
 
-    public int getBoardLength() {
-        return boardLength;
-    }
-
     public void paintDefault() {
         for (int row = 0; row < NUMBER_OF_CELLS; row++) {
             for (int column = 0; column < NUMBER_OF_CELLS; column++) {
@@ -106,7 +96,7 @@ public class Board extends GridPane implements Serializable {
         }
     }
 
-    private void moveClickedPiece(final Piece piece, final int columnIndex, final int rowIndex) {
+    private void moveClickedPiece(Piece piece, final int columnIndex, final int rowIndex) {
         if (clickedToMove) {
             int[][] movable = piece.movable(pieceColumnIndex, pieceRowIndex);
             boolean allowedToMove = false;
@@ -120,6 +110,8 @@ public class Board extends GridPane implements Serializable {
             if (allowedToMove) {
                 setColumnIndex(clickedPiece, columnIndex);
                 setRowIndex(clickedPiece, rowIndex);
+                piece.setClicked(false);
+                piece.highlightClickedPiece();
                 if (clickedPiece.getClass().equals(Pawn.class)) {
                     ((Pawn) clickedPiece).setFirstMove();
                 }
