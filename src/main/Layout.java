@@ -60,7 +60,9 @@ public class Layout extends BorderPane {
             FileOutputStream f = new FileOutputStream("SaveChessGame.txt");
             ObjectOutput out = new ObjectOutputStream(f);
 
-            out.writeObject(board);
+            Save saveFile = new Save(player1.getPieces(), player2.getPieces());
+
+            out.writeObject(saveFile);
             out.flush();
             out.close();
         } catch (FileNotFoundException e) {
@@ -76,8 +78,14 @@ public class Layout extends BorderPane {
         try {
             FileInputStream fi = new FileInputStream("SaveChessGame.txt");
             ObjectInput in = new ObjectInputStream(fi);
-            board = (Board) in.readObject();
+
+            Save saveFile = (Save) in.readObject();
             in.close();
+
+            board.getChildren().clear();
+            player1.setPieces(saveFile.getPlayer1Pieces());
+            player2.setPieces(saveFile.getPlayer2Pieces());
+            board.drawBoard(player1, player2);
         } catch (FileNotFoundException e) {
 
         } catch (IOException e) {

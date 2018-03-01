@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Board extends GridPane implements Serializable {
 
-    Piece clickedPiece;
+    private Piece clickedPiece;
 
     public static int NUMBER_OF_CELLS = 8;
 
@@ -21,12 +21,11 @@ public class Board extends GridPane implements Serializable {
     private boolean clickedToMove;
 
     public Board(Player player1, Player player2) {
-        putTiles();
-        initializePieces(player1, player2);
+        drawBoard(player1, player2);
         clickedToMove = false;
     }
 
-    public void putTiles() {
+    private void putTiles() {
         for (int row = 0; row < NUMBER_OF_CELLS; row++) {
             for (int column = 0; column < NUMBER_OF_CELLS; column++) {
                 boolean white = (row + column) % 2 == 0;
@@ -34,16 +33,21 @@ public class Board extends GridPane implements Serializable {
                 tileLength = 60;
 
                 Tile tile = new Tile(column, row, tileLength, false, white);
-                tile.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-                    moveClickedPiece(clickedPiece, GridPane.getColumnIndex(tile), GridPane.getRowIndex(tile));
-                });
+                tile.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                        event -> moveClickedPiece(clickedPiece, GridPane.getColumnIndex(tile), GridPane.getRowIndex(tile)));
 
                 add(tile, column, row);
             }
         }
     }
 
-    public Tile findTileByIndex(final int columnIndex, final int rowIndex) {
+    public void drawBoard(Player player1, Player player2) {
+        getChildren().clear();
+        putTiles();
+        populatePieces(player1, player2);
+    }
+
+    private Tile findTileByIndex(final int columnIndex, final int rowIndex) {
         for (Node node : getChildren()) {
             if (node.getClass().equals(Tile.class)) {
                 if (GridPane.getColumnIndex(node) == columnIndex && GridPane.getRowIndex(node) == rowIndex) {
@@ -55,7 +59,7 @@ public class Board extends GridPane implements Serializable {
         return null;
     }
 
-    public void paintDefault() {
+    private void paintTileDefault() {
         for (int row = 0; row < NUMBER_OF_CELLS; row++) {
             for (int column = 0; column < NUMBER_OF_CELLS; column++) {
                 getChildren().forEach(
@@ -74,8 +78,8 @@ public class Board extends GridPane implements Serializable {
             final int[][] movable = piece.movable();
             boolean allowedToMove = false;
 
-            for (int i = 0; i < movable.length; i++) {
-                if (movable[i][0] == columnIndex && movable[i][1] == rowIndex) {
+            for (int[] location : movable) {
+                if (location[0] == columnIndex && location[1] == rowIndex) {
                     allowedToMove = true;
                 }
             }
@@ -102,25 +106,25 @@ public class Board extends GridPane implements Serializable {
     private void highlightHovered(final Piece piece) {
         int[][] movable = piece.movable();
 
-        for (int i = 0; i < movable.length; i++) {
-            int col = movable[i][0];
-            int row = movable[i][1];
+        for (int[] location : movable) {
+            int col = location[0];
+            int row = location[1];
 
             Tile tile = findTileByIndex(col, row);
             tile.setMovableHighlight();
         }
     }
 
-    private void initializePieces(final Player player1, final Player player2) {
+    private void populatePieces(final Player player1, final Player player2) {
         ArrayList<Piece> pieces1 = player1.getPieces();
         ArrayList<Piece> pieces2 = player2.getPieces();
 
-        for (int i = 0; i < pieces1.size(); i++) {
-            add(pieces1.get(i), pieces1.get(i).getColumnIndex(), pieces1.get(i).getRowIndex());
+        for (Piece piece : pieces1) {
+            add(piece, piece.getColumnIndex(), piece.getRowIndex());
         }
 
-        for (int i = 0; i < pieces2.size(); i++) {
-            add(pieces2.get(i), pieces2.get(i).getColumnIndex(), pieces2.get(i).getRowIndex());
+        for (Piece piece : pieces2) {
+            add(piece, piece.getColumnIndex(), piece.getRowIndex());
         }
 
         initializeHoverHighlighter(player1.getPieces(), player2.getPieces());
@@ -129,40 +133,32 @@ public class Board extends GridPane implements Serializable {
     private void initializeHoverHighlighter(final ArrayList<Piece> pieces1, final ArrayList<Piece> pieces2) {
         for (Piece p : pieces1) {
             p.addEventFilter(MouseEvent.MOUSE_ENTERED,
-                    event -> {
-                        highlightHovered(p);
-                    });
+                    event -> highlightHovered(p));
         }
 
         for (Piece p : pieces1) {
-            p.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
-                paintDefault();
-            });
+            p.addEventFilter(MouseEvent.MOUSE_EXITED,
+                    event -> paintTileDefault());
         }
 
         for (Piece p : pieces2) {
             p.addEventFilter(MouseEvent.MOUSE_ENTERED,
-                    event -> {
-                        highlightHovered(p);
-                    });
+                    event -> highlightHovered(p));
         }
 
         for (Piece p : pieces2) {
-            p.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
-                paintDefault();
-            });
+            p.addEventFilter(MouseEvent.MOUSE_EXITED,
+                    event -> paintTileDefault());
         }
 
         for (Piece p : pieces1) {
-            p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-                moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
-            });
+            p.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                    event -> moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p)));
         }
 
         for (Piece p : pieces2) {
-            p.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-                moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p));
-            });
+            p.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                    event -> moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p)));
         }
     }
 
