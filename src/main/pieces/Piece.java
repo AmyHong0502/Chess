@@ -7,9 +7,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import main.Movement;
 
-import java.io.Serializable;
-
-public abstract class Piece extends Text implements Movement, Serializable {
+public abstract class Piece extends Text implements Movement {
     boolean white;
 
     boolean hover;
@@ -24,8 +22,11 @@ public abstract class Piece extends Text implements Movement, Serializable {
 
     Color clickedColor;
 
-    Piece(boolean white, int columnIndex, int rowIndex) {
+    char type;
+
+    Piece(final boolean white, final char type, int columnIndex, int rowIndex) {
         super();
+        this.type = type;
         hover = false;
         clicked = false;
         this.white = white;
@@ -62,8 +63,8 @@ public abstract class Piece extends Text implements Movement, Serializable {
         }
     }
 
-    public void setColumnIndex(int columnIndex) {
-        this.columnIndex = columnIndex;
+    public void setColumnIndex(int colIndex) {
+        this.columnIndex = colIndex;
     }
 
     public void setRowIndex(int rowIndex) {
@@ -77,4 +78,13 @@ public abstract class Piece extends Text implements Movement, Serializable {
     public int getRowIndex() {
         return rowIndex;
     }
+
+    public char getType() {
+        return type;
+    }
+
+    public boolean isWhite() {
+        return white;
+    }
+
 }
