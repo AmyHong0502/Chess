@@ -1,15 +1,13 @@
 package main.pieces;
 
-import java.io.Serializable;
-
-public class Pawn extends Piece implements Serializable {
+public class Pawn extends Piece {
 
     private final char type = '\u265F';
 
     private boolean firstMove;
 
     public Pawn(boolean white, int colIndex, int rowIndex) {
-        super(white, colIndex, rowIndex);
+        super(white, '\u265F', colIndex, rowIndex);
         setText(Character.toString(type));
         firstMove = true;
     }

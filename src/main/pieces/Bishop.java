@@ -2,18 +2,13 @@ package main.pieces;
 
 import main.board.Board;
 
-import java.io.Serializable;
-
-public class Bishop extends Piece implements Serializable {
+public class Bishop extends Piece {
 
     private final char type = '\u265D';
 
-    private boolean firstMove;
-
     public Bishop(boolean white, int colIndex, int rowIndex) {
-        super(white, colIndex, rowIndex);
+        super(white, '\u265D', colIndex, rowIndex);
         setText(Character.toString(type));
-        firstMove = true;
     }
 
     @Override

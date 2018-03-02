@@ -1,13 +1,11 @@
 package main.pieces;
 
-import java.io.Serializable;
-
-public class Queen extends Piece implements Serializable {
+public class Queen extends Piece {
 
     private final char type = '\u265B';
 
     public Queen(boolean white, int colIndex, int rowIndex) {
-        super(white, colIndex, rowIndex);
+        super(white, '\u265B', colIndex, rowIndex);
         setText(Character.toString(type));
     }
 

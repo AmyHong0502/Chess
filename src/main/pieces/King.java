@@ -1,16 +1,15 @@
 package main.pieces;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class King extends Piece implements Serializable {
+public class King extends Piece {
 
     private final char type = '\u265A';
 
     private boolean firstMove;
 
     public King(boolean white, int colIndex, int rowIndex) {
-        super(white, colIndex, rowIndex);
+        super(white, '\u265A', colIndex, rowIndex);
         setText(Character.toString(type));
         firstMove = true;
     }

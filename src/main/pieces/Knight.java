@@ -1,14 +1,13 @@
 package main.pieces;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Knight extends Piece implements Serializable {
+public class Knight extends Piece {
 
     private final char type = '\u265E';
 
     public Knight(boolean white, int colIndex, int rowIndex) {
-        super(white, colIndex, rowIndex);
+        super(white, '\u265E', colIndex, rowIndex);
         setText(Character.toString(type));
     }
 

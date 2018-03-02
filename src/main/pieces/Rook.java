@@ -2,16 +2,14 @@ package main.pieces;
 
 import main.board.Board;
 
-import java.io.Serializable;
-
-public class Rook extends Piece implements Serializable {
+public class Rook extends Piece {
 
     private final char type = '\u265C';
 
     private boolean firstMove;
 
     public Rook(boolean white, int colIndex, int rowIndex) {
-        super(white, colIndex, rowIndex);
+        super(white, '\u265C', colIndex, rowIndex);
         setText(Character.toString(type));
         firstMove = true;
     }
