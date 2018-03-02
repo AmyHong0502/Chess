@@ -10,7 +10,7 @@ import main.pieces.Piece;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Board extends GridPane implements Serializable {
+public class Board extends GridPane {
 
     private Piece clickedPiece;
 
@@ -20,8 +20,8 @@ public class Board extends GridPane implements Serializable {
 
     private boolean clickedToMove;
 
-    public Board(Player player1, Player player2) {
-        drawBoard(player1, player2);
+    public Board(Player blackPlayer, Player whitePlayer) {
+        drawBoard(blackPlayer, whitePlayer);
         clickedToMove = false;
     }
 
@@ -42,7 +42,6 @@ public class Board extends GridPane implements Serializable {
     }
 
     public void drawBoard(Player player1, Player player2) {
-        getChildren().clear();
         putTiles();
         populatePieces(player1, player2);
     }

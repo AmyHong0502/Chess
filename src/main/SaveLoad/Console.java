@@ -3,71 +3,60 @@ package main.SaveLoad;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import main.Player;
-import main.pieces.Piece;
+import main.board.Board;
 
 import java.io.*;
-import java.util.ArrayList;
 
 public class Console extends AnchorPane {
 
-    Button saveButton;
+    private Board board;
 
-    Button loadButton;
+    private Button saveButton;
 
-    HBox hbox;
+    private Button loadButton;
 
-    public Console(GridPane board) {
+    private HBox hbox;
+
+    private Player blackPlayer;
+
+    private Player whitePlayer;
+
+    public Console(Board board, Player blackPlayer, Player whitePlayer) {
+        this.board = board;
+        this.blackPlayer = blackPlayer;
+        this.whitePlayer = whitePlayer;
         saveButton = new Button("Save");
         loadButton = new Button("Load");
         hbox = new HBox();
-
-        saveButton.setOnMouseClicked(event -> saveGame());
-        loadButton.setOnMouseClicked(event -> load());
-
         getChildren().addAll(board, hbox);
     }
 
     private void addHBox() {
+        saveButton.setOnMouseClicked(event -> saveGame());
+        loadButton.setOnMouseClicked(event -> load());
+
         hbox.setPadding(new Insets(0, 10, 10, 10));
         hbox.setSpacing(10);
         hbox.getChildren().addAll(saveButton, loadButton);
         hbox.setStyle("-fx-background-color: #ff6");
     }
 
-    private void initialSetup() {
-        AnchorPane.setRightAnchor(hbox, 10.0);
-        AnchorPane.setBottomAnchor(hbox, 5.0);
+    public void initialSetup() {
+        addHBox();
+        setRightAnchor(hbox, 10.0);
+        setBottomAnchor(hbox, 5.0);
     }
 
-    private void savePieces(Save saveFile, ArrayList<Piece> pieces, boolean white) {
-        ArrayList<PiecesSaver> readyToSave = new ArrayList<>();
-
-        for (Piece p : pieces) {
-            int col = p.getColumnIndex();
-            int row = p.getRowIndex();
-            char type = p.getType();
-
-            readyToSave.add(new PiecesSaver(white, type, col, row));
-        }
-
-        if (white) {
-            saveFile.setWhiteSavedPieces(readyToSave);
-        } else {
-            saveFile.setBlackSavedPieces(readyToSave);
-        }
-    }
-
-    private void saveGame(Player blackPlayer, Player whitePlayer) {
+    private void saveGame() {
         try {
-            FileOutputStream f = new FileOutputStream("SaveChessGame.class");
+            FileOutputStream f = new FileOutputStream("SaveChessGame.txt");
             ObjectOutput out = new ObjectOutputStream(f);
 
             Save saveFile = new Save();
-            savePieces(saveFile, blackPlayer.getPieces(), false);
-            savePieces(saveFile, whitePlayer.getPieces(), true);
+            saveFile.savePieces(blackPlayer.getPieces(), false);
+            saveFile.savePieces(whitePlayer.getPieces(), true);
 
             out.writeObject(saveFile);
             out.flush();
@@ -85,7 +74,7 @@ public class Console extends AnchorPane {
 
     private void load() {
         try {
-            FileInputStream fi = new FileInputStream("SaveChessGame.class");
+            FileInputStream fi = new FileInputStream("SaveChessGame.txt");
             ObjectInput in = new ObjectInputStream(fi);
 
             Save saveFile = (Save) in.readObject();
@@ -103,6 +92,7 @@ public class Console extends AnchorPane {
         } catch (ClassNotFoundException e) {
             System.out.println("CNFE");
         }
+
         System.out.println("Loaded.");
     }
 

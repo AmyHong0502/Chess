@@ -5,7 +5,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.Serializable;
 
-public class Tile extends Rectangle implements Serializable {
+public class Tile extends Rectangle {
 
     int xCoordinate;
 

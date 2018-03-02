@@ -19,8 +19,10 @@ public class Layout extends BorderPane {
         whitePlayer = new Player(true);
         board = new Board(blackPlayer, whitePlayer);
         board.setStyle("-fx-background-color: #066;");
+        console = new Console(board, blackPlayer, whitePlayer);
+        console.initialSetup();
 
-        this.setRight(new Console(board));
+        this.setRight(console);
         this.setCenter(board);
     }
 

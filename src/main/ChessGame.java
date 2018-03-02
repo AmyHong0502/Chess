@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 
-public class ChessGame extends Application implements Serializable {
+public class ChessGame extends Application {
 
     Group root;
 

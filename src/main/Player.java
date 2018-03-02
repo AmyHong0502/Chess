@@ -6,13 +6,13 @@ import main.pieces.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player extends Node implements Serializable {
+public class Player extends Node {
 
     private ArrayList<Piece> pieces;
 
-    boolean white;
+    private boolean white;
 
-    boolean clickedPiece;
+    private boolean clickedPiece;
 
     Player(boolean white) {
         super();
@@ -24,6 +24,10 @@ public class Player extends Node implements Serializable {
 
     public void setPieces(ArrayList<Piece> pieces) {
         this.pieces = pieces;
+    }
+
+    public boolean isWhite() {
+        return white;
     }
 
     public ArrayList<Piece> getPieces() {
