@@ -3,7 +3,6 @@ package main;
 import javafx.scene.Node;
 import main.pieces.*;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Player extends Node {

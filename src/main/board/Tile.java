@@ -3,8 +3,6 @@ package main.board;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.io.Serializable;
-
 public class Tile extends Rectangle {
 
     int xCoordinate;
