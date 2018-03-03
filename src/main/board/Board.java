@@ -7,8 +7,9 @@ import main.Player;
 import main.pieces.Pawn;
 import main.pieces.Piece;
 
-import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Board extends GridPane {
 
@@ -20,7 +21,13 @@ public class Board extends GridPane {
 
     private boolean clickedToMove;
 
+    private Player blackPlayer;
+
+    private Player whitePlayer;
+
     public Board(Player blackPlayer, Player whitePlayer) {
+        this.blackPlayer = blackPlayer;
+        this.whitePlayer = whitePlayer;
         drawBoard(blackPlayer, whitePlayer);
         clickedToMove = false;
     }
@@ -58,6 +65,24 @@ public class Board extends GridPane {
         return null;
     }
 
+    private Piece findPieceByIndex(final int columnIndex, final int rowIndex) {
+        ArrayList<Piece> blackPieces = blackPlayer.getPieces();
+        ArrayList<Piece> whitePieces = whitePlayer.getPieces();
+
+        for (Piece p: blackPieces) {
+            if (p.getColumnIndex() == columnIndex && p.getRowIndex() == rowIndex) {
+                return p;
+            }
+        }
+        for (Piece p: whitePieces) {
+            if (p.getColumnIndex() == columnIndex && p.getRowIndex() == rowIndex) {
+                return p;
+            }
+        }
+
+        return null;
+    }
+
     private void paintTileDefault() {
         for (int row = 0; row < NUMBER_OF_CELLS; row++) {
             for (int column = 0; column < NUMBER_OF_CELLS; column++) {
@@ -84,14 +109,19 @@ public class Board extends GridPane {
             }
 
             if (allowedToMove) {
-                clickedPiece.setColumnIndex(columnIndex);
-                clickedPiece.setRowIndex(rowIndex);
-                setColumnIndex(clickedPiece, clickedPiece.getColumnIndex());
-                setRowIndex(clickedPiece, clickedPiece.getRowIndex());
-                piece.setClicked(false);
-                piece.highlightClickedPiece();
-                if (clickedPiece.getClass().equals(Pawn.class)) {
-                    ((Pawn) clickedPiece).setFirstMove();
+                if (findPieceByIndex(columnIndex, rowIndex) != null) {
+                    capturePiece(piece, columnIndex, rowIndex);
+                    return;
+                } else {
+                    clickedPiece.setColumnIndex(columnIndex);
+                    clickedPiece.setRowIndex(rowIndex);
+                    setColumnIndex(clickedPiece, clickedPiece.getColumnIndex());
+                    setRowIndex(clickedPiece, clickedPiece.getRowIndex());
+                    piece.setClicked(false);
+                    piece.highlightClickedPiece();
+                    if (clickedPiece.getClass().equals(Pawn.class)) {
+                        ((Pawn) clickedPiece).setFirstMove();
+                    }
                 }
             }
         } else {
@@ -100,6 +130,25 @@ public class Board extends GridPane {
             clickedPiece = piece;
         }
         clickedToMove = !clickedToMove;
+    }
+
+    private void capturePiece(final Piece predator, final int columnIndex, final int rowIndex) {
+        Piece prey = findPieceByIndex(columnIndex, rowIndex);
+        ArrayList<Piece> pieces;
+
+        pieces = prey.isWhite() ? whitePlayer.getPieces() : blackPlayer.getPieces();
+
+        Iterator itr = pieces.iterator();
+        while (itr.hasNext()) {
+            Piece piece = (Piece) itr.next();
+            if (piece.equals(prey)) {
+                itr.remove();
+            }
+        }
+
+        refreshPieces();
+        clickedToMove = !clickedToMove;
+        moveClickedPiece(predator, columnIndex, rowIndex);
     }
 
     private void highlightHovered(final Piece piece) {
@@ -114,19 +163,24 @@ public class Board extends GridPane {
         }
     }
 
-    private void populatePieces(final Player player1, final Player player2) {
-        ArrayList<Piece> pieces1 = player1.getPieces();
-        ArrayList<Piece> pieces2 = player2.getPieces();
+    private void refreshPieces() {
+        getChildren().clear();
+        drawBoard(blackPlayer, whitePlayer);
+    }
 
-        for (Piece piece : pieces1) {
+    private void populatePieces(final Player blackPlayer, final Player whitePlayer) {
+        ArrayList<Piece> blackPieces = blackPlayer.getPieces();
+        ArrayList<Piece> whitePieces = whitePlayer.getPieces();
+
+        for (Piece piece : blackPieces) {
             add(piece, piece.getColumnIndex(), piece.getRowIndex());
         }
 
-        for (Piece piece : pieces2) {
+        for (Piece piece : whitePieces) {
             add(piece, piece.getColumnIndex(), piece.getRowIndex());
         }
 
-        initializeHoverHighlighter(player1.getPieces(), player2.getPieces());
+        initializeHoverHighlighter(blackPlayer.getPieces(), whitePlayer.getPieces());
     }
 
     private void initializeHoverHighlighter(final ArrayList<Piece> pieces1, final ArrayList<Piece> pieces2) {
