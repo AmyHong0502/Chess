@@ -26,18 +26,10 @@ public class Player extends Node {
 
     public void startMyTurn() {
         myTurn = true;
-
-        for (Piece p: pieces) {
-            p.startMyTurn();
-        }
     }
 
     public void finishMyTurn() {
         myTurn = false;
-
-        for (Piece p: pieces) {
-            p.finishMyTurn();
-        }
     }
 
     public boolean isMyTurn() { return myTurn; }

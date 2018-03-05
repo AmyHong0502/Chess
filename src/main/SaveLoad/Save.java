@@ -10,9 +10,19 @@ public class Save implements Serializable {
 
     private ArrayList<PiecesSaver> whiteSavedPieces;
 
+    private boolean whiteTurn;
+
     Save() {
         blackSavedPieces = new ArrayList<>();
         whiteSavedPieces = new ArrayList<>();
+    }
+
+    void saveTurn(boolean whiteTurn) {
+        this.whiteTurn = whiteTurn;
+    }
+
+    boolean loadTurn() {
+        return whiteTurn;
     }
 
     void savePieces(ArrayList<Piece> pieces, boolean white) {

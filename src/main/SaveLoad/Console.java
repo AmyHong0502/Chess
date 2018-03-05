@@ -57,6 +57,7 @@ public class Console extends AnchorPane {
             Save saveFile = new Save();
             saveFile.savePieces(blackPlayer.getPieces(), false);
             saveFile.savePieces(whitePlayer.getPieces(), true);
+            saveFile.saveTurn(whitePlayer.isMyTurn());
 
             out.writeObject(saveFile);
             out.flush();
@@ -79,6 +80,16 @@ public class Console extends AnchorPane {
 
             Save saveFile = (Save) in.readObject();
             in.close();
+
+            boolean whiteTurn = saveFile.loadTurn();
+
+            if (whiteTurn) {
+                blackPlayer.finishMyTurn();
+                whitePlayer.startMyTurn();
+            } else {
+                whitePlayer.finishMyTurn();
+                blackPlayer.startMyTurn();
+            }
 
             board.getChildren().clear();
             blackPlayer.setPieces(saveFile.loadPieces(false));

@@ -24,14 +24,11 @@ public class Board extends GridPane {
 
     private Player whitePlayer;
 
-    private boolean whiteTurn;
-
     public Board(Player blackPlayer, Player whitePlayer) {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
         drawBoard(blackPlayer, whitePlayer);
         clickedToMove = false;
-        whiteTurn = true;
     }
 
     private void putTiles() {
@@ -129,15 +126,13 @@ public class Board extends GridPane {
                         }
                     }
 
-                    if (whiteTurn) {
+                    if (whitePlayer.isMyTurn()) {
                         whitePlayer.finishMyTurn();
                         blackPlayer.startMyTurn();
                     } else {
                         blackPlayer.finishMyTurn();
                         whitePlayer.startMyTurn();
                     }
-
-                    whiteTurn = whitePlayer.isMyTurn();
                 }
             } else {
                 piece.setColumnIndex(columnIndex);
