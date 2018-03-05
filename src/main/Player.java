@@ -13,13 +13,34 @@ public class Player extends Node {
 
     private boolean clickedPiece;
 
+    private boolean myTurn;
+
     Player(boolean white) {
         super();
         this.white = white;
         pieces = new ArrayList<>();
         initializePieces();
         clickedPiece = false;
+        myTurn = white;
     }
+
+    public void startMyTurn() {
+        myTurn = true;
+
+        for (Piece p: pieces) {
+            p.startMyTurn();
+        }
+    }
+
+    public void finishMyTurn() {
+        myTurn = false;
+
+        for (Piece p: pieces) {
+            p.finishMyTurn();
+        }
+    }
+
+    public boolean isMyTurn() { return myTurn; }
 
     public void setPieces(ArrayList<Piece> pieces) {
         this.pieces = pieces;

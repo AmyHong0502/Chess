@@ -26,6 +26,8 @@ public abstract class Piece extends Text implements Movement {
 
     boolean firstMove;
 
+    boolean myTurn;
+
     Piece(final boolean white, final char type, int columnIndex, int rowIndex, boolean firstMove) {
         super();
         this.type = type;
@@ -92,4 +94,9 @@ public abstract class Piece extends Text implements Movement {
 
     public boolean isFirstMove() {return firstMove;}
 
+    public void startMyTurn() { myTurn = true; }
+
+    public void finishMyTurn() { myTurn = false; }
+
+    public boolean isMyTurn() { return myTurn; }
 }
