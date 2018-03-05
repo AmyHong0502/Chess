@@ -5,7 +5,7 @@ public class Queen extends Piece {
     private final char type = '\u265B';
 
     public Queen(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265B', colIndex, rowIndex);
+        super(white, '\u265B', colIndex, rowIndex, true);
         setText(Character.toString(type));
     }
 

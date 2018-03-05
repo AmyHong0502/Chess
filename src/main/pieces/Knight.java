@@ -7,7 +7,7 @@ public class Knight extends Piece {
     private final char type = '\u265E';
 
     public Knight(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265E', colIndex, rowIndex);
+        super(white, '\u265E', colIndex, rowIndex, true);
         setText(Character.toString(type));
     }
 

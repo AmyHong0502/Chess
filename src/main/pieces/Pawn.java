@@ -4,12 +4,14 @@ public class Pawn extends Piece {
 
     private final char type = '\u265F';
 
-    private boolean firstMove;
-
     public Pawn(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265F', colIndex, rowIndex);
+        super(white, '\u265F', colIndex, rowIndex, true);
         setText(Character.toString(type));
-        firstMove = true;
+    }
+
+    public Pawn(boolean white, int colIndex, int rowIndex, boolean firstMove) {
+        super(white, '\u265F', colIndex, rowIndex, firstMove);
+        setText(Character.toString(type));
     }
 
     public void setFirstMove() {

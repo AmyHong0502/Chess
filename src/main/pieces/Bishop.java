@@ -7,7 +7,7 @@ public class Bishop extends Piece {
     private final char type = '\u265D';
 
     public Bishop(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265D', colIndex, rowIndex);
+        super(white, '\u265D', colIndex, rowIndex, true);
         setText(Character.toString(type));
     }
 

@@ -7,7 +7,6 @@ import main.Player;
 import main.pieces.Pawn;
 import main.pieces.Piece;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 

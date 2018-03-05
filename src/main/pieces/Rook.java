@@ -6,12 +6,15 @@ public class Rook extends Piece {
 
     private final char type = '\u265C';
 
-    private boolean firstMove;
-
     public Rook(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265C', colIndex, rowIndex);
+        super(white, '\u265C', colIndex, rowIndex, true);
         setText(Character.toString(type));
         firstMove = true;
+    }
+
+    public Rook(boolean white, int colIndex, int rowIndex, boolean firstMove) {
+        super(white, '\u265C', colIndex, rowIndex, firstMove);
+        setText(Character.toString(type));
     }
 
     @Override

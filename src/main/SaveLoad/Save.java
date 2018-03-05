@@ -22,8 +22,9 @@ public class Save implements Serializable {
             int col = p.getColumnIndex();
             int row = p.getRowIndex();
             char type = p.getType();
+            boolean firstMove = p.isFirstMove();
 
-            PiecesSaver ps = new PiecesSaver(white, type, col, row);
+            PiecesSaver ps = new PiecesSaver(white, type, col, row, firstMove);
 
             readyToSave.add(ps);
             System.out.println(ps.toString());
@@ -46,16 +47,17 @@ public class Save implements Serializable {
             char type = ps.getType();
             int columnIndex = ps.getColumnIndex();
             int rowIndex = ps.getRowIndex();
+            boolean firstMove = ps.isFirstMove();
 
             switch (type) {
                 case '\u265F': // Pawn
-                    loadedPieces.add(new Pawn(white, columnIndex, rowIndex));
+                    loadedPieces.add(new Pawn(white, columnIndex, rowIndex, firstMove));
                     break;
                 case '\u265E': // Knight
                     loadedPieces.add(new Knight(white, columnIndex, rowIndex));
                     break;
                 case '\u265C': // Rook
-                    loadedPieces.add(new Rook(white, columnIndex, rowIndex));
+                    loadedPieces.add(new Rook(white, columnIndex, rowIndex, firstMove));
                     break;
                 case '\u265D': // Bishop
                     loadedPieces.add(new Bishop(white, columnIndex, rowIndex));
@@ -64,7 +66,7 @@ public class Save implements Serializable {
                     loadedPieces.add(new Queen(white, columnIndex, rowIndex));
                     break;
                 case '\u265A': // King
-                    loadedPieces.add(new King(white, columnIndex, rowIndex));
+                    loadedPieces.add(new King(white, columnIndex, rowIndex, firstMove));
                     break;
             }
         }

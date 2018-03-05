@@ -6,12 +6,15 @@ public class King extends Piece {
 
     private final char type = '\u265A';
 
-    private boolean firstMove;
-
     public King(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265A', colIndex, rowIndex);
+        super(white, '\u265A', colIndex, rowIndex, true);
         setText(Character.toString(type));
         firstMove = true;
+    }
+
+    public King(boolean white, int colIndex, int rowIndex, boolean firstMove) {
+        super(white, '\u265A', colIndex, rowIndex, firstMove);
+        setText(Character.toString(type));
     }
 
     @Override

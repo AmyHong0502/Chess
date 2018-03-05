@@ -24,9 +24,12 @@ public abstract class Piece extends Text implements Movement {
 
     char type;
 
-    Piece(final boolean white, final char type, int columnIndex, int rowIndex) {
+    boolean firstMove;
+
+    Piece(final boolean white, final char type, int columnIndex, int rowIndex, boolean firstMove) {
         super();
         this.type = type;
+        this.firstMove = firstMove;
         hover = false;
         clicked = false;
         this.white = white;
@@ -86,5 +89,7 @@ public abstract class Piece extends Text implements Movement {
     public boolean isWhite() {
         return white;
     }
+
+    public boolean isFirstMove() {return firstMove;}
 
 }
