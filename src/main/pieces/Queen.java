@@ -1,5 +1,8 @@
 package main.pieces;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Queen extends Piece {
 
     private final char type = '\u265B';
@@ -38,4 +41,12 @@ public class Queen extends Piece {
         return result;
     }
 
+    @Override
+    public int[][] searchPath(final int destColumnIndex, final int destRowIndex) {
+        ArrayList<int[]> bishop = new ArrayList<>(Arrays.asList(new Bishop(white, super.getColumnIndex(), super.getRowIndex()).searchPath(destColumnIndex, destRowIndex)));
+        ArrayList<int[]> rook = new ArrayList<>(Arrays.asList(new Rook(white, super.getColumnIndex(), super.getRowIndex()).searchPath(destColumnIndex, destRowIndex)));
+
+        bishop.addAll(rook);
+        return bishop.toArray(new int[bishop.size()][2]);
+    }
 }

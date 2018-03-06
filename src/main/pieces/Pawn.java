@@ -82,4 +82,9 @@ public class Pawn extends Piece {
         return result;
     }
 
+    @Override
+    public int[][] searchPath(final int destColumnIndex, final int destRowIndex) {
+        return new int[0][0];
+    }
+
 }

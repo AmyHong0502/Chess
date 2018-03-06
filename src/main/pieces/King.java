@@ -61,4 +61,9 @@ public class King extends Piece {
         return move.toArray(new int[move.size()][2]);
     }
 
+    @Override
+    public int[][] searchPath(final int destColumnIndex, final int destRowIndex) {
+        return new int[0][0];
+    }
+
 }
