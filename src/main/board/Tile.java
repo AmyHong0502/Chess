@@ -33,12 +33,12 @@ public class Tile extends Rectangle {
         if (white) {
             setFill(Color.web("0xFFF8E7"));
         } else {
-            setFill(Color.web("0x47423c"));
+            setFill(Color.web("0x2F3138"));
         }
     }
 
     void setMovableHighlight() {
-        setFill(Color.web("0xFF6"));
+        setFill(Color.web("0xF99"));
     }
 
     void setCapturableHighlight() {

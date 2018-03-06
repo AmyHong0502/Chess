@@ -18,8 +18,6 @@ public class Board extends GridPane {
 
     private int tileLength;
 
-    private boolean clickedToMove;
-
     private Player blackPlayer;
 
     private Player whitePlayer;
@@ -28,7 +26,6 @@ public class Board extends GridPane {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
         drawBoard(blackPlayer, whitePlayer);
-        clickedToMove = false;
     }
 
     private void putTiles() {
@@ -68,12 +65,12 @@ public class Board extends GridPane {
         ArrayList<Piece> blackPieces = blackPlayer.getPieces();
         ArrayList<Piece> whitePieces = whitePlayer.getPieces();
 
-        for (Piece p: blackPieces) {
+        for (Piece p : blackPieces) {
             if (p.getColumnIndex() == columnIndex && p.getRowIndex() == rowIndex) {
                 return p;
             }
         }
-        for (Piece p: whitePieces) {
+        for (Piece p : whitePieces) {
             if (p.getColumnIndex() == columnIndex && p.getRowIndex() == rowIndex) {
                 return p;
             }
@@ -96,27 +93,39 @@ public class Board extends GridPane {
         }
     }
 
-    private void moveClickedPiece(final Piece piece, final int columnIndex, final int rowIndex) {
+    private void moveClickedPiece(final Piece piece, final int destColumnIndex, final int destRowIndex) {
+        System.out.println("Point 01");
+        if (piece == null) {
+            System.out.println("Piece is null");
+        }
         boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
 
         if (turn) {
-            if (clickedToMove) {
+            System.out.println("Point 012");
+            if (piece.isClicked()) {
+                System.out.println("Point 02");
                 final int[][] movable = piece.movable();
                 boolean allowedToMove = false;
 
-                for (int[] location : movable) {
-                    if (location[0] == columnIndex && location[1] == rowIndex) {
+                for (int[] cell : movable) {
+                    if (cell[0] == destColumnIndex && cell[1] == destRowIndex) {
                         allowedToMove = true;
                     }
                 }
 
+                System.out.println("Point 03");
                 if (allowedToMove) {
-                    if (findPieceByIndex(columnIndex, rowIndex) != null) {
-                        capturePiece(piece, columnIndex, rowIndex);
+
+                    System.out.println("Point 04");
+                    if (findPieceByIndex(destColumnIndex, destRowIndex) != null) {
+                        capturePiece(piece, destColumnIndex, destRowIndex);
                         return;
-                    } else {
-                        clickedPiece.setColumnIndex(columnIndex);
-                        clickedPiece.setRowIndex(rowIndex);
+                    } else if (isClearPath(piece, destColumnIndex, destRowIndex)) {
+                        System.out.println("Clear path");
+
+                        System.out.println("Point 05");
+                        clickedPiece.setColumnIndex(destColumnIndex);
+                        clickedPiece.setRowIndex(destRowIndex);
                         setColumnIndex(clickedPiece, clickedPiece.getColumnIndex());
                         setRowIndex(clickedPiece, clickedPiece.getRowIndex());
                         piece.setClicked(false);
@@ -124,25 +133,51 @@ public class Board extends GridPane {
                         if (clickedPiece.getClass().equals(Pawn.class)) {
                             ((Pawn) clickedPiece).setFirstMove();
                         }
-                    }
-
-                    if (whitePlayer.isMyTurn()) {
-                        whitePlayer.finishMyTurn();
-                        blackPlayer.startMyTurn();
+                        switchTurn();
                     } else {
-                        blackPlayer.finishMyTurn();
-                        whitePlayer.startMyTurn();
+                        System.out.println("Not Clear Path");
+                        piece.setClicked(false);
+                        piece.highlightClickedPiece();
+                        System.out.println("Point 06");
                     }
                 }
             } else {
-                piece.setColumnIndex(columnIndex);
-                piece.setRowIndex(rowIndex);
+                System.out.println("Point 07");
+                piece.setColumnIndex(destColumnIndex);
+                piece.setRowIndex(destRowIndex);
                 clickedPiece = piece;
             }
-            clickedToMove = !clickedToMove;
 
+            System.out.println("Point 08");
+            piece.setClicked(false);
         }
 
+        System.out.println("\n\n");
+    }
+
+    public boolean isClearPath(final Piece piece, final int destColumnIndex, final int destRowIndex) {
+        int[][] possibilities = piece.searchPath(destColumnIndex, destRowIndex);
+
+        for (int[] cell : possibilities) {
+            int column = cell[0];
+            int row = cell[1];
+
+            if (findPieceByIndex(column, row) != null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void switchTurn() {
+        if (whitePlayer.isMyTurn()) {
+            whitePlayer.finishMyTurn();
+            blackPlayer.startMyTurn();
+        } else {
+            blackPlayer.finishMyTurn();
+            whitePlayer.startMyTurn();
+        }
     }
 
     private void capturePiece(final Piece predator, final int columnIndex, final int rowIndex) {
@@ -160,7 +195,7 @@ public class Board extends GridPane {
         }
 
         refreshPieces();
-        clickedToMove = !clickedToMove;
+        predator.setClicked(false);
         moveClickedPiece(predator, columnIndex, rowIndex);
     }
 
@@ -178,6 +213,10 @@ public class Board extends GridPane {
                 tile.setMovableHighlight();
             }
         }
+    }
+
+    private void setClickedPiece(Piece piece) {
+        clickedPiece = piece;
     }
 
     private void refreshPieces() {
@@ -223,12 +262,12 @@ public class Board extends GridPane {
 
         for (Piece p : blackPieces) {
             p.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                    event -> moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p)));
+                    event -> setClickedPiece(p));
         }
 
         for (Piece p : whitePieces) {
             p.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                    event -> moveClickedPiece(p, GridPane.getColumnIndex(p), GridPane.getRowIndex(p)));
+                    event -> setClickedPiece(p));
         }
     }
 
