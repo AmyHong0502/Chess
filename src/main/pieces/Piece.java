@@ -1,5 +1,6 @@
 package main.pieces;
 
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -33,13 +34,24 @@ public abstract class Piece extends Text implements Movement {
         hover = false;
         clicked = false;
         this.white = white;
-        color = white ? Color.WHITE : Color.BLACK;
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
+
+        decoratePiece();
+        addClickListener();
+    }
+
+    private void decoratePiece() {
+        color = white ? Color.WHITE : Color.BLACK;
         setFill(color);
         setFont(new Font(45));
         setTextAlignment(TextAlignment.CENTER);
-        addClickListener();
+
+        DropShadow ds = new DropShadow();
+        ds.setOffsetX(3.0);
+        ds.setOffsetY(3.0);
+        ds.setColor(Color.web("0x889"));
+        setEffect(ds);
 
         clickedColor = Color.web("0x00F");
     }
@@ -47,6 +59,8 @@ public abstract class Piece extends Text implements Movement {
     public void setClicked(boolean clicked) {
         this.clicked = clicked;
     }
+
+    public boolean isClicked() { return clicked; }
 
     public void addClickListener() {
         addEventFilter(MouseEvent.MOUSE_ENTERED, event -> hover = true);
