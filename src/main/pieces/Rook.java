@@ -4,16 +4,20 @@ import main.board.Board;
 
 public class Rook extends Piece {
 
+    /** 
+     * Black rook character in Unicode. Black characters are used for design 
+     * purpose, regardless of actual colour of each piece.
+     */
     private final char type = '\u265C';
 
-    public Rook(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265C', colIndex, rowIndex, true);
+    public Rook(boolean white, int colIndex, int rowIndex, final int colourTheme) {
+        super(white, '\u265C', colIndex, rowIndex, true, colourTheme);
         setText(Character.toString(type));
         firstMove = true;
     }
 
-    public Rook(boolean white, int colIndex, int rowIndex, boolean firstMove) {
-        super(white, '\u265C', colIndex, rowIndex, firstMove);
+    public Rook(boolean white, int colIndex, int rowIndex, boolean firstMove, final int colourTheme) {
+        super(white, '\u265C', colIndex, rowIndex, firstMove, colourTheme);
         setText(Character.toString(type));
     }
 

@@ -19,15 +19,21 @@ public abstract class Piece extends Text implements Movement {
 
     private int rowIndex;
 
-    Color color;
-
-    Color clickedColor;
-
     char type;
 
     boolean firstMove;
 
-    Piece(final boolean white, final char type, int columnIndex, int rowIndex, boolean firstMove) {
+    Color colorTheme1White;
+    Color colorTheme1Black;
+    Color colorTheme1Clicked;
+    Color colorTheme2White;
+    Color colorTheme2Black;
+    Color colorTheme2Clicked;
+    Color colorTheme3White;
+    Color colorTheme3Black;
+    Color colorTheme3Clicked;
+
+    Piece(final boolean white, final char type, int columnIndex, int rowIndex, boolean firstMove, final int colourTheme) {
         super();
         this.type = type;
         this.firstMove = firstMove;
@@ -37,13 +43,23 @@ public abstract class Piece extends Text implements Movement {
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
 
-        decoratePiece();
+        colorTheme1White = Color.web("0xFFF");
+        colorTheme1Black = Color.web("0x000");
+        colorTheme1Clicked = Color.web("0x3885CA");
+        colorTheme2White = Color.web("0xFFF");
+        colorTheme2Black = Color.web("0x000");
+        colorTheme2Clicked = Color.web("0x3885CA");
+        colorTheme3White = Color.web("0xFFF");
+        colorTheme3Black = Color.web("0x000");
+        colorTheme3Clicked = Color.web("0x3885CA");
+
+        decoratePiece(colourTheme);
         addClickListener();
     }
 
-    private void decoratePiece() {
-        color = white ? Color.WHITE : Color.BLACK;
-        setFill(color);
+    private void decoratePiece(final int colourTheme) {
+        paintColour(colourTheme);
+
         setFont(new Font(45));
         setTextAlignment(TextAlignment.CENTER);
 
@@ -52,15 +68,32 @@ public abstract class Piece extends Text implements Movement {
         ds.setOffsetY(3.0);
         ds.setColor(Color.web("0x889"));
         setEffect(ds);
+    }
 
-        clickedColor = Color.web("0x00F");
+    public void paintColour(final int colourTheme) {
+        final Color colour;
+        switch (colourTheme) {
+            case 1:
+                colour = white ? colorTheme1White : colorTheme1Black;
+                break;
+            case 2:
+                colour = white ? colorTheme2White : colorTheme2Black;
+                break;
+            case 3:
+            default:
+                colour = white ? colorTheme3White : colorTheme3Black;
+                break;
+        }
+        setFill(colour);
     }
 
     public void setClicked(boolean clicked) {
         this.clicked = clicked;
     }
 
-    public boolean isClicked() { return clicked; }
+    public boolean isClicked() {
+        return clicked;
+    }
 
     public void addClickListener() {
         addEventFilter(MouseEvent.MOUSE_ENTERED, event -> hover = true);
@@ -74,9 +107,10 @@ public abstract class Piece extends Text implements Movement {
 
     public void highlightClickedPiece() {
         if (clicked) {
-            setFill(clickedColor);
+            setFill(colorTheme1Clicked);
         } else {
-            setFill(color);
+            Color defaultColour = isWhite() ? colorTheme1White : colorTheme1Black;
+            setFill(defaultColour);
         }
     }
 
@@ -104,5 +138,7 @@ public abstract class Piece extends Text implements Movement {
         return white;
     }
 
-    public boolean isFirstMove() {return firstMove;}
+    public boolean isFirstMove() {
+        return firstMove;
+    }
 }

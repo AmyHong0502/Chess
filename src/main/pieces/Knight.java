@@ -4,10 +4,14 @@ import java.util.ArrayList;
 
 public class Knight extends Piece {
 
+    /** 
+     * Black knight character in Unicode. Black characters are used for design 
+     * purpose, regardless of actual colour of each piece.
+     */
     private final char type = '\u265E';
 
-    public Knight(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265E', colIndex, rowIndex, true);
+    public Knight(boolean white, int colIndex, int rowIndex, final int colourTheme) {
+        super(white, '\u265E', colIndex, rowIndex, true, colourTheme);
         setText(Character.toString(type));
     }
 

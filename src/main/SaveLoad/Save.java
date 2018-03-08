@@ -5,13 +5,24 @@ import main.pieces.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Saves current game's turn and pieces for future usage.
+ * @author Amy
+ */
 public class Save implements Serializable {
-    private ArrayList<PiecesSaver> blackSavedPieces;
+    
+    /** Black player's pieces. */
+    private ArrayList<PieceSaver> blackSavedPieces;
 
-    private ArrayList<PiecesSaver> whiteSavedPieces;
+    /** White player's pieces. */
+    private ArrayList<PieceSaver> whiteSavedPieces;
 
+    /** True if white player's turn is saved. */
     private boolean whiteTurn;
 
+    /**
+     * Constructor of this Save.
+     */
     Save() {
         blackSavedPieces = new ArrayList<>();
         whiteSavedPieces = new ArrayList<>();
@@ -26,7 +37,7 @@ public class Save implements Serializable {
     }
 
     void savePieces(ArrayList<Piece> pieces, boolean white) {
-        ArrayList<PiecesSaver> readyToSave = new ArrayList<>();
+        ArrayList<PieceSaver> readyToSave = new ArrayList<>();
 
         for (Piece p : pieces) {
             int col = p.getColumnIndex();
@@ -34,10 +45,9 @@ public class Save implements Serializable {
             char type = p.getType();
             boolean firstMove = p.isFirstMove();
 
-            PiecesSaver ps = new PiecesSaver(white, type, col, row, firstMove);
+            PieceSaver ps = new PieceSaver(white, type, col, row, firstMove);
 
             readyToSave.add(ps);
-            System.out.println(ps.toString());
         }
 
         if (white) {
@@ -47,12 +57,17 @@ public class Save implements Serializable {
         }
     }
 
+    /**
+     * Loads pieces to continue the saved game.
+     * @param whitePlayer true if desired pieces belongs to the white player. 
+     * @return Saved pieces for the given player.
+     */
     public ArrayList<Piece> loadPieces(boolean whitePlayer) {
         ArrayList<Piece> loadedPieces = new ArrayList<>();
 
-        ArrayList<PiecesSaver> pieceSaving = whitePlayer ? whiteSavedPieces : blackSavedPieces;
+        ArrayList<PieceSaver> pieceSaving = whitePlayer ? whiteSavedPieces : blackSavedPieces;
 
-        for (PiecesSaver ps : pieceSaving) {
+        for (PieceSaver ps : pieceSaving) {
             boolean white = ps.isWhite();
             char type = ps.getType();
             int columnIndex = ps.getColumnIndex();
@@ -61,22 +76,25 @@ public class Save implements Serializable {
 
             switch (type) {
                 case '\u265F': // Pawn
-                    loadedPieces.add(new Pawn(white, columnIndex, rowIndex, firstMove));
+                    loadedPieces.add(
+                             new Pawn(white, columnIndex, rowIndex, firstMove, 1));
                     break;
                 case '\u265E': // Knight
-                    loadedPieces.add(new Knight(white, columnIndex, rowIndex));
+                    loadedPieces.add(new Knight(white, columnIndex, rowIndex, 1));
                     break;
                 case '\u265C': // Rook
-                    loadedPieces.add(new Rook(white, columnIndex, rowIndex, firstMove));
+                    loadedPieces.add(
+                             new Rook(white, columnIndex, rowIndex, firstMove, 1));
                     break;
                 case '\u265D': // Bishop
-                    loadedPieces.add(new Bishop(white, columnIndex, rowIndex));
+                    loadedPieces.add(new Bishop(white, columnIndex, rowIndex, 1));
                     break;
                 case '\u265B': // Queen
-                    loadedPieces.add(new Queen(white, columnIndex, rowIndex));
+                    loadedPieces.add(new Queen(white, columnIndex, rowIndex, 1));
                     break;
                 case '\u265A': // King
-                    loadedPieces.add(new King(white, columnIndex, rowIndex, firstMove));
+                    loadedPieces.add(
+                             new King(white, columnIndex, rowIndex, firstMove, 1));
                     break;
             }
         }

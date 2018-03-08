@@ -7,10 +7,21 @@ import java.util.Arrays;
 
 public class Bishop extends Piece {
 
+    /**
+     * Black bishop character in Unicode. Black characters are used for design
+     * purpose, regardless of actual colour of each piece.
+     */
     private final char type = '\u265D';
 
-    public Bishop(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265D', colIndex, rowIndex, true);
+    /**
+     * Constructor of this Bishop.
+     *
+     * @param white       true if this piece belongs to the white player.
+     * @param columnIndex this piece's column index on the Board.
+     * @param rowIndex    this piece's row index on the Board.
+     */
+    public Bishop(boolean white, int columnIndex, int rowIndex, final int colourTheme) {
+        super(white, '\u265D', columnIndex, rowIndex, true, colourTheme);
         setText(Character.toString(type));
     }
 
@@ -29,15 +40,23 @@ public class Bishop extends Piece {
         final int westToEastCount = columnIndex;
         final int eastToWestCount = Board.NUMBER_OF_CELLS - columnIndex - 1;
 
-        final int neSize = northToSouthCount < eastToWestCount ? northToSouthCount : eastToWestCount;
-        final int seSize = southToNorthCount < eastToWestCount ? southToNorthCount : eastToWestCount;
-        final int swSize = southToNorthCount < westToEastCount ? southToNorthCount : westToEastCount;
-        final int nwSize = northToSouthCount < westToEastCount ? northToSouthCount : westToEastCount;
+        final int neSize = northToSouthCount < eastToWestCount
+                ? northToSouthCount : eastToWestCount;
+        final int seSize = southToNorthCount < eastToWestCount
+                ? southToNorthCount : eastToWestCount;
+        final int swSize = southToNorthCount < westToEastCount
+                ? southToNorthCount : westToEastCount;
+        final int nwSize = northToSouthCount < westToEastCount
+                ? northToSouthCount : westToEastCount;
 
-        ArrayList<int[]> northEast = new ArrayList<>(Arrays.asList(movableNE(neSize, columnIndex, rowIndex)));
-        ArrayList<int[]> southEast = new ArrayList<>(Arrays.asList(movableSE(seSize, columnIndex, rowIndex)));
-        ArrayList<int[]> southWest = new ArrayList<>(Arrays.asList(movableSW(swSize, columnIndex, rowIndex)));
-        ArrayList<int[]> northWest = new ArrayList<>(Arrays.asList(movableNW(nwSize, columnIndex, rowIndex)));
+        ArrayList<int[]> northEast = new ArrayList<>(Arrays.asList(
+                movableNE(neSize, columnIndex, rowIndex)));
+        ArrayList<int[]> southEast = new ArrayList<>(Arrays.asList(
+                movableSE(seSize, columnIndex, rowIndex)));
+        ArrayList<int[]> southWest = new ArrayList<>(Arrays.asList(
+                movableSW(swSize, columnIndex, rowIndex)));
+        ArrayList<int[]> northWest = new ArrayList<>(Arrays.asList(
+                movableNW(nwSize, columnIndex, rowIndex)));
 
         ArrayList<int[]> result = new ArrayList<>();
         result.addAll(northEast);
@@ -110,24 +129,17 @@ public class Bishop extends Piece {
 
     @Override
     public int[][] searchPath(final int destColumnIndex, final int destRowIndex) {
-        System.out.println("Called searchPath");
         final int srcColumnIndex = super.getColumnIndex();
         final int srcRowIndex = super.getRowIndex();
 
-        final int northToSouthCount = srcRowIndex;
-        final int southToNorthCount = Board.NUMBER_OF_CELLS - srcRowIndex - 1;
-        final int westToEastCount = srcColumnIndex;
-        final int eastToWestCount = Board.NUMBER_OF_CELLS - srcColumnIndex - 1;
-
-        final int neSize = northToSouthCount < eastToWestCount ? northToSouthCount : eastToWestCount;
-        final int seSize = southToNorthCount < eastToWestCount ? southToNorthCount : eastToWestCount;
-        final int swSize = southToNorthCount < westToEastCount ? southToNorthCount : westToEastCount;
-        final int nwSize = northToSouthCount < westToEastCount ? northToSouthCount : westToEastCount;
-
-        final boolean northEast = (srcColumnIndex < destColumnIndex) && (srcRowIndex > destRowIndex);
-        final boolean southEast = (srcColumnIndex < destColumnIndex) && (srcRowIndex < destRowIndex);
-        final boolean southWest = (srcColumnIndex > destColumnIndex) && (srcRowIndex < destRowIndex);
-        final boolean northWest = (srcColumnIndex > destColumnIndex) && (srcRowIndex > destRowIndex);
+        final boolean northEast = (srcColumnIndex < destColumnIndex)
+                && (srcRowIndex > destRowIndex);
+        final boolean southEast = (srcColumnIndex < destColumnIndex)
+                && (srcRowIndex < destRowIndex);
+        final boolean southWest = (srcColumnIndex > destColumnIndex)
+                && (srcRowIndex < destRowIndex);
+        final boolean northWest = (srcColumnIndex > destColumnIndex)
+                && (srcRowIndex > destRowIndex);
 
         int colSize = Math.abs(srcColumnIndex - destColumnIndex);
         int rowSize = Math.abs(srcRowIndex - destRowIndex);
@@ -135,19 +147,15 @@ public class Bishop extends Piece {
         int resultSize = colSize == rowSize ? colSize : 0;
 
         if (northEast) {
-            System.out.println("NE");
             return movableNE(resultSize, srcColumnIndex, srcRowIndex);
         }
         if (southEast) {
-            System.out.println("SE");
             return movableSE(resultSize, srcColumnIndex, srcRowIndex);
         }
         if (southWest) {
-            System.out.println("SW");
             return movableSW(resultSize, srcColumnIndex, srcRowIndex);
         }
         if (northWest) {
-            System.out.println("NW");
             return movableNW(resultSize, srcColumnIndex, srcRowIndex);
         }
 

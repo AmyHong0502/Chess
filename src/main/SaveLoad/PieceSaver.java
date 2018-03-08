@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Saves one piece per each PieceSaver object.
  * @author Amy
  */
-public class PiecesSaver implements Serializable {
+public class PieceSaver implements Serializable {
     
     /** Column index of this piece to save. */
     private final int columnIndex;
@@ -35,7 +35,7 @@ public class PiecesSaver implements Serializable {
      * @param rowIndex    Row index of this piece to save
      * @param firstMove   True if this piece to save has never moved
      */ 
-    PiecesSaver(boolean white, char type,
+    PieceSaver(boolean white, char type,
                 int columnIndex, int rowIndex, boolean firstMove) {
         this.white = white;
         this.type = type;

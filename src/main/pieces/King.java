@@ -4,16 +4,20 @@ import java.util.ArrayList;
 
 public class King extends Piece {
 
+    /**
+     * Black king character in Unicode. Black characters are used for design
+     * purpose, regardless of actual colour of each piece.
+     */
     private final char type = '\u265A';
 
-    public King(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265A', colIndex, rowIndex, true);
+    public King(boolean white, int colIndex, int rowIndex, final int colourTheme) {
+        super(white, '\u265A', colIndex, rowIndex, true, colourTheme);
         setText(Character.toString(type));
         firstMove = true;
     }
 
-    public King(boolean white, int colIndex, int rowIndex, boolean firstMove) {
-        super(white, '\u265A', colIndex, rowIndex, firstMove);
+    public King(boolean white, int colIndex, int rowIndex, boolean firstMove, final int colourTheme) {
+        super(white, '\u265A', colIndex, rowIndex, firstMove, colourTheme);
         setText(Character.toString(type));
     }
 
@@ -29,33 +33,33 @@ public class King extends Piece {
         final int rowIndex = super.getRowIndex();
 
         if (rowIndex != 7) {
-            move.add(new int[] {columnIndex, rowIndex + 1});
+            move.add(new int[]{columnIndex, rowIndex + 1});
 
             if (columnIndex != 7) {
-                move.add(new int[] {columnIndex + 1, rowIndex + 1});
+                move.add(new int[]{columnIndex + 1, rowIndex + 1});
             }
             if (columnIndex != 0) {
-                move.add(new int[] {columnIndex - 1, rowIndex + 1});
+                move.add(new int[]{columnIndex - 1, rowIndex + 1});
             }
         }
 
         if (rowIndex != 0) {
-            move.add(new int[] {columnIndex, rowIndex - 1});
+            move.add(new int[]{columnIndex, rowIndex - 1});
 
             if (columnIndex != 7) {
-                move.add(new int[] {columnIndex + 1, rowIndex - 1});
+                move.add(new int[]{columnIndex + 1, rowIndex - 1});
             }
             if (columnIndex != 0) {
-                move.add(new int[] {columnIndex - 1, rowIndex - 1});
+                move.add(new int[]{columnIndex - 1, rowIndex - 1});
             }
         }
 
         if (columnIndex != 7) {
-            move.add(new int[] {columnIndex + 1, rowIndex});
+            move.add(new int[]{columnIndex + 1, rowIndex});
         }
 
         if (columnIndex != 0) {
-            move.add(new int[] {columnIndex - 1, rowIndex});
+            move.add(new int[]{columnIndex - 1, rowIndex});
         }
 
         return move.toArray(new int[move.size()][2]);

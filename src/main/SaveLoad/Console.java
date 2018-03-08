@@ -11,18 +11,39 @@ import java.io.*;
 
 public class Console extends AnchorPane {
 
+    /**
+     * Chess board for this game.
+     */
     private Board board;
 
+    /**
+     * Button to save this game.
+     */
     private Button saveButton;
 
+    /**
+     * Button to load the saved game.
+     */
     private Button loadButton;
 
     private HBox hbox;
 
+    /**
+     * Player using black pieces.
+     */
     private Player blackPlayer;
 
+    /**
+     * Player using white pieces.
+     */
     private Player whitePlayer;
 
+    /**
+     * Constructor of this Console.
+     * @param board Chess board for this game
+     * @param blackPlayer Player using black pieces
+     * @param whitePlayer Player using white pieces
+     */
     public Console(Board board, Player blackPlayer, Player whitePlayer) {
         this.board = board;
         this.blackPlayer = blackPlayer;
@@ -49,6 +70,9 @@ public class Console extends AnchorPane {
         setBottomAnchor(hbox, 5.0);
     }
 
+    /**
+     * Saves the current game's turn and pieces.
+     */
     private void saveGame() {
         try {
             FileOutputStream f = new FileOutputStream("SaveChessGame.txt");
@@ -73,6 +97,9 @@ public class Console extends AnchorPane {
         System.out.println("Saved.");
     }
 
+    /**
+     * Loads saved game's turn and pieces.
+     */
     private void load() {
         try {
             FileInputStream fi = new FileInputStream("SaveChessGame.txt");
@@ -106,6 +133,5 @@ public class Console extends AnchorPane {
 
         System.out.println("Loaded.");
     }
-
 
 }

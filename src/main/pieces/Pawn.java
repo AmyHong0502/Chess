@@ -2,15 +2,19 @@ package main.pieces;
 
 public class Pawn extends Piece {
 
+    /** 
+     * Black pawn character in Unicode. Black characters are used for design 
+     * purpose, regardless of actual colour of each piece.
+     */
     private final char type = '\u265F';
 
-    public Pawn(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265F', colIndex, rowIndex, true);
+    public Pawn(boolean white, int colIndex, int rowIndex, final int colourTheme) {
+        super(white, '\u265F', colIndex, rowIndex, true, colourTheme);
         setText(Character.toString(type));
     }
 
-    public Pawn(boolean white, int colIndex, int rowIndex, boolean firstMove) {
-        super(white, '\u265F', colIndex, rowIndex, firstMove);
+    public Pawn(boolean white, int colIndex, int rowIndex, boolean firstMove, final int colourTheme) {
+        super(white, '\u265F', colIndex, rowIndex, firstMove, colourTheme);
         setText(Character.toString(type));
     }
 
