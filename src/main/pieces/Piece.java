@@ -13,15 +13,15 @@ public abstract class Piece extends Text implements Movement {
 
     boolean hover;
 
-    boolean clicked;
-
     private int columnIndex;
 
     private int rowIndex;
 
     char type;
 
-    boolean firstMove;
+    boolean neverMoved;
+
+    boolean highlight;
 
     Color colorTheme1White;
     Color colorTheme1Black;
@@ -33,12 +33,13 @@ public abstract class Piece extends Text implements Movement {
     Color colorTheme3Black;
     Color colorTheme3Clicked;
 
-    Piece(final boolean white, final char type, int columnIndex, int rowIndex, boolean firstMove, final int colourTheme) {
+    Piece(final boolean white, final char type, int columnIndex, int rowIndex,
+                                     boolean neverMoved, final int colourTheme) {
         super();
         this.type = type;
-        this.firstMove = firstMove;
+        this.neverMoved = neverMoved;
         hover = false;
-        clicked = false;
+        highlight = false;
         this.white = white;
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
@@ -48,7 +49,7 @@ public abstract class Piece extends Text implements Movement {
         colorTheme1Clicked = Color.web("0x3885CA");
         colorTheme2White = Color.web("0xFFF");
         colorTheme2Black = Color.web("0x000");
-        colorTheme2Clicked = Color.web("0x3885CA");
+        colorTheme2Clicked = Color.web("0xf1404b");
         colorTheme3White = Color.web("0xFFF");
         colorTheme3Black = Color.web("0x000");
         colorTheme3Clicked = Color.web("0x3885CA");
@@ -87,45 +88,53 @@ public abstract class Piece extends Text implements Movement {
         setFill(colour);
     }
 
-    public void setClicked(boolean clicked) {
-        this.clicked = clicked;
-    }
-
-    public boolean isClicked() {
-        return clicked;
-    }
-
     public void addClickListener() {
         addEventFilter(MouseEvent.MOUSE_ENTERED, event -> hover = true);
 
         addEventFilter(MouseEvent.MOUSE_EXITED, event -> hover = false);
 
-        addEventFilter(MouseEvent.MOUSE_CLICKED, event -> clicked = !clicked);
-
-        addEventFilter(MouseEvent.MOUSE_CLICKED, event -> highlightClickedPiece());
+        addEventFilter(MouseEvent.MOUSE_CLICKED, 
+                                              event -> highlightClickedPiece());
     }
 
     public void highlightClickedPiece() {
-        if (clicked) {
+        highlight = !highlight;
+
+        if (highlight) {
             setFill(colorTheme1Clicked);
         } else {
-            Color defaultColour = isWhite() ? colorTheme1White : colorTheme1Black;
-            setFill(defaultColour);
+            paintColour(1);
         }
     }
 
+    /**
+     * Sets column index of this piece on the chess board.
+     * @param colIndex column index of this piece on the chess board
+     */
     public void setColumnIndex(int colIndex) {
         this.columnIndex = colIndex;
     }
 
+    /**
+     * Sets row index of this piece on the chess board.
+     * @param rowIndex row index of this piece on the chess board
+     */
     public void setRowIndex(int rowIndex) {
         this.rowIndex = rowIndex;
     }
 
+    /**
+     * Returns column index of this piece on the chess board.
+     * @return column index of this piece on the chess board
+     */
     public int getColumnIndex() {
         return columnIndex;
     }
 
+    /**
+     * Returns row index of this piece on the chess board.
+     * @return row index of this piece on the chess board
+     */
     public int getRowIndex() {
         return rowIndex;
     }
@@ -134,11 +143,15 @@ public abstract class Piece extends Text implements Movement {
         return type;
     }
 
+    /**
+     * Returns true if this piece belongs to the white player.
+     * @return true if this piece belongs to the white player
+     */
     public boolean isWhite() {
         return white;
     }
 
-    public boolean isFirstMove() {
-        return firstMove;
+    public boolean isNeverMoved() {
+        return neverMoved;
     }
 }

@@ -11,7 +11,8 @@ public class Queen extends Piece {
      */
     private final char type = '\u265B';
 
-    public Queen(boolean white, int colIndex, int rowIndex, final int colourTheme) {
+    public Queen(boolean white, int colIndex, int rowIndex,
+                                                        final int colourTheme) {
         super(white, '\u265B', colIndex, rowIndex, true, colourTheme);
         setText(Character.toString(type));
     }
@@ -26,8 +27,10 @@ public class Queen extends Piece {
         final int columnIndex = super.getColumnIndex();
         final int rowIndex = super.getRowIndex();
 
-        int[][] bishop = new Bishop(white, super.getColumnIndex(), super.getRowIndex(), 1).movable();
-        int[][] rook = new Rook(white, super.getColumnIndex(), super.getRowIndex(), 1).movable();
+        int[][] bishop = new Bishop(white, super.getColumnIndex(), 
+                                              super.getRowIndex(), 1).movable();
+        int[][] rook = new Rook(white, super.getColumnIndex(), 
+                                              super.getRowIndex(), 1).movable();
 
         int resultSize = bishop.length + rook.length;
         int[][] result = new int[resultSize][2];
@@ -46,9 +49,14 @@ public class Queen extends Piece {
     }
 
     @Override
-    public int[][] searchPath(final int destColumnIndex, final int destRowIndex) {
-        ArrayList<int[]> bishop = new ArrayList<>(Arrays.asList(new Bishop(white, super.getColumnIndex(), super.getRowIndex(), 1).searchPath(destColumnIndex, destRowIndex)));
-        ArrayList<int[]> rook = new ArrayList<>(Arrays.asList(new Rook(white, super.getColumnIndex(), super.getRowIndex(), 1).searchPath(destColumnIndex, destRowIndex)));
+    public int[][] searchPath(final int destColumnIndex, 
+                                                       final int destRowIndex) {
+        ArrayList<int[]> bishop = new ArrayList<>(Arrays.asList(
+               new Bishop(white, super.getColumnIndex(), super.getRowIndex(), 1)
+                                   .searchPath(destColumnIndex, destRowIndex)));
+        ArrayList<int[]> rook = new ArrayList<>(Arrays.asList(
+                 new Rook(white, super.getColumnIndex(), super.getRowIndex(), 1)
+                                   .searchPath(destColumnIndex, destRowIndex)));
 
         bishop.addAll(rook);
         return bishop.toArray(new int[bishop.size()][2]);

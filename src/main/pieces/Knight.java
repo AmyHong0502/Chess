@@ -10,7 +10,8 @@ public class Knight extends Piece {
      */
     private final char type = '\u265E';
 
-    public Knight(boolean white, int colIndex, int rowIndex, final int colourTheme) {
+    public Knight(boolean white, int colIndex, int rowIndex,
+                                                        final int colourTheme) {
         super(white, '\u265E', colIndex, rowIndex, true, colourTheme);
         setText(Character.toString(type));
     }
@@ -36,7 +37,8 @@ public class Knight extends Piece {
         move.add(new int[]{columnIndex - 2, rowIndex - 1});
 
         for (int i = 0; i < move.size(); i++) {
-            if (move.get(i)[0] < 0 || move.get(i)[0] > 7 || move.get(i)[1] < 0 || move.get(i)[1] > 7) {
+            if (move.get(i)[0] < 0 || move.get(i)[0] > 7 || 
+                                     move.get(i)[1] < 0 || move.get(i)[1] > 7) {
                 move.remove(i);
                 i--;
             }
@@ -46,7 +48,8 @@ public class Knight extends Piece {
     }
 
     @Override
-    public int[][] searchPath(final int destColumnIndex, final int destRowIndex) {
+    public int[][] searchPath(final int destColumnIndex, 
+                                                       final int destRowIndex) {
         return new int[0][0];
     }
 

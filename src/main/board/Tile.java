@@ -34,8 +34,8 @@ public class Tile extends Rectangle {
 
         colorTheme1Light = Color.web("0xFFF8E7");
         colorTheme1Dark = Color.web("0x2F3138");
-        colorTheme2Light = Color.web("0xBBB");
-        colorTheme2Dark = Color.web("0x555");
+        colorTheme2Light = Color.web("0xf4f5f9");
+        colorTheme2Dark = Color.web("0x252c41");
         colorTheme3Light = Color.web("0xDDD");
         colorTheme3Dark = Color.web("0x333");
 

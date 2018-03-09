@@ -10,13 +10,15 @@ public class Rook extends Piece {
      */
     private final char type = '\u265C';
 
-    public Rook(boolean white, int colIndex, int rowIndex, final int colourTheme) {
+    public Rook(boolean white, int colIndex, int rowIndex, 
+                                                        final int colourTheme) {
         super(white, '\u265C', colIndex, rowIndex, true, colourTheme);
         setText(Character.toString(type));
-        firstMove = true;
+        neverMoved = true;
     }
 
-    public Rook(boolean white, int colIndex, int rowIndex, boolean firstMove, final int colourTheme) {
+    public Rook(boolean white, int colIndex, int rowIndex, boolean firstMove, 
+                                                        final int colourTheme) {
         super(white, '\u265C', colIndex, rowIndex, firstMove, colourTheme);
         setText(Character.toString(type));
     }
@@ -54,7 +56,8 @@ public class Rook extends Piece {
         return result;
     }
 
-    private int[][] movableHorizontal(final int destColumnIndex, final int destRowIndex) {
+    private int[][] movableHorizontal(final int destColumnIndex, 
+                                                       final int destRowIndex) {
         final int srcColumnIndex = super.getColumnIndex();
         final int srcRowIndex = super.getRowIndex();
 
@@ -92,7 +95,8 @@ public class Rook extends Piece {
         return result;
     }
 
-    private int[][] movableVertical(final int destColumnIndex, final int destRowIndex) {
+    private int[][] movableVertical(final int destColumnIndex, 
+                                                       final int destRowIndex) {
         final int srcColumnIndex = super.getColumnIndex();
         final int srcRowIndex = super.getRowIndex();
 
@@ -121,7 +125,8 @@ public class Rook extends Piece {
     }
 
     @Override
-    public int[][] searchPath(final int destColumnIndex, final int destRowIndex) {
+    public int[][] searchPath(final int destColumnIndex, 
+                                                       final int destRowIndex) {
         final int srcColumnIndex = super.getColumnIndex();
         final int srcRowIndex = super.getRowIndex();
 

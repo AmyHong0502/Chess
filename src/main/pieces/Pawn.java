@@ -13,13 +13,14 @@ public class Pawn extends Piece {
         setText(Character.toString(type));
     }
 
-    public Pawn(boolean white, int colIndex, int rowIndex, boolean firstMove, final int colourTheme) {
+    public Pawn(boolean white, int colIndex, int rowIndex, boolean firstMove, 
+                                                        final int colourTheme) {
         super(white, '\u265F', colIndex, rowIndex, firstMove, colourTheme);
         setText(Character.toString(type));
     }
 
     public void setFirstMove() {
-        firstMove = false;
+        neverMoved = false;
     }
 
     @Override
@@ -34,9 +35,11 @@ public class Pawn extends Piece {
         }
 
         if (white) {
-            destination = new int[][]{{columnIndex - 1, rowIndex - 1}, {columnIndex + 1, rowIndex - 1}};
+            destination = new int[][]{{columnIndex - 1, rowIndex - 1}, 
+                                               {columnIndex + 1, rowIndex - 1}};
         } else {
-            destination = new int[][]{{columnIndex - 1, rowIndex + 1}, {columnIndex + 1, rowIndex + 1}};
+            destination = new int[][]{{columnIndex - 1, rowIndex + 1}, 
+                                               {columnIndex + 1, rowIndex + 1}};
         }
 
         return destination;
@@ -54,7 +57,7 @@ public class Pawn extends Piece {
         int[][] result;
 
         if (white) {
-            if (firstMove) {
+            if (neverMoved) {
                 result = new int[2][2];
 
                 result[0][0] = columnIndex;
@@ -68,7 +71,7 @@ public class Pawn extends Piece {
                 result[0][1] = rowIndex - 1;
             }
         } else {
-            if (firstMove) {
+            if (neverMoved) {
                 result = new int[2][2];
 
                 result[0][0] = columnIndex;
@@ -87,7 +90,8 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public int[][] searchPath(final int destColumnIndex, final int destRowIndex) {
+    public int[][] searchPath(final int destColumnIndex, 
+                                                       final int destRowIndex) {
         return new int[0][0];
     }
 
