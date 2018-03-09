@@ -25,7 +25,7 @@ public class Layout extends BorderPane {
         whitePlayer = new Player(true);
         colourTheme = new ColourTheme();
         board = new Board(blackPlayer, whitePlayer, colourTheme);
-        console = new Console(board, blackPlayer, whitePlayer);
+        console = new Console(board, blackPlayer, whitePlayer, colourTheme);
         console.initialSetup();
 
         eventController = new EventController(board, colourTheme);

@@ -35,7 +35,7 @@ public class EventController {
                 node.addEventFilter(MouseEvent.MOUSE_ENTERED,
                         event -> board.highlightTiles((Piece) node));
                 node.addEventFilter(MouseEvent.MOUSE_EXITED,
-                        event -> colourTheme.paintByTheme(board));
+                        event -> colourTheme.unhighlightTiles(board));
             }
         }
     }

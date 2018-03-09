@@ -31,11 +31,9 @@ public class Console extends AnchorPane {
     private VBox vBox;
     private HBox hBox;
 
-    private Button colourTheme1;
+    private ColourTheme colourTheme;
 
-    private Button colourTheme2;
-
-    private Button colourTheme3;
+    private Button colourThemeButtons[];
     /**
      * Player using black pieces.
      */
@@ -52,16 +50,14 @@ public class Console extends AnchorPane {
      * @param blackPlayer Player using black pieces
      * @param whitePlayer Player using white pieces
      */
-    public Console(Board board, Player blackPlayer, Player whitePlayer) {
+    public Console(Board board, Player blackPlayer, Player whitePlayer, ColourTheme colourTheme) {
         this.board = board;
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
+        this.colourTheme = colourTheme;
 
         vBox = new VBox();
-        colourTheme1 = new Button("Colour Theme 1");
-        colourTheme2 = new Button("Colour Theme 2");
-        colourTheme3 = new Button("Colour Theme 3");
-        vBox.getChildren().addAll(colourTheme1, colourTheme2, colourTheme3);
+        colourThemeButtons = new Button[5];
 
         hBox = new HBox();
         saveButton = new Button("Save");
@@ -77,6 +73,12 @@ public class Console extends AnchorPane {
     }
 
     private void addVBox() {
+        for (int i = 0; i < 5; i++) {
+            final int colourThemeNumber = i;
+            colourThemeButtons[i] = new Button("Colour Set " + colourThemeNumber);
+            colourThemeButtons[i].setOnMouseClicked(event -> changeColourTheme(colourThemeNumber));
+            vBox.getChildren().add(colourThemeButtons[i]);
+        }
         vBox.setPadding(new Insets(10));
         vBox.setSpacing(12);
         vBox.setStyle("-fx-background-color: #F00");
@@ -95,10 +97,10 @@ public class Console extends AnchorPane {
         setBottomAnchor(hBox, 0.0);
     }
 
-//
-//    private void colourTheme1() {
-//        board.
-//    }
+    private void changeColourTheme(int colourThemeNumber) {
+        colourTheme.setColourTheme(colourThemeNumber);
+        colourTheme.paintByTheme(board);
+    }
 
     /**
      * Saves the current game's turn and pieces.

@@ -8,30 +8,18 @@ import main.pieces.*;
 
 public class ColourTheme {
 
-    private static final Color pieceWhite1 = Color.web("0xFFF");
-    private static final Color pieceBlack1 = Color.web("0x000");
-    private static final Color pieceClicked1 = Color.web("0x3885CA");
-    private static final Color pieceWhite2 = Color.web("0xFFF");
-    private static final Color pieceBlack2 = Color.web("0x000");
-    private static final Color pieceClicked2 = Color.web("0xf1404b");
-    private static final Color pieceWhite3 = Color.web("0xFFF");
-    private static final Color pieceBlack3 = Color.web("0x000");
-    private static final Color pieceClicked3 = Color.web("0x3885CA");
+    private static final Color pieceWhite[] = {Color.web("0xFFF")};
+    private static final Color pieceBlack[] = {Color.web("0x000")};
+    private static final Color pieceClicked[] = {Color.web("0x2793f4"), Color.web("0xff2d3a"), Color.web("0x45d9fd"), Color.web("0xff5f2e"), Color.web("0xbd1550")};
 
-    private static final Color tileLight1 = Color.web("0xFFF8E7");
-    private static final Color tileDark1 = Color.web("0x2F3138");
-    private static final Color tileHighlight1 = Color.web("0xF99");
-    private static final Color tileLight2 = Color.web("0xf4f5f9");
-    private static final Color tileDark2 = Color.web("0x252c41");
-    private static final Color tileHighlight2 = Color.web("0xF99");
-    private static final Color tileLight3 = Color.web("0xDDD");
-    private static final Color tileDark3 = Color.web("0x333");
-    private static final Color tileHighlight3 = Color.web("0xF99");
+    private static final Color tileLight[] = {Color.web("0xFFF8E7"), Color.web("0xf4f5f9"), Color.web("0xf4f4f4"), Color.web("0xfcbe32"), Color.web("0xd9e1e8")};
+    private static final Color tileDark[] = {Color.web("0x2F3138"), Color.web("0x252c41"), Color.web("0x08182b"), Color.web("0x004e66"), Color.web("0x1c140d")};
+    private static final Color tileHighlight[] = {Color.web("0xF99"), Color.web("0x22f9ef"), Color.web("0xee2560"), Color.web("0xe1eef6"), Color.web("0x99f19e")};
 
     private int colourThemeNumber;
 
     public ColourTheme() {
-        this.colourThemeNumber = 1;
+        this.colourThemeNumber = 4;
     }
 
     public ColourTheme(final int colourThemeNumber) {
@@ -59,16 +47,9 @@ public class ColourTheme {
         if (!(piece || tile)) {
             throw new IllegalArgumentException("Given object to paint is not piece or tile.");
         }
+        return white ? (piece ? pieceWhite[0] : tileLight[colourThemeNumber])
+                    : (piece ? pieceBlack[0] : tileDark[colourThemeNumber]);
 
-        switch (colourThemeNumber) {
-            case 1:
-                return white ? (piece ? pieceWhite1 : tileLight1) : (piece ? pieceBlack1 : tileDark1);
-            case 2:
-                return white ? (piece ? pieceWhite2 : tileLight2) : (piece ? pieceBlack2 : tileDark2);
-            case 3:
-            default:
-                return white ? (piece ? pieceWhite3 : tileLight3) : (piece ? pieceBlack3 : tileDark3);
-        }
     }
 
     private Color findHighlightColour(Object objectToPaint) throws IllegalArgumentException {
@@ -78,16 +59,7 @@ public class ColourTheme {
         if (!(piece || tile)) {
             throw new IllegalArgumentException("Given object to paint is not piece or tile.");
         }
-
-        switch (colourThemeNumber) {
-            case 1:
-                return piece ? pieceClicked1 : tileHighlight1;
-            case 2:
-                return piece ? pieceClicked2 : tileHighlight2;
-            case 3:
-            default:
-                return piece ? pieceClicked3 : tileHighlight3;
-        }
+        return piece ? pieceClicked[colourThemeNumber] : tileHighlight[colourThemeNumber];
     }
 
     public void paintDefault(Object objectToPaint) {
@@ -125,6 +97,15 @@ public class ColourTheme {
     public void unhighlightTiles(Tile tile) {
         tile.setHighlighted(false);
         paintDefault(tile);
+    }
+
+    public void unhighlightTiles(Board board) {
+        for (Node node : board.getChildren()) {
+            if (node.getClass().equals(Tile.class)) {
+                ((Tile) node).setHighlighted(false);
+                paintDefault(node);
+            }
+        }
     }
 
     public void paintByTheme(Board board) {
