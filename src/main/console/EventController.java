@@ -16,7 +16,6 @@ public class EventController {
         this.colourTheme = colourTheme;
     }
 
-
     private static boolean isPiece(Object obj) {
         return obj.getClass().equals(Piece.class)
                 || obj.getClass().equals(Pawn.class)

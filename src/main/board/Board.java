@@ -177,6 +177,8 @@ public class Board extends GridPane {
         }
 
         refreshPieces();
+        colourTheme.paintByTheme(this);
+        moveClickedPiece(columnIndex, rowIndex);
     }
 
     public void highlightTiles(final Piece piece) {
@@ -216,7 +218,13 @@ public class Board extends GridPane {
     }
 
     private void setClickedPiece(Piece piece) {
-        clickedPiece = piece;
+        boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
+
+        if (turn) {
+            clickedPiece = piece;
+        } else {
+            capturePiece(GridPane.getColumnIndex(piece), GridPane.getRowIndex(piece));
+        }
     }
 
     private void initializeClickListener(final ArrayList<Piece> blackPieces, final ArrayList<Piece> whitePieces) {
