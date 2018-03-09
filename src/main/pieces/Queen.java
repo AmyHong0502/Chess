@@ -11,9 +11,8 @@ public class Queen extends Piece {
      */
     private final char type = '\u265B';
 
-    public Queen(boolean white, int colIndex, int rowIndex,
-                                                        final int colourTheme) {
-        super(white, '\u265B', colIndex, rowIndex, true, colourTheme);
+    public Queen(boolean white, int colIndex, int rowIndex) {
+        super(white, '\u265B', colIndex, rowIndex, true);
         setText(Character.toString(type));
     }
 
@@ -28,9 +27,9 @@ public class Queen extends Piece {
         final int rowIndex = super.getRowIndex();
 
         int[][] bishop = new Bishop(isWhite(), columnIndex,
-                rowIndex, 1).movable();
+                rowIndex).movable();
         int[][] rook = new Rook(isWhite(), columnIndex,
-                rowIndex, 1).movable();
+                rowIndex).movable();
 
         int resultSize = bishop.length + rook.length;
         int[][] result = new int[resultSize][2];
@@ -55,10 +54,10 @@ public class Queen extends Piece {
         final int rowIndex = super.getRowIndex();
 
         ArrayList<int[]> bishop = new ArrayList<>(Arrays.asList(
-               new Bishop(isWhite(), columnIndex, rowIndex, 1)
+               new Bishop(isWhite(), columnIndex, rowIndex)
                                    .searchPath(destColumnIndex, destRowIndex)));
         ArrayList<int[]> rook = new ArrayList<>(Arrays.asList(
-                 new Rook(isWhite(), columnIndex, rowIndex, 1)
+                 new Rook(isWhite(), columnIndex, rowIndex, false)
                                    .searchPath(destColumnIndex, destRowIndex)));
 
         bishop.addAll(rook);

@@ -25,7 +25,7 @@ public abstract class Piece extends Text implements Movement {
     private boolean highlighted;
 
     Piece(final boolean white, final char type, int columnIndex, int rowIndex,
-                                     boolean neverMoved, final int colourTheme) {
+                                     boolean neverMoved) {
         super();
         this.type = type;
         this.neverMoved = neverMoved;
@@ -34,14 +34,9 @@ public abstract class Piece extends Text implements Movement {
         this.white = white;
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
-
-        decoratePiece(colourTheme);
-        addClickListener();
     }
 
-    private void decoratePiece(final int colourTheme) {
-        ColourTheme.paintPiece(this);
-
+    public void initialSetup() {
         setFont(new Font(45));
         setTextAlignment(TextAlignment.CENTER);
 
@@ -50,15 +45,14 @@ public abstract class Piece extends Text implements Movement {
         ds.setOffsetY(3.0);
         ds.setColor(Color.web("0x889"));
         setEffect(ds);
+
+        addClickListener();
     }
 
     public void addClickListener() {
         addEventFilter(MouseEvent.MOUSE_ENTERED, event -> hover = true);
 
         addEventFilter(MouseEvent.MOUSE_EXITED, event -> hover = false);
-
-        addEventFilter(MouseEvent.MOUSE_CLICKED, 
-                                              event -> ColourTheme.highlightPiece(this));
     }
 
     /**
@@ -116,6 +110,7 @@ public abstract class Piece extends Text implements Movement {
     public void setHighlighted(boolean highlighted) {
         this.highlighted = highlighted;
     }
+
     public boolean isHighlighted() {
         return highlighted;
     }

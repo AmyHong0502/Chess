@@ -10,14 +10,14 @@ public class King extends Piece {
      */
     private final char type = '\u265A';
 
-    public King(boolean white, int colIndex, int rowIndex, final int colourTheme) {
-        super(white, '\u265A', colIndex, rowIndex, true, colourTheme);
+    public King(boolean white, int colIndex, int rowIndex) {
+        super(white, '\u265A', colIndex, rowIndex, true);
         setText(Character.toString(type));
     }
 
     public King(boolean white, int colIndex, int rowIndex,
-                                     boolean firstMove, final int colourTheme) {
-        super(white, '\u265A', colIndex, rowIndex, firstMove, colourTheme);
+                                     boolean neverMoved) {
+        super(white, '\u265A', colIndex, rowIndex, neverMoved);
         setText(Character.toString(type));
     }
 

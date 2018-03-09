@@ -20,8 +20,8 @@ public class Bishop extends Piece {
      * @param columnIndex this piece's column index on the Board.
      * @param rowIndex    this piece's row index on the Board.
      */
-    public Bishop(boolean white, int columnIndex, int rowIndex, final int colourTheme) {
-        super(white, '\u265D', columnIndex, rowIndex, true, colourTheme);
+    public Bishop(boolean white, int columnIndex, int rowIndex) {
+        super(white, '\u265D', columnIndex, rowIndex, true);
         setText(Character.toString(type));
     }
 

@@ -10,15 +10,13 @@ public class Rook extends Piece {
      */
     private final char type = '\u265C';
 
-    public Rook(boolean white, int colIndex, int rowIndex, 
-                                                        final int colourTheme) {
-        super(white, '\u265C', colIndex, rowIndex, true, colourTheme);
+    public Rook(boolean white, int colIndex, int rowIndex) {
+        super(white, '\u265C', colIndex, rowIndex, true);
         setText(Character.toString(type));
     }
 
-    public Rook(boolean white, int colIndex, int rowIndex, boolean firstMove, 
-                                                        final int colourTheme) {
-        super(white, '\u265C', colIndex, rowIndex, firstMove, colourTheme);
+    public Rook(boolean white, int colIndex, int rowIndex, boolean neverMoved) {
+        super(white, '\u265C', colIndex, rowIndex, neverMoved);
         setText(Character.toString(type));
     }
 
@@ -66,17 +64,6 @@ public class Rook extends Piece {
 
         int[][] result = new int[Math.abs(srcColumnIndex - destColumnIndex)][2];;
         int cellCount = 0;
-/*
-
-        for (int col = 0; col < Math.abs(srcColumnIndex - destColumnIndex); col++) {
-            if (col == srcColumnIndex) {
-                continue;
-            }
-            result[cellCount][0] = col;
-            result[cellCount][1] = srcRowIndex;
-            cellCount++;
-        }
-*/
 
         if (srcColumnIndex > destColumnIndex) {
             for (int col = destColumnIndex; col < srcColumnIndex; col++) {

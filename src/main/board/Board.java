@@ -23,10 +23,14 @@ public class Board extends GridPane {
 
     private Player whitePlayer;
 
-    public Board(Player blackPlayer, Player whitePlayer) {
+    private ColourTheme colourTheme;
+
+    public Board(Player blackPlayer, Player whitePlayer, ColourTheme colourTheme) {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
         drawBoard(blackPlayer, whitePlayer);
+
+        this.colourTheme = colourTheme;
     }
 
     private void putTiles() {
@@ -36,7 +40,7 @@ public class Board extends GridPane {
 
                 tileLength = 60;
 
-                Tile tile = new Tile(column, row, tileLength, false, white, 1);
+                Tile tile = new Tile(tileLength, false, white);
                 tile.addEventFilter(MouseEvent.MOUSE_CLICKED,
                         event -> moveClickedPiece(GridPane.getColumnIndex(tile), GridPane.getRowIndex(tile)));
                 add(tile, column, row);
@@ -77,20 +81,6 @@ public class Board extends GridPane {
         }
 
         return null;
-    }
-
-    private void paintTileDefault() {
-        for (int row = 0; row < NUMBER_OF_CELLS; row++) {
-            for (int column = 0; column < NUMBER_OF_CELLS; column++) {
-                getChildren().forEach(
-                        (Node c) -> {
-                            if (c.getClass().equals(Tile.class)) {
-                                ((Tile) c).setColor(((Tile) c).white, 1);
-                            }
-                        }
-                );
-            }
-        }
     }
 
     private boolean isAllowedToMove(final int[][] movable, 
@@ -141,7 +131,7 @@ public class Board extends GridPane {
             clickedPiece.setNeverMoved(false);
         }
 
-        ColourTheme.highlightPiece(clickedPiece);
+        colourTheme.highlightPiece(clickedPiece);
         clickedPiece = null;
     }
 
@@ -189,7 +179,7 @@ public class Board extends GridPane {
         refreshPieces();
     }
 
-    private void highlightTiles(final Piece piece) {
+    public void highlightTiles(final Piece piece) {
         boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
 
         if (turn) {
@@ -200,13 +190,9 @@ public class Board extends GridPane {
                 int row = location[1];
 
                 Tile tile = findTileByIndex(col, row);
-                tile.setMovableHighlight();
+                colourTheme.highlightTile(tile);
             }
         }
-    }
-
-    private void setClickedPiece(Piece piece) {
-        clickedPiece = piece;
     }
 
     private void refreshPieces() {
@@ -226,30 +212,14 @@ public class Board extends GridPane {
             add(piece, piece.getColumnIndex(), piece.getRowIndex());
         }
 
-        initializeHoverHighlighter(blackPlayer.getPieces(), whitePlayer.getPieces());
+        initializeClickListener(blackPlayer.getPieces(), whitePlayer.getPieces());
     }
 
-    private void initializeHoverHighlighter(final ArrayList<Piece> blackPieces, final ArrayList<Piece> whitePieces) {
-        for (Piece p : blackPieces) {
-            p.addEventFilter(MouseEvent.MOUSE_ENTERED,
-                    event -> highlightTiles(p));
-        }
+    private void setClickedPiece(Piece piece) {
+        clickedPiece = piece;
+    }
 
-        for (Piece p : blackPieces) {
-            p.addEventFilter(MouseEvent.MOUSE_EXITED,
-                    event -> paintTileDefault());
-        }
-
-        for (Piece p : whitePieces) {
-            p.addEventFilter(MouseEvent.MOUSE_ENTERED,
-                    event -> highlightTiles(p));
-        }
-
-        for (Piece p : whitePieces) {
-            p.addEventFilter(MouseEvent.MOUSE_EXITED,
-                    event -> paintTileDefault());
-        }
-
+    private void initializeClickListener(final ArrayList<Piece> blackPieces, final ArrayList<Piece> whitePieces) {
         for (Piece p : blackPieces) {
             p.addEventFilter(MouseEvent.MOUSE_CLICKED,
                     event -> setClickedPiece(p));

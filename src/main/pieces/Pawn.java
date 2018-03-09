@@ -8,14 +8,13 @@ public class Pawn extends Piece {
      */
     private final char type = '\u265F';
 
-    public Pawn(boolean white, int colIndex, int rowIndex, final int colourTheme) {
-        super(white, '\u265F', colIndex, rowIndex, true, colourTheme);
+    public Pawn(boolean white, int colIndex, int rowIndex) {
+        super(white, '\u265F', colIndex, rowIndex, true);
         setText(Character.toString(type));
     }
 
-    public Pawn(boolean white, int colIndex, int rowIndex, boolean firstMove, 
-                                                        final int colourTheme) {
-        super(white, '\u265F', colIndex, rowIndex, firstMove, colourTheme);
+    public Pawn(boolean white, int colIndex, int rowIndex, boolean neverMoved) {
+        super(white, '\u265F', colIndex, rowIndex, neverMoved);
         setText(Character.toString(type));
     }
 
