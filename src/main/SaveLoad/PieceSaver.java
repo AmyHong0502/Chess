@@ -77,8 +77,8 @@ public class PieceSaver implements Serializable {
     }
 
     /**
-     * Returns true if this saved piece never moved from the beginning of 
-     * this saved game.
+     * Returns true if this saved piece never moved from the beginning of this 
+     * saved game.
      * @return true if this saved piece never moved 
      *              from the beginning of this saved game
      */

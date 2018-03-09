@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import main.Player;
 import main.board.Board;
 
@@ -26,8 +27,14 @@ public class Console extends AnchorPane {
      */
     private Button loadButton;
 
-    private HBox hbox;
+    private VBox vBox;
+    private HBox hBox;
 
+    private Button colourTheme1;
+
+    private Button colourTheme2;
+
+    private Button colourTheme3;
     /**
      * Player using black pieces.
      */
@@ -48,27 +55,49 @@ public class Console extends AnchorPane {
         this.board = board;
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
+
+        vBox = new VBox();
+        colourTheme1 = new Button("Colour Theme 1");
+        colourTheme2 = new Button("Colour Theme 2");
+        colourTheme3 = new Button("Colour Theme 3");
+        vBox.getChildren().addAll(colourTheme1, colourTheme2, colourTheme3);
+
+        hBox = new HBox();
         saveButton = new Button("Save");
         loadButton = new Button("Load");
-        hbox = new HBox();
-        getChildren().addAll(board, hbox);
+        hBox.getChildren().addAll(saveButton, loadButton);
+
+        getChildren().addAll(vBox, hBox);
+    }
+
+    public void initialSetup() {
+        addVBox();
+        addHBox();
+    }
+
+    private void addVBox() {
+        vBox.setPadding(new Insets(10));
+        vBox.setSpacing(12);
+        vBox.setStyle("-fx-background-color: #F00");
+
+        setTopAnchor(vBox, 0.0);
     }
 
     private void addHBox() {
         saveButton.setOnMouseClicked(event -> saveGame());
         loadButton.setOnMouseClicked(event -> load());
 
-        hbox.setPadding(new Insets(0, 10, 10, 10));
-        hbox.setSpacing(10);
-        hbox.getChildren().addAll(saveButton, loadButton);
-        hbox.setStyle("-fx-background-color: #ff6");
+        hBox.setPadding(new Insets(0, 10, 10, 10));
+        hBox.setSpacing(10);
+        hBox.setStyle("-fx-background-color: #ff6");
+
+        setBottomAnchor(hBox, 0.0);
     }
 
-    public void initialSetup() {
-        addHBox();
-        setRightAnchor(hbox, 10.0);
-        setBottomAnchor(hbox, 5.0);
-    }
+//
+//    private void colourTheme1() {
+//        board.
+//    }
 
     /**
      * Saves the current game's turn and pieces.

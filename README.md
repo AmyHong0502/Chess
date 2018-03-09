@@ -10,3 +10,4 @@ A chess game you can enjoy anywhere with JVM.
 ## Acknowledgments
 
 * [Design Seeds](https://www.design-seeds.com/edible-hues/sweet-tooth/color-scoop/) - Some colours used
+* [LOL colours](https://www.webdesignrankings.com/resources/lolcolors/) - Some colours used

@@ -28,14 +28,23 @@ public class Save implements Serializable {
         whiteSavedPieces = new ArrayList<>();
     }
 
+    /**
+     * Saves who's turn it is for the moment the user saves the game.
+     * @param whiteTurn
+     */
     void saveTurn(boolean whiteTurn) {
         this.whiteTurn = whiteTurn;
     }
-
+    
+    /**
+     * Returns true if the saved game was the white player's turn.
+     * @return true if the saved game was the white player's turn
+     */
     boolean loadTurn() {
         return whiteTurn;
     }
 
+    /**  */
     void savePieces(ArrayList<Piece> pieces, boolean white) {
         ArrayList<PieceSaver> readyToSave = new ArrayList<>();
 
@@ -43,7 +52,7 @@ public class Save implements Serializable {
             int col = p.getColumnIndex();
             int row = p.getRowIndex();
             char type = p.getType();
-            boolean firstMove = p.isFirstMove();
+            boolean firstMove = p.isNeverMoved();
 
             PieceSaver ps = new PieceSaver(white, type, col, row, firstMove);
 
@@ -65,7 +74,8 @@ public class Save implements Serializable {
     public ArrayList<Piece> loadPieces(boolean whitePlayer) {
         ArrayList<Piece> loadedPieces = new ArrayList<>();
 
-        ArrayList<PieceSaver> pieceSaving = whitePlayer ? whiteSavedPieces : blackSavedPieces;
+        ArrayList<PieceSaver> pieceSaving = whitePlayer 
+                                          ? whiteSavedPieces : blackSavedPieces;
 
         for (PieceSaver ps : pieceSaving) {
             boolean white = ps.isWhite();
@@ -77,24 +87,24 @@ public class Save implements Serializable {
             switch (type) {
                 case '\u265F': // Pawn
                     loadedPieces.add(
-                             new Pawn(white, columnIndex, rowIndex, firstMove, 1));
+                          new Pawn(white, columnIndex, rowIndex, firstMove, 1));
                     break;
                 case '\u265E': // Knight
-                    loadedPieces.add(new Knight(white, columnIndex, rowIndex, 1));
+                  loadedPieces.add(new Knight(white, columnIndex, rowIndex, 1));
                     break;
                 case '\u265C': // Rook
                     loadedPieces.add(
-                             new Rook(white, columnIndex, rowIndex, firstMove, 1));
+                          new Rook(white, columnIndex, rowIndex, firstMove, 1));
                     break;
                 case '\u265D': // Bishop
-                    loadedPieces.add(new Bishop(white, columnIndex, rowIndex, 1));
+                  loadedPieces.add(new Bishop(white, columnIndex, rowIndex, 1));
                     break;
                 case '\u265B': // Queen
-                    loadedPieces.add(new Queen(white, columnIndex, rowIndex, 1));
+                   loadedPieces.add(new Queen(white, columnIndex, rowIndex, 1));
                     break;
                 case '\u265A': // King
                     loadedPieces.add(
-                             new King(white, columnIndex, rowIndex, firstMove, 1));
+                          new King(white, columnIndex, rowIndex, firstMove, 1));
                     break;
             }
         }
