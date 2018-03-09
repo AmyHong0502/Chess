@@ -13,7 +13,6 @@ public class King extends Piece {
     public King(boolean white, int colIndex, int rowIndex, final int colourTheme) {
         super(white, '\u265A', colIndex, rowIndex, true, colourTheme);
         setText(Character.toString(type));
-        neverMoved = true;
     }
 
     public King(boolean white, int colIndex, int rowIndex,

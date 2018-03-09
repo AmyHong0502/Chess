@@ -1,7 +1,8 @@
 package main;
 
 import javafx.scene.layout.BorderPane;
-import main.SaveLoad.Console;
+import main.console.ColourTheme;
+import main.console.Console;
 import main.board.Board;
 
 public class Layout extends BorderPane {
@@ -14,6 +15,8 @@ public class Layout extends BorderPane {
 
     private Console console;
 
+    private ColourTheme colourTheme;
+
     Layout() {
         blackPlayer = new Player(false);
         whitePlayer = new Player(true);
@@ -21,6 +24,7 @@ public class Layout extends BorderPane {
         board.setStyle("-fx-background-color: #066;");
         console = new Console(board, blackPlayer, whitePlayer);
         console.initialSetup();
+        colourTheme = new ColourTheme();
 
         this.setRight(console);
         this.setCenter(board);

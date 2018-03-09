@@ -14,7 +14,6 @@ public class Rook extends Piece {
                                                         final int colourTheme) {
         super(white, '\u265C', colIndex, rowIndex, true, colourTheme);
         setText(Character.toString(type));
-        neverMoved = true;
     }
 
     public Rook(boolean white, int colIndex, int rowIndex, boolean firstMove, 

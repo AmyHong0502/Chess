@@ -19,10 +19,6 @@ public class Pawn extends Piece {
         setText(Character.toString(type));
     }
 
-    public void setFirstMove() {
-        neverMoved = false;
-    }
-
     @Override
     public int[][] capturable() {
         int[][] destination;
@@ -34,7 +30,7 @@ public class Pawn extends Piece {
             return new int[0][0];
         }
 
-        if (white) {
+        if (isWhite()) {
             destination = new int[][]{{columnIndex - 1, rowIndex - 1}, 
                                                {columnIndex + 1, rowIndex - 1}};
         } else {
@@ -56,8 +52,8 @@ public class Pawn extends Piece {
 
         int[][] result;
 
-        if (white) {
-            if (neverMoved) {
+        if (isWhite()) {
+            if (isNeverMoved()) {
                 result = new int[2][2];
 
                 result[0][0] = columnIndex;
@@ -71,7 +67,7 @@ public class Pawn extends Piece {
                 result[0][1] = rowIndex - 1;
             }
         } else {
-            if (neverMoved) {
+            if (isNeverMoved()) {
                 result = new int[2][2];
 
                 result[0][0] = columnIndex;

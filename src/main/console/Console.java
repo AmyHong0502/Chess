@@ -1,4 +1,4 @@
-package main.SaveLoad;
+package main.console;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -6,6 +6,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import main.Player;
+import main.SaveLoad.Save;
 import main.board.Board;
 
 import java.io.*;

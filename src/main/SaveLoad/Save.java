@@ -23,7 +23,7 @@ public class Save implements Serializable {
     /**
      * Constructor of this Save.
      */
-    Save() {
+    public Save() {
         blackSavedPieces = new ArrayList<>();
         whiteSavedPieces = new ArrayList<>();
     }
@@ -32,7 +32,7 @@ public class Save implements Serializable {
      * Saves who's turn it is for the moment the user saves the game.
      * @param whiteTurn
      */
-    void saveTurn(boolean whiteTurn) {
+    public void saveTurn(boolean whiteTurn) {
         this.whiteTurn = whiteTurn;
     }
     
@@ -40,12 +40,12 @@ public class Save implements Serializable {
      * Returns true if the saved game was the white player's turn.
      * @return true if the saved game was the white player's turn
      */
-    boolean loadTurn() {
+    public boolean loadTurn() {
         return whiteTurn;
     }
 
     /**  */
-    void savePieces(ArrayList<Piece> pieces, boolean white) {
+    public void savePieces(ArrayList<Piece> pieces, boolean white) {
         ArrayList<PieceSaver> readyToSave = new ArrayList<>();
 
         for (Piece p : pieces) {

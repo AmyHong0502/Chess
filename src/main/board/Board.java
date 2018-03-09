@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import main.Player;
+import main.console.ColourTheme;
 import main.pieces.Pawn;
 import main.pieces.Piece;
 
@@ -137,10 +138,10 @@ public class Board extends GridPane {
         setRowIndex(clickedPiece, clickedPiece.getRowIndex());
 
         if (clickedPiece.getClass().equals(Pawn.class)) {
-            ((Pawn) clickedPiece).setFirstMove();
+            clickedPiece.setNeverMoved(false);
         }
 
-        clickedPiece.highlightClickedPiece();
+        ColourTheme.highlightPiece(clickedPiece);
         clickedPiece = null;
     }
 
