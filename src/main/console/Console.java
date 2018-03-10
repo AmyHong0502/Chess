@@ -44,17 +44,20 @@ public class Console extends AnchorPane {
      */
     private Player whitePlayer;
 
+    private EventController eventController;
+
     /**
      * Constructor of this Console.
      * @param board Chess board for this game
      * @param blackPlayer Player using black pieces
      * @param whitePlayer Player using white pieces
      */
-    public Console(Board board, Player blackPlayer, Player whitePlayer, ColourTheme colourTheme) {
+    public Console(Board board, Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, EventController eventController) {
         this.board = board;
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
         this.colourTheme = colourTheme;
+        this.eventController = eventController;
 
         vBox = new VBox();
         colourThemeButtons = new Button[5];
@@ -154,6 +157,8 @@ public class Console extends AnchorPane {
             blackPlayer.setPieces(saveFile.loadPieces(false));
             whitePlayer.setPieces(saveFile.loadPieces(true));
             board.drawBoard(blackPlayer, whitePlayer);
+            colourTheme.paintByTheme(board);
+            eventController.addColouringListener();
         } catch (FileNotFoundException e) {
             System.out.println("FNFE");
         } catch (IOException e) {

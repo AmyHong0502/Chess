@@ -74,14 +74,13 @@ public class ColourTheme {
     }
 
     public void highlightPiece(Piece piece) {
-        boolean highlighted = piece.isHighlighted();
-        piece.setHighlighted(!highlighted);
+        piece.setHighlighted(true);
+        piece.setFill(findHighlightColour(piece));
+    }
 
-        if (piece.isHighlighted()) {
-            piece.setFill(findHighlightColour(piece));
-        } else {
-            paintDefault(piece);
-        }
+    public void unhighlightPiece(Piece piece) {
+        piece.setHighlighted(false);
+        paintDefault(piece);
     }
 
     public void highlightTile(Tile tile) {

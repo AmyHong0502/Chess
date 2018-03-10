@@ -106,11 +106,9 @@ public class Board extends GridPane {
             final int[][] movable = clickedPiece.movable();
 
             if (isAllowedToMove(movable, destColumnIndex, destRowIndex)) {
-                if (findPieceByIndex(destColumnIndex, destRowIndex) != null) {
-                    capturePiece(destColumnIndex, destRowIndex);
-                    switchTurn();
-                } else if (isClearPath(clickedPiece, destColumnIndex, destRowIndex)) {
+                if (isClearPath(clickedPiece, destColumnIndex, destRowIndex)) {
                     relocatePiece(destColumnIndex, destRowIndex);
+                    colourTheme.paintByTheme(this);
                     switchTurn();
                 } else {
                     System.out.println("Not Clear Path");
@@ -161,7 +159,31 @@ public class Board extends GridPane {
         }
     }
 
+    private void tryCapture(final int destColumnIndex, final int destRowIndex) {
+        if (clickedPiece == null) {
+            return;
+        }
+
+        boolean turn = clickedPiece.isWhite() ? whitePlayer.isMyTurn()
+                : blackPlayer.isMyTurn();
+
+        if (turn) {
+            final int[][] capturable = clickedPiece.capturable();
+
+            if (isAllowedToMove(capturable, destColumnIndex, destRowIndex)) {
+                if (findPieceByIndex(destColumnIndex, destRowIndex) != null) {
+                    capturePiece(destColumnIndex, destRowIndex);
+                    switchTurn();
+                }
+            }
+        }
+    }
+
     private void capturePiece(final int columnIndex, final int rowIndex) {
+        if (clickedPiece == null) {
+            return;
+        }
+
         Piece prey = findPieceByIndex(columnIndex, rowIndex);
         ArrayList<Piece> pieces;
 
@@ -179,6 +201,7 @@ public class Board extends GridPane {
         refreshPieces();
         colourTheme.paintByTheme(this);
         moveClickedPiece(columnIndex, rowIndex);
+        relocatePiece(columnIndex, rowIndex);
     }
 
     public void highlightTiles(final Piece piece) {
@@ -219,11 +242,17 @@ public class Board extends GridPane {
 
     private void setClickedPiece(Piece piece) {
         boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
+        ArrayList<Piece> pieces = piece.isWhite() ? whitePlayer.getPieces() : blackPlayer.getPieces();
 
         if (turn) {
+            for (Piece p: pieces) {
+                colourTheme.unhighlightPiece(p);
+            }
+
             clickedPiece = piece;
+            colourTheme.unhighlightPiece(piece);
         } else {
-            capturePiece(GridPane.getColumnIndex(piece), GridPane.getRowIndex(piece));
+            tryCapture(GridPane.getColumnIndex(piece), GridPane.getRowIndex(piece));
         }
     }
 

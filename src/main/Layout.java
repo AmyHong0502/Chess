@@ -25,11 +25,12 @@ public class Layout extends BorderPane {
         whitePlayer = new Player(true);
         colourTheme = new ColourTheme();
         board = new Board(blackPlayer, whitePlayer, colourTheme);
-        console = new Console(board, blackPlayer, whitePlayer, colourTheme);
-        console.initialSetup();
 
         eventController = new EventController(board, colourTheme);
         eventController.addColouringListener();
+        console = new Console(board, blackPlayer, whitePlayer, colourTheme, eventController);
+        console.initialSetup();
+
 
         this.setRight(console);
         this.setCenter(board);

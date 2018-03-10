@@ -24,7 +24,7 @@ public class PieceSaver implements Serializable {
     private final boolean white;
     
     /** True if this piece to save has never moved. */
-    private final boolean firstMove;
+    private final boolean neverMoved;
     
     /**
      * Constructor of this PieceSaver.
@@ -33,15 +33,15 @@ public class PieceSaver implements Serializable {
      *                    Pawn, Knight, Rook, Bishop, Queen, or King
      * @param columnIndex Column index of this piece to save
      * @param rowIndex    Row index of this piece to save
-     * @param firstMove   True if this piece to save has never moved
+     * @param neverMoved   True if this piece to save has never moved
      */ 
     PieceSaver(boolean white, char type,
-                int columnIndex, int rowIndex, boolean firstMove) {
+                int columnIndex, int rowIndex, boolean neverMoved) {
         this.white = white;
         this.type = type;
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
-        this.firstMove = firstMove;
+        this.neverMoved = neverMoved;
     }
 
     /**
@@ -82,7 +82,7 @@ public class PieceSaver implements Serializable {
      * @return true if this saved piece never moved 
      *              from the beginning of this saved game
      */
-    public boolean isFirstMove() {
-        return firstMove; 
+    public boolean isNeverMoved() {
+        return neverMoved;
     }
 }

@@ -1,5 +1,7 @@
 package main.SaveLoad;
 
+import jdk.jfr.Event;
+import main.console.EventController;
 import main.pieces.*;
 
 import java.io.Serializable;
@@ -82,19 +84,19 @@ public class Save implements Serializable {
             char type = ps.getType();
             int columnIndex = ps.getColumnIndex();
             int rowIndex = ps.getRowIndex();
-            boolean firstMove = ps.isFirstMove();
+            boolean neverMoved = ps.isNeverMoved();
 
             switch (type) {
                 case '\u265F': // Pawn
                     loadedPieces.add(
-                          new Pawn(white, columnIndex, rowIndex, firstMove));
+                          new Pawn(white, columnIndex, rowIndex, neverMoved));
                     break;
                 case '\u265E': // Knight
                   loadedPieces.add(new Knight(white, columnIndex, rowIndex));
                     break;
                 case '\u265C': // Rook
                     loadedPieces.add(
-                          new Rook(white, columnIndex, rowIndex, firstMove));
+                          new Rook(white, columnIndex, rowIndex, neverMoved));
                     break;
                 case '\u265D': // Bishop
                   loadedPieces.add(new Bishop(white, columnIndex, rowIndex));
@@ -104,9 +106,13 @@ public class Save implements Serializable {
                     break;
                 case '\u265A': // King
                     loadedPieces.add(
-                          new King(white, columnIndex, rowIndex, firstMove));
+                          new King(white, columnIndex, rowIndex, neverMoved));
                     break;
             }
+        }
+
+        for (Piece p: loadedPieces) {
+            p.initialSetup();
         }
 
         return loadedPieces;

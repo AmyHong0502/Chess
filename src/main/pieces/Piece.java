@@ -7,21 +7,30 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import main.Movement;
-import main.console.ColourTheme;
 
 public abstract class Piece extends Text implements Movement {
+    
+    /** True if this piece belongs to the white player. */
     private boolean white;
 
+    /** True if the user hovers their mouse on this piece. */
     private boolean hover;
 
+    /** Column index of this piece on the chessboard. */
     private int columnIndex;
 
+    /** Row index of this piece on the chessboard. */
     private int rowIndex;
 
+    /** Type of this piece: Pawn, Knight, Rook, Bishop, Queen, or King. */
     private char type;
 
+    /** 
+     * True if this piece never moved from the beginning of the current game.
+     */
     private boolean neverMoved;
 
+    /** True if this piece is highlighted. */
     private boolean highlighted;
 
     Piece(final boolean white, final char type, int columnIndex, int rowIndex,
