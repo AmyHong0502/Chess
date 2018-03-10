@@ -13,6 +13,8 @@ import java.util.Iterator;
 
 public class Board extends GridPane {
 
+    private int zlevel;
+
     private Piece clickedPiece;
 
     public static int NUMBER_OF_CELLS = 8;
@@ -25,12 +27,13 @@ public class Board extends GridPane {
 
     private ColourTheme colourTheme;
 
-    public Board(Player blackPlayer, Player whitePlayer, ColourTheme colourTheme) {
+    public Board(Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, int zlevel) {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
         drawBoard(blackPlayer, whitePlayer);
 
         this.colourTheme = colourTheme;
+        this.zlevel = zlevel;
     }
 
     private void putTiles() {

@@ -14,9 +14,19 @@ import java.io.*;
 public class Console extends AnchorPane {
 
     /**
-     * Chess board for this game.
+     * Chess board on the top of this gameboard.
      */
-    private Board board;
+    private Board topBoard;
+
+    /**
+     * Chess board on the middle level of this gameboard.
+     */
+    private Board middleBoard;
+
+    /**
+     * Chess board on the bottom of this gameboard.
+     */
+    private Board bottomBoard;
 
     /**
      * Button to save this game.
@@ -28,12 +38,13 @@ public class Console extends AnchorPane {
      */
     private Button loadButton;
 
-    private VBox vBox;
+    private HBox colourButtonsHBox;
+
     private HBox hBox;
 
     private ColourTheme colourTheme;
 
-    private Button colourThemeButtons[];
+    private Button colourThemeButtons[][];
     /**
      * Player using black pieces.
      */
@@ -48,26 +59,30 @@ public class Console extends AnchorPane {
 
     /**
      * Constructor of this Console.
-     * @param board Chess board for this game
+     * @param topBoard Chess board on the top of this gameboard
+     * @param middleBoard Chess board on the middle level of this gameboard
+     * @param bottomBoard Chess board on the bottom of this gameboard
      * @param blackPlayer Player using black pieces
      * @param whitePlayer Player using white pieces
      */
-    public Console(Board board, Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, EventController eventController) {
-        this.board = board;
+    public Console(Board topBoard, Board middleBoard, Board bottomBoard, Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, EventController eventController) {
+        this.topBoard = topBoard;
+        this.middleBoard = middleBoard;
+        this.bottomBoard = bottomBoard;
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
         this.colourTheme = colourTheme;
         this.eventController = eventController;
 
-        vBox = new VBox();
-        colourThemeButtons = new Button[5];
+        colourButtonsHBox = new HBox();
+        colourThemeButtons = new Button[3][5];
 
         hBox = new HBox();
         saveButton = new Button("Save");
         loadButton = new Button("Load");
         hBox.getChildren().addAll(saveButton, loadButton);
 
-        getChildren().addAll(vBox, hBox);
+        getChildren().addAll(colourButtonsHBox, hBox);
     }
 
     public void initialSetup() {
@@ -76,17 +91,23 @@ public class Console extends AnchorPane {
     }
 
     private void addVBox() {
-        for (int i = 0; i < 5; i++) {
-            final int colourThemeNumber = i;
-            colourThemeButtons[i] = new Button("Colour Set " + colourThemeNumber);
-            colourThemeButtons[i].setOnMouseClicked(event -> changeColourTheme(colourThemeNumber));
-            vBox.getChildren().add(colourThemeButtons[i]);
-        }
-        vBox.setPadding(new Insets(10));
-        vBox.setSpacing(12);
-        vBox.setStyle("-fx-background-color: #F00");
+        for (int i = 0; i < 3; i++) {
+            VBox vBox = new VBox();
 
-        setTopAnchor(vBox, 0.0);
+            for (int j = 0; j < 5; j++) {
+                final int boardLevel = i;
+                final int colourThemeNumber = j;
+                colourThemeButtons[i][j] = new Button("0" + colourThemeNumber);
+                colourThemeButtons[i][j].setOnMouseClicked(event -> changeColourTheme(boardLevel, colourThemeNumber));
+                vBox.getChildren().add(colourThemeButtons[i][j]);
+            }
+
+            vBox.setPadding(new Insets(10));
+            vBox.setSpacing(12);
+            vBox.setStyle("-fx-background-color: #F00");
+            colourButtonsHBox.getChildren().add(i, vBox);
+        }
+        setTopAnchor(colourButtonsHBox, 0.0);
     }
 
     private void addHBox() {
@@ -100,9 +121,20 @@ public class Console extends AnchorPane {
         setBottomAnchor(hBox, 0.0);
     }
 
-    private void changeColourTheme(int colourThemeNumber) {
+    private void changeColourTheme(int boardLevel, int colourThemeNumber) {
         colourTheme.setColourTheme(colourThemeNumber);
-        colourTheme.paintByTheme(board);
+
+        switch(boardLevel) {
+            case 0:
+                colourTheme.paintByTheme(topBoard);
+                break;
+            case 1:
+                colourTheme.paintByTheme(middleBoard);
+                break;
+            case 2:
+                colourTheme.paintByTheme(bottomBoard);
+                break;
+        }
     }
 
     /**
@@ -153,11 +185,17 @@ public class Console extends AnchorPane {
                 blackPlayer.startMyTurn();
             }
 
-            board.getChildren().clear();
+            topBoard.getChildren().clear();
+            middleBoard.getChildren().clear();
+            bottomBoard.getChildren().clear();
             blackPlayer.setPieces(saveFile.loadPieces(false));
             whitePlayer.setPieces(saveFile.loadPieces(true));
-            board.drawBoard(blackPlayer, whitePlayer);
-            colourTheme.paintByTheme(board);
+
+            topBoard.drawBoard(blackPlayer, whitePlayer);
+
+            colourTheme.paintByTheme(topBoard);
+            colourTheme.paintByTheme(middleBoard);
+            colourTheme.paintByTheme(bottomBoard);
             eventController.addColouringListener();
         } catch (FileNotFoundException e) {
             System.out.println("FNFE");

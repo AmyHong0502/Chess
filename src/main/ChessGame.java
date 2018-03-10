@@ -21,7 +21,7 @@ public class ChessGame extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Chess");
-        primaryStage.setScene(new Scene(root, 593, 480));
+        primaryStage.setScene(new Scene(root, 1553, 480));
         primaryStage.show();
     }
 
