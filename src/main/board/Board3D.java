@@ -61,12 +61,12 @@ public class Board3D extends HBox {
     private void initializeClickListener(final ArrayList<Piece> blackPieces, final ArrayList<Piece> whitePieces) {
         for (Piece p : blackPieces) {
             p.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                    event -> setClickedPiece(p));
+                    event -> selectPiece(p));
         }
 
         for (Piece p : whitePieces) {
             p.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                    event -> setClickedPiece(p));
+                    event -> selectPiece(p));
         }
 
         for (Node node : topBoard.getChildren()) {
@@ -76,9 +76,23 @@ public class Board3D extends HBox {
                                 GridPane.getColumnIndex(node), GridPane.getRowIndex(node)));
             }
         }
+        for (Node node : middleBoard.getChildren()) {
+            if (node.getClass().equals(Tile.class)) {
+                node.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                        event -> tryToMoveClickedPiece(((Tile) node).getzLevel(),
+                                GridPane.getColumnIndex(node), GridPane.getRowIndex(node)));
+            }
+        }
+        for (Node node : bottomBoard.getChildren()) {
+            if (node.getClass().equals(Tile.class)) {
+                node.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                        event -> tryToMoveClickedPiece(((Tile) node).getzLevel(),
+                                GridPane.getColumnIndex(node), GridPane.getRowIndex(node)));
+            }
+        }
     }
 
-    private void setClickedPiece(Piece piece) {
+    private void selectPiece(Piece piece) {
         boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
         ArrayList<Piece> pieces = piece.isWhite() ? whitePlayer.getPieces() : blackPlayer.getPieces();
 

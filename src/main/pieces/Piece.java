@@ -13,14 +13,14 @@ public abstract class Piece extends Text implements Movement {
     /** True if this piece belongs to the white player. */
     private final boolean white;
 
+    /** Type of this piece: Pawn, Knight, Rook, Bishop, Queen, or King. */
+    private char type;
+    
     /** Column index of this piece on the chessboard. */
     private int columnIndex;
 
     /** Row index of this piece on the chessboard. */
     private int rowIndex;
-
-    /** Type of this piece: Pawn, Knight, Rook, Bishop, Queen, or King. */
-    private char type;
 
     /** 
      * True if this piece never moved from the beginning of the current game.
@@ -30,8 +30,20 @@ public abstract class Piece extends Text implements Movement {
     /** True if this piece is highlighted. */
     private boolean highlighted;
 
+    /** 3D level of the board where this piece is located. */
     private int zLevel;
 
+    /**
+     * Constructor of this Piece.
+     * @param white       True if this piece belongs to the white player
+     * @param type        Type of this piece: 
+     *                     Pawn, Knight, Rook, Bishop, Queen, or King
+     * @param columnIndex Column index of this piece on the chessboard
+     * @param rowIndex    Row index of this piece on the chessboard
+     * @param zLevel      3D level of the board where this piece is located
+     * @param neverMoved  True if this piece never moved 
+     *                     from the beginning of the current game
+     */
     Piece(final boolean white, final char type,
           int columnIndex, int rowIndex, int zLevel, boolean neverMoved) {
         super();
@@ -93,6 +105,10 @@ public abstract class Piece extends Text implements Movement {
         return rowIndex;
     }
 
+    /**
+     * Returns type of this piece: Pawn, Knight, Rook, Bishop, Queen, or King.
+     * @return type of this piece: Pawn, Knight, Rook, Bishop, Queen, or King
+     */
     public char getType() {
         return type;
     }
@@ -105,26 +121,53 @@ public abstract class Piece extends Text implements Movement {
         return white;
     }
 
+    /**
+     * Sets whether this piece has moved or not during this game.
+     * @param neverMoved true if this piece never moved 
+     *                   from the beginning of the current game
+     */
     public void setNeverMoved(boolean neverMoved) {
         this.neverMoved = neverMoved;
     }
 
+    /**
+     * Returns true if this piece never moved 
+     *         from the beginning of the current game.
+     * @return true if this piece never moved
+     *         from the beginning of the current game
+     */
     public boolean isNeverMoved() {
         return neverMoved;
     }
 
+    /**
+     * Sets whether this piece is highlighted or not.
+     * @param highlighted true if this piece is highlighted
+     */
     public void setHighlighted(boolean highlighted) {
         this.highlighted = highlighted;
     }
 
+    /**
+     * Returns true if this piece is highlighted.
+     * @return true if this piece is highlighted
+     */
     public boolean isHighlighted() {
         return highlighted;
     }
 
+    /**
+     * Sets 3D level of the board where this piece is located.
+     * @param zLevel 3D level of the board where this piece is located
+     */
     public void setzLevel(int zLevel) {
         this.zLevel = zLevel;
     }
 
+    /**
+     * Returns 3D level of the board where this piece is located.
+     * @return 3D level of the board where this piece is located
+     */
     public int getzLevel() {
         return zLevel;
     }

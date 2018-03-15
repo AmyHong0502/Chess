@@ -12,7 +12,7 @@ public class Tile extends Rectangle {
 
     private boolean highlighted;
 
-    public Tile(final int zLevel, int length, boolean hasPiece, boolean white) {
+    public Tile(final int zLevel, int length, boolean white) {
         super(length, length);
         this.zLevel = zLevel;
         this.length = length;

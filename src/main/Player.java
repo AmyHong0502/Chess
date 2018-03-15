@@ -7,12 +7,13 @@ import java.util.ArrayList;
 
 public class Player extends Node {
 
+    /** This player's pieces. */
     private ArrayList<Piece> pieces;
 
+    /** True if this player has white pieces. */
     private boolean white;
 
-    private boolean clickedPiece;
-
+    /** True if it is this player's turn. */
     private boolean myTurn;
 
     Player(boolean white) {
@@ -20,19 +21,30 @@ public class Player extends Node {
         this.white = white;
         pieces = new ArrayList<>();
         initializePieces();
-        clickedPiece = false;
         myTurn = white;
     }
 
+    /**
+     * Starts this player's turn.
+     */
     public void startMyTurn() {
         myTurn = true;
     }
 
+    /**
+     * Ends this player's turn.
+     */
     public void finishMyTurn() {
         myTurn = false;
     }
 
-    public boolean isMyTurn() { return myTurn; }
+    /**
+     * Returns true if it is this player's turn.
+     * @return true if it is this player's turn
+     */
+    public boolean isMyTurn() { 
+        return myTurn; 
+    }
 
     public void setPieces(ArrayList<Piece> pieces) {
         this.pieces = pieces;
@@ -42,6 +54,10 @@ public class Player extends Node {
         return white;
     }
 
+    /**
+     * Returns this player's pieces.
+     * @return this player's pieces
+     */
     public ArrayList<Piece> getPieces() {
         return pieces;
     }
@@ -60,10 +76,10 @@ public class Player extends Node {
     private void initializePieces() {
         if (white) {
             for (int i = 0; i < 8; i++) {
-                pieces.add(new Pawn(white, i, 6, 1,true));
+                pieces.add(new Pawn(white, i, 6, 1, true));
             }
 
-            pieces.add(new Rook(white, 0, 7, 1,true));
+            pieces.add(new Rook(white, 0, 7, 1, true));
             pieces.add(new Knight(white, 1, 7, 1));
             pieces.add(new Bishop(white, 2, 7, 1));
             pieces.add(new Queen(white, 3, 7, 1));
@@ -73,7 +89,7 @@ public class Player extends Node {
             pieces.add(new Rook(white, 7, 7, 1, true));
         } else {
             for (int i = 0; i < 8; i++) {
-                pieces.add(new Pawn(white, i, 1, 1,true));
+                pieces.add(new Pawn(white, i, 1, 1, true));
             }
 
             pieces.add(new Rook(white, 0, 0, 1, true));

@@ -4,22 +4,27 @@ import javafx.scene.Node;
 import javafx.scene.layout.*;
 import main.Player;
 import main.console.ColourTheme;
+import main.pieces.Pawn;
 import main.pieces.Piece;
 
 import java.util.ArrayList;
 
 public class Board extends GridPane {
 
-    private final int zLevel;
+    /** Number of cells in a row/cell. */
+    public static final int NUMBER_OF_CELLS = 8;
 
-    public static int NUMBER_OF_CELLS = 8;
+    private final int zLevel;
 
     private int tileLength;
 
+    /** Black player. */
     private Player blackPlayer;
 
+    /** White player. */
     private Player whitePlayer;
 
+    /** ColourTheme object for colouring. */
     private ColourTheme colourTheme;
 
     public Board(Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, final int zLevel) {
@@ -39,7 +44,7 @@ public class Board extends GridPane {
 
                 tileLength = 60;
 
-                Tile tile = new Tile(zLevel, tileLength, false, white);
+                Tile tile = new Tile(zLevel, tileLength, white);
                 add(tile, column, row);
             }
         }
@@ -145,7 +150,16 @@ public class Board extends GridPane {
         }
     }
 
-    void refreshPieces() {
+    /**
+     * Refreshes the display of pieces on this board.
+     */
+    public void refreshPieces() {
+        for (Node node : getChildren()) {
+            if (node.getClass().equals(Pawn.class)) {
+
+            }
+        }
+
         getChildren().clear();
         drawPieces();
     }
