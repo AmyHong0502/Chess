@@ -16,18 +16,28 @@ public class ColourTheme {
     private static final Color tileDark[] = {Color.web("0x2F3138"), Color.web("0x252c41"), Color.web("0x08182b"), Color.web("0x004e66"), Color.web("0x1c140d")};
     private static final Color tileHighlight[] = {Color.web("0xF99"), Color.web("0x22f9ef"), Color.web("0xee2560"), Color.web("0xe1eef6"), Color.web("0x99f19e")};
 
-    private int colourThemeNumber;
+    private int themeNumberTop;
+    private int themeNumberMiddle;
+    private int themeNumberBottom;
 
     public ColourTheme() {
-        this.colourThemeNumber = 4;
+        setColourTheme(4);
     }
 
-    public ColourTheme(final int colourThemeNumber) {
-        this.colourThemeNumber = colourThemeNumber;
+    public ColourTheme(final int themeNumber) {
+        setColourTheme(themeNumber);
     }
 
-    public void setColourTheme(final int colourThemeNumber) {
-        this.colourThemeNumber = colourThemeNumber;
+    public ColourTheme(final int themeNumberTop, final int themeNumberMiddle, final int themeNumberBottom) {
+        this.themeNumberTop = themeNumberTop;
+        this.themeNumberMiddle = themeNumberMiddle;
+        this.themeNumberBottom = themeNumberBottom;
+    }
+
+    public void setColourTheme(final int themeNumber) {
+        themeNumberTop = themeNumber;
+        themeNumberMiddle = themeNumber;
+        themeNumberBottom = themeNumber;
     }
 
     private static boolean isPiece(Object obj) {
@@ -40,76 +50,77 @@ public class ColourTheme {
                 || obj.getClass().equals(King.class);
     }
 
-    private Color findDefaultColour(Object objectToPaint, boolean white) throws IllegalArgumentException {
+    private Color findDefaultColour(final Object objectToPaint, final boolean white, final int zlevel) throws IllegalArgumentException {
         final boolean piece = isPiece(objectToPaint);
         final boolean tile = objectToPaint.getClass().equals(Tile.class);
+        final int themeNumber = zlevel == 0 ? themeNumberTop : zlevel == 1 ? themeNumberMiddle : themeNumberBottom;
 
         if (!(piece || tile)) {
             throw new IllegalArgumentException("Given object to paint is not piece or tile.");
         }
-        return white ? (piece ? pieceWhite[0] : tileLight[colourThemeNumber])
-                    : (piece ? pieceBlack[0] : tileDark[colourThemeNumber]);
+        return white ? (piece ? pieceWhite[0] : tileLight[themeNumber])
+                    : (piece ? pieceBlack[0] : tileDark[themeNumber]);
 
     }
 
-    private Color findHighlightColour(Object objectToPaint) throws IllegalArgumentException {
+    private Color findHighlightColour(final Object objectToPaint, final int zlevel) throws IllegalArgumentException {
         final boolean piece = isPiece(objectToPaint);
         final boolean tile = objectToPaint.getClass().equals(Tile.class);
+        final int themeNumber = zlevel == 0 ? themeNumberTop : zlevel == 1 ? themeNumberMiddle : themeNumberBottom;
 
         if (!(piece || tile)) {
             throw new IllegalArgumentException("Given object to paint is not piece or tile.");
         }
-        return piece ? pieceClicked[colourThemeNumber] : tileHighlight[colourThemeNumber];
+        return piece ? pieceClicked[themeNumber] : tileHighlight[themeNumber];
     }
 
-    public void paintDefault(Object objectToPaint) {
+    public void paintDefault(Object objectToPaint, final int zlevel) {
         if (isPiece(objectToPaint)) {
-            ((Piece) objectToPaint).setFill(findDefaultColour(objectToPaint,((Piece) objectToPaint).isWhite()));
+            ((Piece) objectToPaint).setFill(findDefaultColour(objectToPaint,((Piece) objectToPaint).isWhite(), zlevel));
         } else if (objectToPaint.getClass().equals(Tile.class)) {
-            ((Tile) objectToPaint).setFill(findDefaultColour(objectToPaint, ((Tile) objectToPaint).isWhite()));
+            ((Tile) objectToPaint).setFill(findDefaultColour(objectToPaint, ((Tile) objectToPaint).isWhite(), zlevel));
         } else {
-            System.out.println(objectToPaint.getClass() + "\n\n\n");
             throw new IllegalArgumentException("Given object to paint is not piece or tile.");
         }
     }
 
-    public void highlightPiece(Piece piece) {
+    public void highlightPiece(Piece piece, final int zlevel) {
         piece.setHighlighted(true);
-        piece.setFill(findHighlightColour(piece));
+        piece.setFill(findHighlightColour(piece, zlevel));
     }
 
-    public void unhighlightPiece(Piece piece) {
+    public void unhighlightPiece(Piece piece, final int zlevel) {
         piece.setHighlighted(false);
-        paintDefault(piece);
+        paintDefault(piece, zlevel);
     }
 
-    public void highlightTile(Tile tile) {
+    public void highlightTile(Tile tile, final int zlevel) {
         tile.setHighlighted(true);
 
         if (tile.isHighlighted()) {
-            tile.setFill(findHighlightColour(tile));
+            tile.setFill(findHighlightColour(tile, zlevel));
         } else {
-            paintDefault(tile);
+            paintDefault(tile, zlevel);
         }
     }
 
-    public void unhighlightTiles(Tile tile) {
+    public void unhighlightTiles(Tile tile, final int zlevel) {
         tile.setHighlighted(false);
-        paintDefault(tile);
+        paintDefault(tile, zlevel);
     }
 
-    public void unhighlightTiles(Board board) {
+    public void unhighlightTiles(Board board, final int zlevel) {
         for (Node node : board.getChildren()) {
             if (node.getClass().equals(Tile.class)) {
                 ((Tile) node).setHighlighted(false);
-                paintDefault(node);
+                paintDefault(node, zlevel);
             }
         }
     }
 
-    public void paintByTheme(Board board) {
+    public void paintByTheme(Board board, final int zlevel) {
         for (Node node : board.getChildren()) {
-            paintDefault(node);
+            paintDefault(node, zlevel);
         }
     }
 }

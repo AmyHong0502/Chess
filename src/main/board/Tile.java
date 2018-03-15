@@ -3,21 +3,24 @@ package main.board;
 import javafx.scene.shape.Rectangle;
 
 public class Tile extends Rectangle {
-    private int length;
 
-    private boolean hasPiece;
+    private int zLevel;
+
+    private int length;
 
     private boolean white;
 
     private boolean highlighted;
 
-    public Tile(int length, boolean hasPiece, boolean white) {
+    public Tile(final int zLevel, int length, boolean hasPiece, boolean white) {
         super(length, length);
+        this.zLevel = zLevel;
         this.length = length;
-        this.hasPiece = hasPiece;
         this.white = white;
         highlighted = false;
     }
+
+    public int getzLevel() { return zLevel; }
 
     public int getLength() {
         return length;
@@ -25,14 +28,6 @@ public class Tile extends Rectangle {
 
     public void setLength(int length) {
         this.length = length;
-    }
-
-    public boolean isHasPiece() {
-        return hasPiece;
-    }
-
-    public void setHasPiece(boolean hasPiece) {
-        this.hasPiece = hasPiece;
     }
 
     public boolean isWhite() {

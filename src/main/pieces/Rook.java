@@ -10,13 +10,13 @@ public class Rook extends Piece {
      */
     private final char type = '\u265C';
 
-    public Rook(boolean white, int colIndex, int rowIndex) {
-        super(white, '\u265C', colIndex, rowIndex, true);
+    public Rook(boolean white, int colIndex, int rowIndex, int zLevel) {
+        super(white, '\u265C', colIndex, rowIndex, zLevel, true);
         setText(Character.toString(type));
     }
 
-    public Rook(boolean white, int colIndex, int rowIndex, boolean neverMoved) {
-        super(white, '\u265C', colIndex, rowIndex, neverMoved);
+    public Rook(boolean white, int colIndex, int rowIndex, int zLevel, boolean neverMoved) {
+        super(white, '\u265C', colIndex, rowIndex, zLevel, neverMoved);
         setText(Character.toString(type));
     }
 

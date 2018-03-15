@@ -30,11 +30,11 @@ public class EventController {
         for (Node node: board.getChildren()) {
             if (isPiece(node)) {
                 node.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> colourTheme.highlightPiece((Piece) node));
+                        event -> colourTheme.highlightPiece((Piece) node, ((Piece) node).getzLevel()));
                 node.addEventFilter(MouseEvent.MOUSE_ENTERED,
                         event -> board.highlightTiles((Piece) node));
                 node.addEventFilter(MouseEvent.MOUSE_EXITED,
-                        event -> colourTheme.unhighlightTiles(board));
+                        event -> colourTheme.unhighlightTiles(board, ((Piece) node).getzLevel()));
             }
         }
     }

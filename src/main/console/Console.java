@@ -121,18 +121,18 @@ public class Console extends AnchorPane {
         setBottomAnchor(hBox, 0.0);
     }
 
-    private void changeColourTheme(int boardLevel, int colourThemeNumber) {
+    private void changeColourTheme(int zLevel, int colourThemeNumber) {
         colourTheme.setColourTheme(colourThemeNumber);
 
-        switch(boardLevel) {
+        switch(zLevel) {
             case 0:
-                colourTheme.paintByTheme(topBoard);
+                colourTheme.paintByTheme(topBoard, zLevel);
                 break;
             case 1:
-                colourTheme.paintByTheme(middleBoard);
+                colourTheme.paintByTheme(middleBoard, zLevel);
                 break;
             case 2:
-                colourTheme.paintByTheme(bottomBoard);
+                colourTheme.paintByTheme(bottomBoard, zLevel);
                 break;
         }
     }
@@ -191,11 +191,13 @@ public class Console extends AnchorPane {
             blackPlayer.setPieces(saveFile.loadPieces(false));
             whitePlayer.setPieces(saveFile.loadPieces(true));
 
-            topBoard.drawBoard(blackPlayer, whitePlayer);
+            topBoard.putTiles();
+            middleBoard.putTiles();
+            bottomBoard.putTiles();
 
-            colourTheme.paintByTheme(topBoard);
-            colourTheme.paintByTheme(middleBoard);
-            colourTheme.paintByTheme(bottomBoard);
+            colourTheme.paintByTheme(topBoard, 0);
+            colourTheme.paintByTheme(middleBoard, 1);
+            colourTheme.paintByTheme(bottomBoard, 2);
             eventController.addColouringListener();
         } catch (FileNotFoundException e) {
             System.out.println("FNFE");

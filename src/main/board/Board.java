@@ -1,21 +1,16 @@
 package main.board;
 
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import main.Player;
 import main.console.ColourTheme;
-import main.pieces.Pawn;
 import main.pieces.Piece;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Board extends GridPane {
 
-    private int zlevel;
-
-    private Piece clickedPiece;
+    private final int zLevel;
 
     public static int NUMBER_OF_CELLS = 8;
 
@@ -27,33 +22,40 @@ public class Board extends GridPane {
 
     private ColourTheme colourTheme;
 
-    public Board(Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, int zlevel) {
+    public Board(Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, final int zLevel) {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
-        drawBoard(blackPlayer, whitePlayer);
+
+        putTiles();
 
         this.colourTheme = colourTheme;
-        this.zlevel = zlevel;
+        this.zLevel = zLevel;
     }
 
-    private void putTiles() {
+    public void putTiles() {
         for (int row = 0; row < NUMBER_OF_CELLS; row++) {
             for (int column = 0; column < NUMBER_OF_CELLS; column++) {
                 boolean white = (row + column) % 2 == 0;
 
                 tileLength = 60;
 
-                Tile tile = new Tile(tileLength, false, white);
-                tile.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> moveClickedPiece(GridPane.getColumnIndex(tile), GridPane.getRowIndex(tile)));
+                Tile tile = new Tile(zLevel, tileLength, false, white);
                 add(tile, column, row);
             }
         }
     }
 
-    public void drawBoard(Player player1, Player player2) {
-        putTiles();
-        populatePieces(player1, player2);
+    void drawPieces() {
+        ArrayList<Piece> blackPieces = blackPlayer.getPieces(zLevel);
+        ArrayList<Piece> whitePieces = whitePlayer.getPieces(zLevel);
+
+        for (Piece piece : blackPieces) {
+            add(piece, piece.getColumnIndex(), piece.getRowIndex());
+        }
+
+        for (Piece piece : whitePieces) {
+            add(piece, piece.getColumnIndex(), piece.getRowIndex());
+        }
     }
 
     private Tile findTileByIndex(final int columnIndex, final int rowIndex) {
@@ -86,56 +88,6 @@ public class Board extends GridPane {
         return null;
     }
 
-    private boolean isAllowedToMove(final int[][] movable, 
-                            final int destColumnIndex, final int destRowIndex) {
-        for (int[] cell : movable) {
-            if (cell[0] == destColumnIndex && cell[1] == destRowIndex) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void moveClickedPiece(final int destColumnIndex, 
-                                                       final int destRowIndex) {
-        if (clickedPiece == null) {
-            return;
-        }
-
-        boolean turn = clickedPiece.isWhite() ? whitePlayer.isMyTurn()
-                                                       : blackPlayer.isMyTurn();
-
-        if (turn) {
-            final int[][] movable = clickedPiece.movable();
-
-            if (isAllowedToMove(movable, destColumnIndex, destRowIndex)) {
-                if (isClearPath(clickedPiece, destColumnIndex, destRowIndex)) {
-                    relocatePiece(destColumnIndex, destRowIndex);
-                    colourTheme.paintByTheme(this);
-                    switchTurn();
-                } else {
-                    System.out.println("Not Clear Path");
-                    clickedPiece = null;
-                }
-            }
-        }
-    }
-
-    private void relocatePiece(final int destColumnIndex, 
-                                                       final int destRowIndex) {
-        clickedPiece.setColumnIndex(destColumnIndex);
-        clickedPiece.setRowIndex(destRowIndex);
-        setColumnIndex(clickedPiece, clickedPiece.getColumnIndex());
-        setRowIndex(clickedPiece, clickedPiece.getRowIndex());
-
-        if (clickedPiece.getClass().equals(Pawn.class)) {
-            clickedPiece.setNeverMoved(false);
-        }
-
-        colourTheme.highlightPiece(clickedPiece);
-        clickedPiece = null;
-    }
-
     public boolean isClearPath(final Piece piece, final int destColumnIndex, 
                                                        final int destRowIndex) {
         int[][] possibilities = piece.searchPath(destColumnIndex, destRowIndex);
@@ -152,60 +104,30 @@ public class Board extends GridPane {
         return true;
     }
 
-    private void switchTurn() {
-        if (whitePlayer.isMyTurn()) {
-            whitePlayer.finishMyTurn();
-            blackPlayer.startMyTurn();
-        } else {
-            blackPlayer.finishMyTurn();
-            whitePlayer.startMyTurn();
-        }
-    }
-
-    private void tryCapture(final int destColumnIndex, final int destRowIndex) {
-        if (clickedPiece == null) {
-            return;
-        }
-
-        boolean turn = clickedPiece.isWhite() ? whitePlayer.isMyTurn()
-                : blackPlayer.isMyTurn();
-
-        if (turn) {
-            final int[][] capturable = clickedPiece.capturable();
-
-            if (isAllowedToMove(capturable, destColumnIndex, destRowIndex)) {
-                if (findPieceByIndex(destColumnIndex, destRowIndex) != null) {
-                    capturePiece(destColumnIndex, destRowIndex);
-                    switchTurn();
-                }
-            }
-        }
-    }
-
-    private void capturePiece(final int columnIndex, final int rowIndex) {
-        if (clickedPiece == null) {
-            return;
-        }
-
-        Piece prey = findPieceByIndex(columnIndex, rowIndex);
-        ArrayList<Piece> pieces;
-
-        pieces = prey.isWhite() ? whitePlayer.getPieces()
-                                                      : blackPlayer.getPieces();
-
-        Iterator itr = pieces.iterator();
-        while (itr.hasNext()) {
-            Piece piece = (Piece) itr.next();
-            if (piece.equals(prey)) {
-                itr.remove();
-            }
-        }
-
-        refreshPieces();
-        colourTheme.paintByTheme(this);
-        moveClickedPiece(columnIndex, rowIndex);
-        relocatePiece(columnIndex, rowIndex);
-    }
+//    private void capturePiece(final int columnIndex, final int rowIndex) {
+//        if (clickedPiece == null) {
+//            return;
+//        }
+//
+//        Piece prey = findPieceByIndex(columnIndex, rowIndex);
+//        ArrayList<Piece> pieces;
+//
+//        pieces = prey.isWhite() ? whitePlayer.getPieces()
+//                                                      : blackPlayer.getPieces();
+//
+//        Iterator itr = pieces.iterator();
+//        while (itr.hasNext()) {
+//            Piece piece = (Piece) itr.next();
+//            if (piece.equals(prey)) {
+//                itr.remove();
+//            }
+//        }
+//
+//        refreshPieces();
+//        colourTheme.paintByTheme(this, zLevel);
+//        moveClickedPiece(columnIndex, rowIndex);
+//        relocatePiece(columnIndex, rowIndex);
+//    }
 
     public void highlightTiles(final Piece piece) {
         boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
@@ -218,57 +140,14 @@ public class Board extends GridPane {
                 int row = location[1];
 
                 Tile tile = findTileByIndex(col, row);
-                colourTheme.highlightTile(tile);
+                colourTheme.highlightTile(tile, zLevel);
             }
         }
     }
 
-    private void refreshPieces() {
+    void refreshPieces() {
         getChildren().clear();
-        drawBoard(blackPlayer, whitePlayer);
-    }
-
-    private void populatePieces(final Player blackPlayer, final Player whitePlayer) {
-        ArrayList<Piece> blackPieces = blackPlayer.getPieces();
-        ArrayList<Piece> whitePieces = whitePlayer.getPieces();
-
-        for (Piece piece : blackPieces) {
-            add(piece, piece.getColumnIndex(), piece.getRowIndex());
-        }
-
-        for (Piece piece : whitePieces) {
-            add(piece, piece.getColumnIndex(), piece.getRowIndex());
-        }
-
-        initializeClickListener(blackPlayer.getPieces(), whitePlayer.getPieces());
-    }
-
-    private void setClickedPiece(Piece piece) {
-        boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
-        ArrayList<Piece> pieces = piece.isWhite() ? whitePlayer.getPieces() : blackPlayer.getPieces();
-
-        if (turn) {
-            for (Piece p: pieces) {
-                colourTheme.unhighlightPiece(p);
-            }
-
-            clickedPiece = piece;
-            colourTheme.unhighlightPiece(piece);
-        } else {
-            tryCapture(GridPane.getColumnIndex(piece), GridPane.getRowIndex(piece));
-        }
-    }
-
-    private void initializeClickListener(final ArrayList<Piece> blackPieces, final ArrayList<Piece> whitePieces) {
-        for (Piece p : blackPieces) {
-            p.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                    event -> setClickedPiece(p));
-        }
-
-        for (Piece p : whitePieces) {
-            p.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                    event -> setClickedPiece(p));
-        }
+        drawPieces();
     }
 
 }

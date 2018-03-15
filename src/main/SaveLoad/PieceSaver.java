@@ -22,10 +22,12 @@ public class PieceSaver implements Serializable {
     
     /** True if this piece to save is white. */
     private final boolean white;
-    
+
+    private final int zLevel;
+
     /** True if this piece to save has never moved. */
     private final boolean neverMoved;
-    
+
     /**
      * Constructor of this PieceSaver.
      * @param white       True if this piece to save is white
@@ -35,13 +37,14 @@ public class PieceSaver implements Serializable {
      * @param rowIndex    Row index of this piece to save
      * @param neverMoved   True if this piece to save has never moved
      */ 
-    PieceSaver(boolean white, char type,
-                int columnIndex, int rowIndex, boolean neverMoved) {
+    PieceSaver(boolean white, char type, boolean neverMoved,
+                int columnIndex, int rowIndex, int zLevel) {
         this.white = white;
         this.type = type;
+        this.neverMoved = neverMoved;
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
-        this.neverMoved = neverMoved;
+        this.zLevel = zLevel;
     }
 
     /**
@@ -75,6 +78,8 @@ public class PieceSaver implements Serializable {
     public int getRowIndex() {
         return rowIndex;
     }
+
+    public int getzLevel() { return zLevel; }
 
     /**
      * Returns true if this saved piece never moved from the beginning of this 

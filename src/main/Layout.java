@@ -2,6 +2,7 @@ package main;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import main.board.Board3D;
 import main.console.ColourTheme;
 import main.console.Console;
 import main.board.Board;
@@ -14,6 +15,8 @@ public class Layout extends BorderPane {
     private Board middleBoard;
 
     private Board bottomBoard;
+
+    private Board3D board3D;
 
     private Player blackPlayer;
 
@@ -32,23 +35,20 @@ public class Layout extends BorderPane {
         topBoard = new Board(blackPlayer, whitePlayer, colourTheme, 0);
         middleBoard = new Board(blackPlayer, whitePlayer, colourTheme, 1);
         bottomBoard = new Board(blackPlayer, whitePlayer, colourTheme, 2);
+        board3D = new Board3D(blackPlayer, whitePlayer, topBoard, middleBoard, bottomBoard, colourTheme);
+        board3D.initialSetup();
 
         eventController = new EventController(bottomBoard, colourTheme);
         eventController.addColouringListener();
         console = new Console(topBoard, middleBoard, bottomBoard, blackPlayer, whitePlayer, colourTheme, eventController);
         console.initialSetup();
 
-        HBox hBox = new HBox();
-        hBox.getChildren().add(0, topBoard);
-        hBox.getChildren().add(1, middleBoard);
-        hBox.getChildren().add(2, bottomBoard);
-
         this.setRight(console);
-        this.setCenter(hBox);
+        this.setCenter(board3D);
 
-        colourTheme.paintByTheme(topBoard);
-        colourTheme.paintByTheme(middleBoard);
-        colourTheme.paintByTheme(bottomBoard);
+        colourTheme.paintByTheme(topBoard, 0);
+        colourTheme.paintByTheme(middleBoard, 1);
+        colourTheme.paintByTheme(bottomBoard, 2);
     }
 
 }

@@ -1,7 +1,5 @@
 package main.SaveLoad;
 
-import jdk.jfr.Event;
-import main.console.EventController;
 import main.pieces.*;
 
 import java.io.Serializable;
@@ -55,8 +53,9 @@ public class Save implements Serializable {
             int row = p.getRowIndex();
             char type = p.getType();
             boolean firstMove = p.isNeverMoved();
+            int zLevel = p.getzLevel();
 
-            PieceSaver ps = new PieceSaver(white, type, col, row, firstMove);
+            PieceSaver ps = new PieceSaver(white, type, firstMove, col, row, zLevel);
 
             readyToSave.add(ps);
         }
@@ -82,31 +81,32 @@ public class Save implements Serializable {
         for (PieceSaver ps : pieceSaving) {
             boolean white = ps.isWhite();
             char type = ps.getType();
+            boolean neverMoved = ps.isNeverMoved();
             int columnIndex = ps.getColumnIndex();
             int rowIndex = ps.getRowIndex();
-            boolean neverMoved = ps.isNeverMoved();
+            int zLevel = ps.getzLevel();
 
             switch (type) {
                 case '\u265F': // Pawn
                     loadedPieces.add(
-                          new Pawn(white, columnIndex, rowIndex, neverMoved));
+                          new Pawn(white, columnIndex, rowIndex, zLevel, neverMoved));
                     break;
                 case '\u265E': // Knight
-                  loadedPieces.add(new Knight(white, columnIndex, rowIndex));
+                  loadedPieces.add(new Knight(white, columnIndex, rowIndex, zLevel));
                     break;
                 case '\u265C': // Rook
                     loadedPieces.add(
-                          new Rook(white, columnIndex, rowIndex, neverMoved));
+                          new Rook(white, columnIndex, rowIndex, zLevel, neverMoved));
                     break;
                 case '\u265D': // Bishop
-                  loadedPieces.add(new Bishop(white, columnIndex, rowIndex));
+                  loadedPieces.add(new Bishop(white, columnIndex, rowIndex, zLevel));
                     break;
                 case '\u265B': // Queen
-                   loadedPieces.add(new Queen(white, columnIndex, rowIndex));
+                   loadedPieces.add(new Queen(white, columnIndex, rowIndex, zLevel));
                     break;
                 case '\u265A': // King
                     loadedPieces.add(
-                          new King(white, columnIndex, rowIndex, neverMoved));
+                          new King(white, columnIndex, rowIndex, zLevel, neverMoved));
                     break;
             }
         }

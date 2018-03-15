@@ -11,10 +11,7 @@ import main.Movement;
 public abstract class Piece extends Text implements Movement {
     
     /** True if this piece belongs to the white player. */
-    private boolean white;
-
-    /** True if the user hovers their mouse on this piece. */
-    private boolean hover;
+    private final boolean white;
 
     /** Column index of this piece on the chessboard. */
     private int columnIndex;
@@ -33,16 +30,18 @@ public abstract class Piece extends Text implements Movement {
     /** True if this piece is highlighted. */
     private boolean highlighted;
 
-    Piece(final boolean white, final char type, int columnIndex, int rowIndex,
-                                     boolean neverMoved) {
+    private int zLevel;
+
+    Piece(final boolean white, final char type,
+          int columnIndex, int rowIndex, int zLevel, boolean neverMoved) {
         super();
+        this.white = white;
         this.type = type;
         this.neverMoved = neverMoved;
-        hover = false;
         highlighted = false;
-        this.white = white;
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
+        this.zLevel = zLevel;
     }
 
     public void initialSetup() {
@@ -55,13 +54,11 @@ public abstract class Piece extends Text implements Movement {
         ds.setColor(Color.web("0x889"));
         setEffect(ds);
 
-        addClickListener();
+        addMouseListener();
     }
 
-    public void addClickListener() {
-        addEventFilter(MouseEvent.MOUSE_ENTERED, event -> hover = true);
-
-        addEventFilter(MouseEvent.MOUSE_EXITED, event -> hover = false);
+    public void addMouseListener() {
+        addEventFilter(MouseEvent.MOUSE_CLICKED, event -> highlighted = !highlighted);
     }
 
     /**
@@ -122,5 +119,13 @@ public abstract class Piece extends Text implements Movement {
 
     public boolean isHighlighted() {
         return highlighted;
+    }
+
+    public void setzLevel(int zLevel) {
+        this.zLevel = zLevel;
+    }
+
+    public int getzLevel() {
+        return zLevel;
     }
 }
