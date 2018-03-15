@@ -4,37 +4,44 @@ import javafx.scene.Node;
 import javafx.scene.layout.*;
 import main.Player;
 import main.console.ColourTheme;
-import main.pieces.Pawn;
-import main.pieces.Piece;
+import main.pieces.*;
 
 import java.util.ArrayList;
 
 public class Board extends GridPane {
 
-    /** Number of cells in a row/cell. */
+    /**
+     * Number of cells in a row/cell.
+     */
     public static final int NUMBER_OF_CELLS = 8;
 
     private final int zLevel;
 
     private int tileLength;
 
-    /** Black player. */
+    /**
+     * Black player.
+     */
     private Player blackPlayer;
 
-    /** White player. */
+    /**
+     * White player.
+     */
     private Player whitePlayer;
 
-    /** ColourTheme object for colouring. */
+    /**
+     * ColourTheme object for colouring.
+     */
     private ColourTheme colourTheme;
 
     public Board(Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, final int zLevel) {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
 
-        putTiles();
-
         this.colourTheme = colourTheme;
         this.zLevel = zLevel;
+
+        putTiles();
     }
 
     public void putTiles() {
@@ -75,7 +82,7 @@ public class Board extends GridPane {
         return null;
     }
 
-    private Piece findPieceByIndex(final int columnIndex, final int rowIndex) {
+    Piece findPieceByIndex(final int columnIndex, final int rowIndex) {
         ArrayList<Piece> blackPieces = blackPlayer.getPieces();
         ArrayList<Piece> whitePieces = whitePlayer.getPieces();
 
@@ -93,8 +100,8 @@ public class Board extends GridPane {
         return null;
     }
 
-    public boolean isClearPath(final Piece piece, final int destColumnIndex, 
-                                                       final int destRowIndex) {
+    public boolean isClearPath(final Piece piece, final int destColumnIndex,
+                               final int destRowIndex) {
         int[][] possibilities = piece.searchPath(destColumnIndex, destRowIndex);
 
         for (int[] cell : possibilities) {
@@ -108,31 +115,6 @@ public class Board extends GridPane {
 
         return true;
     }
-
-//    private void capturePiece(final int columnIndex, final int rowIndex) {
-//        if (clickedPiece == null) {
-//            return;
-//        }
-//
-//        Piece prey = findPieceByIndex(columnIndex, rowIndex);
-//        ArrayList<Piece> pieces;
-//
-//        pieces = prey.isWhite() ? whitePlayer.getPieces()
-//                                                      : blackPlayer.getPieces();
-//
-//        Iterator itr = pieces.iterator();
-//        while (itr.hasNext()) {
-//            Piece piece = (Piece) itr.next();
-//            if (piece.equals(prey)) {
-//                itr.remove();
-//            }
-//        }
-//
-//        refreshPieces();
-//        colourTheme.paintByTheme(this, zLevel);
-//        moveClickedPiece(columnIndex, rowIndex);
-//        relocatePiece(columnIndex, rowIndex);
-//    }
 
     public void highlightTiles(final Piece piece) {
         boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
@@ -154,13 +136,9 @@ public class Board extends GridPane {
      * Refreshes the display of pieces on this board.
      */
     public void refreshPieces() {
-        for (Node node : getChildren()) {
-            if (node.getClass().equals(Pawn.class)) {
+        getChildren().removeAll(blackPlayer.getPieces());
+        getChildren().removeAll(whitePlayer.getPieces());
 
-            }
-        }
-
-        getChildren().clear();
         drawPieces();
     }
 

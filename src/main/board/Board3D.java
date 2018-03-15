@@ -12,6 +12,7 @@ import main.pieces.Piece;
 import main.pieces.Rook;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Board3D extends HBox {
 
@@ -109,18 +110,57 @@ public class Board3D extends HBox {
     }
 
     private void tryToCapture(Piece prey) {
+        if (clickedPiece == null) {
+            return;
+        }
+
         final int predatorZLevel = clickedPiece.getzLevel();
         final int preyZLevel = prey.getzLevel();
 
         if (isAllowedToMove(clickedPiece.capturable(), predatorZLevel, preyZLevel,
-                GridPane.getColumnIndex(prey), GridPane.getRowIndex(prey))) {
-            // capturePrey();
+                prey.getColumnIndex(), prey.getRowIndex())) {
+            capturePrey(prey.getzLevel(), prey.getColumnIndex(), prey.getRowIndex());
         }
     }
 
+    private void capturePrey(final int preyZLevel, final int preyColumnIndex, final int preyRowIndex) {
+        if (clickedPiece == null) {
+            return;
+        }
+
+        Piece prey = null;
+
+        switch (preyZLevel) {
+            case 0:
+                prey = topBoard.findPieceByIndex(preyColumnIndex, preyRowIndex);
+                break;
+            case 1:
+                prey = middleBoard.findPieceByIndex(preyColumnIndex, preyRowIndex);
+                break;
+            case 2:
+                prey = bottomBoard.findPieceByIndex(preyColumnIndex, preyRowIndex);
+                break;
+        }
+
+        ArrayList<Piece> preyPieces = clickedPiece.isWhite() ? whitePlayer.getPieces()
+                                                             : blackPlayer.getPieces();
+
+        Iterator itr = preyPieces.iterator();
+        while (itr.hasNext()) {
+            Piece piece = (Piece) itr.next();
+            if (piece.equals(prey)) {
+                itr.remove();
+            }
+        }
+
+        moveClickedPiece(preyZLevel, preyColumnIndex, preyRowIndex);
+        refreshPiecesOnBoards();
+        switchTurn();
+    }
+
     private boolean isAllowedToMove(final int[][] movable,
-                            final int srcZLevel, final int destZLevel,
-                            final int destColumnIndex, final int destRowIndex) {
+                                    final int srcZLevel, final int destZLevel,
+                                    final int destColumnIndex, final int destRowIndex) {
         if (Math.abs(srcZLevel - destZLevel) > 1) {
             return false;
         }
@@ -155,8 +195,8 @@ public class Board3D extends HBox {
             final int[][] movable = clickedPiece.movable();
 
             if (isAllowedToMove(movable, clickedPiece.getzLevel(), destZLevel, destColumnIndex, destRowIndex)) {
-                    moveClickedPiece(destZLevel, destColumnIndex, destRowIndex);
-                    switchTurn();
+                moveClickedPiece(destZLevel, destColumnIndex, destRowIndex);
+                switchTurn();
             }
         }
 
