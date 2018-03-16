@@ -5,7 +5,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import main.Player;
-import main.console.ColourTheme;
 import main.pieces.King;
 import main.pieces.Pawn;
 import main.pieces.Piece;
@@ -34,9 +33,6 @@ public class Board3D extends HBox {
     /** Player with white pieces. */
     private Player whitePlayer;
 
-    /** ColourTheme object for colouring. */
-    private ColourTheme colourTheme;
-
     /**
      * Constructor of this Board3D.
      * 
@@ -44,12 +40,10 @@ public class Board3D extends HBox {
      * @param whitePlayer Player with white pieces
      * @param topBoard    Board on the top level
      * @param middleBoard Board on the middle level
-     * @param bottomBoard Board on the bottom level 
-     * @param colourTheme ColourTheme object for colouring
+     * @param bottomBoard Board on the bottom level
      */
     public Board3D(Player blackPlayer, Player whitePlayer,
-                   Board topBoard, Board middleBoard, Board bottomBoard,
-                   ColourTheme colourTheme) {
+                   Board topBoard, Board middleBoard, Board bottomBoard) {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
 
@@ -61,7 +55,6 @@ public class Board3D extends HBox {
         getChildren().add(1, middleBoard);
         getChildren().add(2, bottomBoard);
 
-        this.colourTheme = colourTheme;
         clickedPiece = null;
     }
 
@@ -127,16 +120,12 @@ public class Board3D extends HBox {
 
     private void selectPiece(Piece piece) {
         boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
-        ArrayList<Piece> pieces = piece.isWhite() ? whitePlayer.getPieces() : blackPlayer.getPieces();
 
         if (turn) {
-            for (Piece p : pieces) {
-                colourTheme.unhighlightPiece(p, p.getVerticalLevel());
-            }
-
+            System.out.println("Turn");
             clickedPiece = piece;
-            colourTheme.highlightPiece(clickedPiece, clickedPiece.getVerticalLevel());
         } else {
+            System.out.println("TTC");
             tryToCapture(piece);
         }
     }
@@ -147,6 +136,7 @@ public class Board3D extends HBox {
      */
     private void tryToCapture(Piece prey) {
         if (clickedPiece == null) {
+            System.out.println("tryToCapture: Null");
             return;
         }
 
@@ -171,6 +161,7 @@ public class Board3D extends HBox {
     private void capturePrey(final int preyVerticalLevel,
                              final int preyColumnIndex, final int preyRowIndex) {
         if (clickedPiece == null) {
+            System.out.println("Capture: null");
             return;
         }
 
@@ -188,8 +179,8 @@ public class Board3D extends HBox {
                 break;
         }
 
-        ArrayList<Piece> preyPieces = clickedPiece.isWhite() ? whitePlayer.getPieces()
-                                                             : blackPlayer.getPieces();
+        ArrayList<Piece> preyPieces = clickedPiece.isWhite() ? blackPlayer.getPieces()
+                                                             : whitePlayer.getPieces();
 
         Iterator itr = preyPieces.iterator();
         while (itr.hasNext()) {
@@ -277,9 +268,7 @@ public class Board3D extends HBox {
             clickedPiece.setNeverMoved(false);
         }
 
-        colourTheme.unhighlightPiece(clickedPiece, clickedPiece.getVerticalLevel());
         clickedPiece = null;
-
         refreshPiecesOnBoards();
     }
 

@@ -48,10 +48,10 @@ public class ChessGame extends Application {
         topBoard = new Board(blackPlayer, whitePlayer, colourTheme, 0);
         middleBoard = new Board(blackPlayer, whitePlayer, colourTheme, 1);
         bottomBoard = new Board(blackPlayer, whitePlayer, colourTheme, 2);
-        board3D = new Board3D(blackPlayer, whitePlayer, topBoard, middleBoard, bottomBoard, colourTheme);
+        board3D = new Board3D(blackPlayer, whitePlayer, topBoard, middleBoard, bottomBoard);
         board3D.initialSetup();
 
-        eventController = new EventController(topBoard, middleBoard, bottomBoard, colourTheme);
+        eventController = new EventController(topBoard, middleBoard, bottomBoard, colourTheme, blackPlayer, whitePlayer);
         eventController.addColouringListener();
         console = new Console(topBoard, middleBoard, bottomBoard, blackPlayer, whitePlayer, colourTheme, eventController);
         console.initialSetup();

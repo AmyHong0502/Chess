@@ -128,9 +128,15 @@ public class Board extends GridPane {
      * Refreshes the display of pieces on this board.
      */
     public void refreshPieces() {
-        getChildren().removeAll(blackPlayer.getPieces());
-        getChildren().removeAll(whitePlayer.getPieces());
+        ArrayList<Piece> piecesOnBoard = new ArrayList<>();
 
+        for (Node node: getChildren()) {
+            if (Piece.isPiece(node)) {
+                piecesOnBoard.add((Piece) node);
+            }
+        }
+
+        getChildren().removeAll(piecesOnBoard);
         drawPieces();
     }
 

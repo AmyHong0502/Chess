@@ -10,11 +10,11 @@ public class ColourTheme {
 
     private static final Color pieceWhite[] = {Color.web("0xFFF")};
     private static final Color pieceBlack[] = {Color.web("0x000")};
-    private static final Color pieceClicked[] = {Color.web("0x2793f4"), Color.web("0xff2d3a"), Color.web("0x45d9fd"), Color.web("0xff5f2e"), Color.web("0xbd1550")};
+    private static final Color pieceClicked[] = {Color.web("0x2793f4"), Color.web("0xff2d3a"), Color.web("0x999"), Color.web("0xff5f2e"), Color.web("0xbd1550")};
 
-    private static final Color tileLight[] = {Color.web("0xFFF8E7"), Color.web("0xf4f5f9"), Color.web("0xf4f4f4"), Color.web("0xfcbe32"), Color.web("0xd9e1e8")};
-    private static final Color tileDark[] = {Color.web("0x2F3138"), Color.web("0x252c41"), Color.web("0x08182b"), Color.web("0x004e66"), Color.web("0x1c140d")};
-    private static final Color tileHighlight[] = {Color.web("0xF99"), Color.web("0x22f9ef"), Color.web("0xee2560"), Color.web("0xe1eef6"), Color.web("0x99f19e")};
+    private static final Color tileLight[] = {Color.web("0xFFF8E7"), Color.web("0xf4f5f9"), Color.web("0xfff"), Color.web("0xfcbe32"), Color.web("0xd9e1e8")};
+    private static final Color tileDark[] = {Color.web("0x2F3138"), Color.web("0x252c41"), Color.web("0x141414"), Color.web("0x004e66"), Color.web("0x1c140d")};
+    private static final Color tileHighlight[] = {Color.web("0xF99"), Color.web("0x22f9ef"), Color.web("0x883d94"), Color.web("0xe1eef6"), Color.web("0x99f19e")};
 
     private int themeNumberTop;
     private int themeNumberMiddle;

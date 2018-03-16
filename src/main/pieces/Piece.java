@@ -1,7 +1,6 @@
 package main.pieces;
 
 import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -65,12 +64,6 @@ public abstract class Piece extends Text implements Movement {
         ds.setOffsetY(3.0);
         ds.setColor(Color.web("0x889"));
         setEffect(ds);
-
-        addMouseListener();
-    }
-
-    public void addMouseListener() {
-        addEventFilter(MouseEvent.MOUSE_CLICKED, event -> highlighted = !highlighted);
     }
 
     /**
@@ -170,5 +163,15 @@ public abstract class Piece extends Text implements Movement {
      */
     public int getVerticalLevel() {
         return verticalLevel;
+    }
+
+    public static boolean isPiece(Object obj) {
+        return obj.getClass().equals(Piece.class)
+                || obj.getClass().equals(Pawn.class)
+                || obj.getClass().equals(Rook.class)
+                || obj.getClass().equals(Knight.class)
+                || obj.getClass().equals(Bishop.class)
+                || obj.getClass().equals(Queen.class)
+                || obj.getClass().equals(King.class);
     }
 }
