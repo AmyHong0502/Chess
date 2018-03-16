@@ -6,6 +6,8 @@ import main.board.Board;
 import main.board.Tile;
 import main.pieces.*;
 
+import java.util.ArrayList;
+
 public class ColourTheme {
 
     private static final Color pieceWhite[] = {Color.web("0xFFF")};
@@ -76,9 +78,11 @@ public class ColourTheme {
 
     public void paintDefault(Object objectToPaint, final int verticalLevel) {
         if (isPiece(objectToPaint)) {
-            ((Piece) objectToPaint).setFill(findDefaultColour(objectToPaint,((Piece) objectToPaint).isWhite(), verticalLevel));
+            ((Piece) objectToPaint).setFill(
+                    findDefaultColour(objectToPaint,((Piece) objectToPaint).isWhite(), verticalLevel));
         } else if (objectToPaint.getClass().equals(Tile.class)) {
-            ((Tile) objectToPaint).setFill(findDefaultColour(objectToPaint, ((Tile) objectToPaint).isWhite(), verticalLevel));
+            ((Tile) objectToPaint).setFill(
+                    findDefaultColour(objectToPaint, ((Tile) objectToPaint).isWhite(), verticalLevel));
         } else {
             throw new IllegalArgumentException("Given object to paint is not piece or tile.");
         }
@@ -92,6 +96,15 @@ public class ColourTheme {
     public void unhighlightPiece(Piece piece, final int verticalLevel) {
         piece.setHighlighted(false);
         paintDefault(piece, verticalLevel);
+    }
+
+    public void unhighlightPieces(ArrayList<Piece> pieces) {
+        for (Piece p: pieces) {
+            p.setHighlighted(false);
+            paintDefault(p, 0);
+            paintDefault(p, 1);
+            paintDefault(p, 2);
+        }
     }
 
     public void highlightTile(Tile tile, final int verticalLevel) {

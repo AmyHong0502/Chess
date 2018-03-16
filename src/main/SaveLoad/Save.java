@@ -30,6 +30,7 @@ public class Save implements Serializable {
 
     /**
      * Saves who's turn it is for the moment the user saves the game.
+     * 
      * @param whiteTurn true if it is the white user's turn
      */
     public void saveTurn(boolean whiteTurn) {
@@ -38,6 +39,7 @@ public class Save implements Serializable {
     
     /**
      * Returns true if the saved game was the white player's turn.
+     * 
      * @return true if the saved game was the white player's turn
      */
     public boolean loadTurn() {
@@ -46,6 +48,7 @@ public class Save implements Serializable {
 
     /**
      * Saves a user's pieces for the current game.
+     * 
      * @param pieces pieces of a user. A user can be black or white.
      * @param white  true if this pieces to save belong to the white user. 
      */
@@ -57,9 +60,9 @@ public class Save implements Serializable {
             int row = p.getRowIndex();
             char type = p.getType();
             boolean firstMove = p.isNeverMoved();
-            int zLevel = p.getVerticalLevel();
+            int verticalLevel = p.getVerticalLevel();
 
-            PieceSaver ps = new PieceSaver(white, type, firstMove, col, row, zLevel);
+            PieceSaver ps = new PieceSaver(white, type, firstMove, col, row, verticalLevel);
 
             readyToSave.add(ps);
         }
@@ -73,8 +76,9 @@ public class Save implements Serializable {
 
     /**
      * Loads pieces to continue the saved game.
-     * @param whitePlayer true if desired pieces belongs to the white player. 
-     * @return Saved pieces for the given player.
+     * 
+     * @param whitePlayer   true if desired pieces belongs to the white player. 
+     * @return              Saved pieces for the given player.
      */
     public ArrayList<Piece> loadPieces(boolean whitePlayer) {
         ArrayList<Piece> loadedPieces = new ArrayList<>();
@@ -88,29 +92,29 @@ public class Save implements Serializable {
             boolean neverMoved = ps.isNeverMoved();
             int columnIndex = ps.getColumnIndex();
             int rowIndex = ps.getRowIndex();
-            int zLevel = ps.getzLevel();
+            int verticalLevel = ps.getVerticalLevel();
 
             switch (type) {
                 case '\u265F': // Pawn
                     loadedPieces.add(
-                          new Pawn(white, columnIndex, rowIndex, zLevel, neverMoved));
+                          new Pawn(white, columnIndex, rowIndex, verticalLevel, neverMoved));
                     break;
                 case '\u265E': // Knight
-                  loadedPieces.add(new Knight(white, columnIndex, rowIndex, zLevel));
+                  loadedPieces.add(new Knight(white, columnIndex, rowIndex, verticalLevel));
                     break;
                 case '\u265C': // Rook
                     loadedPieces.add(
-                          new Rook(white, columnIndex, rowIndex, zLevel, neverMoved));
+                          new Rook(white, columnIndex, rowIndex, verticalLevel, neverMoved));
                     break;
                 case '\u265D': // Bishop
-                  loadedPieces.add(new Bishop(white, columnIndex, rowIndex, zLevel));
+                  loadedPieces.add(new Bishop(white, columnIndex, rowIndex, verticalLevel));
                     break;
                 case '\u265B': // Queen
-                   loadedPieces.add(new Queen(white, columnIndex, rowIndex, zLevel));
+                   loadedPieces.add(new Queen(white, columnIndex, rowIndex, verticalLevel));
                     break;
                 case '\u265A': // King
                     loadedPieces.add(
-                          new King(white, columnIndex, rowIndex, zLevel, neverMoved));
+                          new King(white, columnIndex, rowIndex, verticalLevel, neverMoved));
                     break;
             }
         }

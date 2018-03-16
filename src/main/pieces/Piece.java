@@ -21,9 +21,7 @@ public abstract class Piece extends Text implements Movement {
     /** Row index of this piece on the chessboard. */
     private int rowIndex;
 
-    /** 
-     * True if this piece never moved from the beginning of the current game.
-     */
+    /** True if this piece never moved from the beginning of the current game. */
     private boolean neverMoved;
 
     /** True if this piece is highlighted. */
@@ -34,14 +32,15 @@ public abstract class Piece extends Text implements Movement {
 
     /**
      * Constructor of this Piece.
-     * @param white       True if this piece belongs to the white player
-     * @param type        Type of this piece: 
-     *                     Pawn, Knight, Rook, Bishop, Queen, or King
-     * @param columnIndex Column index of this piece on the chessboard
-     * @param rowIndex    Row index of this piece on the chessboard
-     * @param verticalLevel vertical-3D level of the board where this piece is located
-     * @param neverMoved  True if this piece never moved 
-     *                     from the beginning of the current game
+     * @param white         True if this piece belongs to the white player
+     * @param type          Type of this piece: 
+     *                      Pawn, Knight, Rook, Bishop, Queen, or King
+     * @param columnIndex   Column index of this piece on the chessboard
+     * @param rowIndex      Row index of this piece on the chessboard
+     * @param verticalLevel vertical-3D level of the board
+     *                      where this piece is located
+     * @param neverMoved    True if this piece never moved 
+     *                      from the beginning of the current game
      */
     Piece(final boolean white, final char type,
           int columnIndex, int rowIndex, int verticalLevel, boolean neverMoved) {
@@ -124,10 +123,11 @@ public abstract class Piece extends Text implements Movement {
     }
 
     /**
-     * Returns true if this piece never moved 
-     *         from the beginning of the current game.
-     * @return true if this piece never moved
-     *         from the beginning of the current game
+     * Returns true if this piece never moved from the beginning of the 
+     * current game.
+     *         
+     * @return true if this piece never moved from the beginning of the 
+     *         current game
      */
     public boolean isNeverMoved() {
         return neverMoved;
@@ -135,6 +135,7 @@ public abstract class Piece extends Text implements Movement {
 
     /**
      * Sets whether this piece is highlighted or not.
+     * 
      * @param highlighted true if this piece is highlighted
      */
     public void setHighlighted(boolean highlighted) {
@@ -143,6 +144,7 @@ public abstract class Piece extends Text implements Movement {
 
     /**
      * Returns true if this piece is highlighted.
+     * 
      * @return true if this piece is highlighted
      */
     public boolean isHighlighted() {
@@ -151,7 +153,9 @@ public abstract class Piece extends Text implements Movement {
 
     /**
      * Sets 3D vertical level of the board where this piece is located.
-     * @param verticalLevel 3D vertical level of the board where this piece is located
+     * 
+     * @param verticalLevel vertical-3D level of the board 
+     *                      where this piece is located
      */
     public void setVerticalLevel(int verticalLevel) {
         this.verticalLevel = verticalLevel;

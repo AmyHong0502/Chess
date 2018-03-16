@@ -5,6 +5,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import main.Player;
+import main.console.ColourTheme;
 import main.pieces.King;
 import main.pieces.Pawn;
 import main.pieces.Piece;
@@ -118,25 +119,33 @@ public class Board3D extends HBox {
         }
     }
 
+    /** 
+     * If a piece is selected during its owner's turn, 
+     * it will be ready to move or capture other players piece. 
+     * Otherwise checks whether the user can capture the piece or not.
+     * 
+     * @param piece piece to move or capture other players piece
+     *              or piece to capture
+     */
     private void selectPiece(Piece piece) {
         boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
 
         if (turn) {
-            System.out.println("Turn");
             clickedPiece = piece;
         } else {
-            System.out.println("TTC");
             tryToCapture(piece);
         }
     }
 
     /**
-     * Tries to capture other player's piece.
+     * Tries to capture other player's piece. 
+     * If it is legal move, this method captures the given prey.
+     * Otherwise this method does nothing.
+     * 
      * @param prey a piece to capture
      */
     private void tryToCapture(Piece prey) {
         if (clickedPiece == null) {
-            System.out.println("tryToCapture: Null");
             return;
         }
 
@@ -151,17 +160,16 @@ public class Board3D extends HBox {
     }
 
     /**
-     * Captures a piece and move to the piece's location. 
-     * A player consumes their turn after capturing.
+     * Captures a piece and move to the prey's location. 
+     * A player consumes their turn to capture the given prey.
      * 
-     * @param preyVerticalLevel      vertical-3D level of a piece to capture
-     * @param preyColumnIndex column index of a piece to capture
-     * @param preyRowIndex    row index of a piece to capture
+     * @param preyVerticalLevel vertical-3D level of a piece to capture
+     * @param preyColumnIndex   column index of a piece to capture
+     * @param preyRowIndex      row index of a piece to capture
      */
     private void capturePrey(final int preyVerticalLevel,
                              final int preyColumnIndex, final int preyRowIndex) {
         if (clickedPiece == null) {
-            System.out.println("Capture: null");
             return;
         }
 
@@ -197,12 +205,13 @@ public class Board3D extends HBox {
 
     /**
      * Returns true if it is allowed to move to given location.
-     * @param movable         array of allowed locations 
-     * @param srcVerticalLevel       starting vertical-3D level
-     * @param destVerticalLevel      destination's vertical-3D level
-     * @param destColumnIndex destination's column index
-     * @param destRowIndex    destination's row index
-     * @return true if it is allowed to move to given location
+     * 
+     * @param movable           array of allowed locations 
+     * @param srcVerticalLevel  starting vertical-3D level
+     * @param destVerticalLevel destination's vertical-3D level
+     * @param destColumnIndex   destination's column index
+     * @param destRowIndex      destination's row index
+     * @return                  true if it is allowed to move to given location
      */
     private boolean isAllowedToMove(final int[][] movable,
                                     final int srcVerticalLevel, final int destVerticalLevel,
@@ -223,6 +232,11 @@ public class Board3D extends HBox {
      * Ends current turn and starts the other user's turn.
      */
     private void switchTurn() {
+        ColourTheme ct = new ColourTheme();
+
+        ct.unhighlightPieces(whitePlayer.getPieces());
+        ct.unhighlightPieces(blackPlayer.getPieces());
+
         if (whitePlayer.isMyTurn()) {
             whitePlayer.finishMyTurn();
             blackPlayer.startMyTurn();
@@ -234,11 +248,15 @@ public class Board3D extends HBox {
 
     /**
      * Tries to move clicked piece to given location.
-     * @param destVerticalLevel      destination's vertical level
-     * @param destColumnIndex destination's column index
-     * @param destRowIndex    destination's row index
+     * If it is legal move, this method moves clickedPiece to given location.
+     * Otherwise this method does nothing.
+     * 
+     * @param destVerticalLevel destination's vertical level
+     * @param destColumnIndex   destination's column index
+     * @param destRowIndex      destination's row index
      */
-    private void tryToMoveClickedPiece(final int destVerticalLevel, final int destColumnIndex, final int destRowIndex) {
+    private void tryToMoveClickedPiece(final int destVerticalLevel,
+                                       final int destColumnIndex, final int destRowIndex) {
         if (clickedPiece == null) {
             return;
         }
@@ -249,7 +267,9 @@ public class Board3D extends HBox {
         if (turn) {
             final int[][] movable = clickedPiece.movable();
 
-            if (isAllowedToMove(movable, clickedPiece.getVerticalLevel(), destVerticalLevel, destColumnIndex, destRowIndex)) {
+            if (isAllowedToMove(movable, 
+                                clickedPiece.getVerticalLevel(), destVerticalLevel, 
+                                destColumnIndex, destRowIndex)) {
                 moveClickedPiece(destVerticalLevel, destColumnIndex, destRowIndex);
                 switchTurn();
             }
@@ -257,8 +277,16 @@ public class Board3D extends HBox {
 
     }
 
-    private void moveClickedPiece(final int destzLevel, final int destColumnIndex, final int destRowIndex) {
-        clickedPiece.setVerticalLevel(destzLevel);
+    /**
+     * Moves clickedPiece to given location.
+     * 
+     * @param destVerticalLevel destination's vertical Level
+     * @param destColumnIndex   destination's column index
+     * @param destRowIndex      destination's row index
+     */
+    private void moveClickedPiece(final int destVerticalLevel,
+                                  final int destColumnIndex, final int destRowIndex) {
+        clickedPiece.setVerticalLevel(destVerticalLevel);
         clickedPiece.setColumnIndex(destColumnIndex);
         clickedPiece.setRowIndex(destRowIndex);
 
@@ -275,7 +303,7 @@ public class Board3D extends HBox {
     /**
      * Redraw pieces on every board: top, middle, and bottom.
      */
-    private void refreshPiecesOnBoards() {
+    public void refreshPiecesOnBoards() {
         topBoard.refreshPieces();
         middleBoard.refreshPieces();
         bottomBoard.refreshPieces();

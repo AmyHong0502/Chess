@@ -16,6 +16,11 @@ public class Player extends Node {
     /** True if it is this player's turn. */
     private boolean myTurn;
 
+    /**
+     * Constructor of this Player.
+     * 
+     * @param white true if this player has white pieces
+     */
     Player(boolean white) {
         super();
         this.white = white;
@@ -40,28 +45,46 @@ public class Player extends Node {
 
     /**
      * Returns true if it is this player's turn.
+     * 
      * @return true if it is this player's turn
      */
     public boolean isMyTurn() { 
         return myTurn; 
     }
 
+    /**
+     * Sets this player's pieces.
+     * 
+     * @param pieces pieces for this player
+     */
     public void setPieces(ArrayList<Piece> pieces) {
         this.pieces = pieces;
     }
 
+    /**
+     * Returns true if this player has white pieces.
+     * 
+     * @return true if this player has white pieces
+     */
     public boolean isWhite() {
         return white;
     }
 
     /**
      * Returns this player's pieces.
+     * 
      * @return this player's pieces
      */
     public ArrayList<Piece> getPieces() {
         return pieces;
     }
 
+    /**
+     * Returns this player's pieces on the given vertical level.
+     * 
+     * @param verticalLevel vertical-3D level of the board to get pieces
+     * @return              pieces on the given vertical level
+     */
     public ArrayList<Piece> getPieces(final int verticalLevel) {
         ArrayList<Piece> piecesOnVLevel = new ArrayList<>();
         for (Piece p: pieces) {

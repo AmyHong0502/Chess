@@ -37,7 +37,8 @@ public class EventController {
 
     private ColourTheme colourTheme;
 
-    public EventController(Board topBoard, Board middleBoard, Board bottomBoard, ColourTheme colourTheme, Player blackPlayer, Player whitePlayer) {
+    public EventController(Board topBoard, Board middleBoard, Board bottomBoard,
+                           ColourTheme colourTheme, Player blackPlayer, Player whitePlayer) {
         this.topBoard = topBoard;
         this.middleBoard = middleBoard;
         this.bottomBoard = bottomBoard;

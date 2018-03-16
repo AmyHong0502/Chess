@@ -24,32 +24,34 @@ public class PieceSaver implements Serializable {
     private final boolean white;
 
     /** Indicator for vertical-3D level of a board to save. */
-    private final int zLevel;
+    private final int verticalLevel;
 
     /** True if this piece to save has never moved. */
     private final boolean neverMoved;
 
     /**
      * Constructor of this PieceSaver.
+     * 
      * @param white       True if this piece to save is white
      * @param type        Type of this piece to save: 
      *                    Pawn, Knight, Rook, Bishop, Queen, or King
      * @param columnIndex Column index of this piece to save
      * @param rowIndex    Row index of this piece to save
-     * @param neverMoved   True if this piece to save has never moved
+     * @param neverMoved  True if this piece to save has never moved
      */ 
     PieceSaver(boolean white, char type, boolean neverMoved,
-                int columnIndex, int rowIndex, int zLevel) {
+                int columnIndex, int rowIndex, int verticalLevel) {
         this.white = white;
         this.type = type;
         this.neverMoved = neverMoved;
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
-        this.zLevel = zLevel;
+        this.verticalLevel = verticalLevel;
     }
 
     /**
      * Returns type of this saved piece.
+     * 
      * @return type of this saved piece
      */
     public char getType() {
@@ -58,6 +60,7 @@ public class PieceSaver implements Serializable {
     
     /**
      * Returns true if this saved piece is white. 
+     * 
      * @return true if this saved piece is white
      */
     public boolean isWhite() {
@@ -66,6 +69,7 @@ public class PieceSaver implements Serializable {
 
     /**
      * Returns column's index of this saved piece.
+     * 
      * @return column's index of this saved piece
      */
     public int getColumnIndex() {
@@ -74,6 +78,7 @@ public class PieceSaver implements Serializable {
 
     /**
      * Returns row's index of this saved piece.
+     * 
      * @return row's index of this saved piece
      */
     public int getRowIndex() {
@@ -82,15 +87,17 @@ public class PieceSaver implements Serializable {
 
     /**
      * Returns vertical-3D level (z-Level) of this saved board.
+     * 
      * @return vertical-3D level (z-Level) of this saved board.
      */
-    public int getzLevel() { 
-        return zLevel; 
+    public int getVerticalLevel() {
+        return verticalLevel;
     }
 
     /**
      * Returns true if this saved piece never moved from the beginning of this 
      * saved game.
+     * 
      * @return true if this saved piece never moved 
      *              from the beginning of this saved game
      */

@@ -17,16 +17,21 @@ public class ChessGame extends Application {
 
     private BorderPane borderPane;
 
+    /** Board on the top level. verticalLevel of the board is 0. */
     private Board topBoard;
 
+    /** Board on the middle level. verticalLevel of the board is 1. */
     private Board middleBoard;
 
+    /** Board on the bottom level. verticalLevel of the board is 2. */
     private Board bottomBoard;
 
     private Board3D board3D;
 
+    /** Player with black pieces. */
     private Player blackPlayer;
 
+    /** Player with white pieces. */
     private Player whitePlayer;
 
     private Console console;
@@ -53,7 +58,7 @@ public class ChessGame extends Application {
 
         eventController = new EventController(topBoard, middleBoard, bottomBoard, colourTheme, blackPlayer, whitePlayer);
         eventController.addColouringListener();
-        console = new Console(topBoard, middleBoard, bottomBoard, blackPlayer, whitePlayer, colourTheme, eventController);
+        console = new Console(board3D, topBoard, middleBoard, bottomBoard, blackPlayer, whitePlayer, colourTheme, eventController);
         console.initialSetup();
 
         borderPane.setRight(console);
@@ -73,6 +78,11 @@ public class ChessGame extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Drives the program.
+     * 
+     * @param args launches JavaFX application
+     */
     public static void main(String[] args) {
         launch(args);
     }

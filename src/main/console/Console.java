@@ -8,10 +8,13 @@ import javafx.scene.layout.VBox;
 import main.Player;
 import main.SaveLoad.Save;
 import main.board.Board;
+import main.board.Board3D;
 
 import java.io.*;
 
 public class Console extends AnchorPane {
+
+    private Board3D board3D;
 
     /**
      * Chess board on the top of this gameboard.
@@ -59,13 +62,18 @@ public class Console extends AnchorPane {
 
     /**
      * Constructor of this Console.
-     * @param topBoard Chess board on the top of this gameboard
+     * 
+     * @param topBoard    Chess board on the top of this gameboard
      * @param middleBoard Chess board on the middle level of this gameboard
      * @param bottomBoard Chess board on the bottom of this gameboard
      * @param blackPlayer Player using black pieces
      * @param whitePlayer Player using white pieces
      */
-    public Console(Board topBoard, Board middleBoard, Board bottomBoard, Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, EventController eventController) {
+    public Console(Board3D board3D, 
+                   Board topBoard, Board middleBoard, Board bottomBoard, 
+                   Player blackPlayer, Player whitePlayer, 
+                   ColourTheme colourTheme, EventController eventController) {
+        this.board3D = board3D;
         this.topBoard = topBoard;
         this.middleBoard = middleBoard;
         this.bottomBoard = bottomBoard;
@@ -80,17 +88,16 @@ public class Console extends AnchorPane {
         hBox = new HBox();
         saveButton = new Button("Save");
         loadButton = new Button("Load");
-        hBox.getChildren().addAll(saveButton, loadButton);
 
         getChildren().addAll(colourButtonsHBox, hBox);
     }
 
     public void initialSetup() {
-        addVBox();
-        addHBox();
+        addColourButtonsVBox();
+        addSaveLoadHBox();
     }
 
-    private void addVBox() {
+    private void addColourButtonsVBox() {
         for (int i = 0; i < 3; i++) {
             VBox vBox = new VBox();
 
@@ -107,10 +114,13 @@ public class Console extends AnchorPane {
             vBox.setStyle("-fx-background-color: #F00");
             colourButtonsHBox.getChildren().add(i, vBox);
         }
-        setTopAnchor(colourButtonsHBox, 0.0);
+        setTopAnchor(colourButtonsHBox, 12.0);
+        setRightAnchor(colourButtonsHBox, 10.0);
     }
 
-    private void addHBox() {
+    private void addSaveLoadHBox() {
+        hBox.getChildren().addAll(saveButton, loadButton);
+
         saveButton.setOnMouseClicked(event -> saveGame());
         loadButton.setOnMouseClicked(event -> load());
 
@@ -119,6 +129,7 @@ public class Console extends AnchorPane {
         hBox.setStyle("-fx-background-color: #ff6");
 
         setBottomAnchor(hBox, 0.0);
+        setRightAnchor(hBox, 0.0);
     }
 
     private void changeColourTheme(int verticalLevel, int colourThemeNumber) {
@@ -188,8 +199,10 @@ public class Console extends AnchorPane {
             topBoard.getChildren().clear();
             middleBoard.getChildren().clear();
             bottomBoard.getChildren().clear();
+
             blackPlayer.setPieces(saveFile.loadPieces(false));
             whitePlayer.setPieces(saveFile.loadPieces(true));
+            board3D.refreshPiecesOnBoards();
 
             topBoard.putTiles();
             middleBoard.putTiles();
@@ -198,6 +211,7 @@ public class Console extends AnchorPane {
             colourTheme.paintByTheme(topBoard, 0);
             colourTheme.paintByTheme(middleBoard, 1);
             colourTheme.paintByTheme(bottomBoard, 2);
+
             eventController.addColouringListener();
         } catch (FileNotFoundException e) {
             System.out.println("FNFE");
