@@ -51,7 +51,7 @@ public class ChessGame extends Application {
         board3D = new Board3D(blackPlayer, whitePlayer, topBoard, middleBoard, bottomBoard, colourTheme);
         board3D.initialSetup();
 
-        eventController = new EventController(bottomBoard, colourTheme);
+        eventController = new EventController(topBoard, middleBoard, bottomBoard, colourTheme);
         eventController.addColouringListener();
         console = new Console(topBoard, middleBoard, bottomBoard, blackPlayer, whitePlayer, colourTheme, eventController);
         console.initialSetup();

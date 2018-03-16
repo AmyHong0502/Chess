@@ -4,7 +4,7 @@ import javafx.scene.shape.Rectangle;
 
 public class Tile extends Rectangle {
 
-    private int zLevel;
+    private int verticalLevel;
 
     private int length;
 
@@ -12,15 +12,15 @@ public class Tile extends Rectangle {
 
     private boolean highlighted;
 
-    public Tile(final int zLevel, int length, boolean white) {
+    public Tile(final int verticalLevel, int length, boolean white) {
         super(length, length);
-        this.zLevel = zLevel;
+        this.verticalLevel = verticalLevel;
         this.length = length;
         this.white = white;
         highlighted = false;
     }
 
-    public int getzLevel() { return zLevel; }
+    public int getVerticalLevel() { return verticalLevel; }
 
     public int getLength() {
         return length;

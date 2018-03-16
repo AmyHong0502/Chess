@@ -7,12 +7,27 @@ import main.pieces.*;
 
 public class EventController {
 
-    private Board board;
+    /**
+     * Chess board on the top of this gameboard.
+     */
+    private Board topBoard;
+
+    /**
+     * Chess board on the middle level of this gameboard.
+     */
+    private Board middleBoard;
+
+    /**
+     * Chess board on the bottom of this gameboard.
+     */
+    private Board bottomBoard;
 
     private ColourTheme colourTheme;
 
-    public EventController(Board board, ColourTheme colourTheme) {
-        this.board = board;
+    public EventController(Board topBoard, Board middleBoard, Board bottomBoard, ColourTheme colourTheme) {
+        this.topBoard = topBoard;
+        this.middleBoard = middleBoard;
+        this.bottomBoard = bottomBoard;
         this.colourTheme = colourTheme;
     }
 
@@ -26,16 +41,22 @@ public class EventController {
                 || obj.getClass().equals(King.class);
     }
 
-    public void addColouringListener() {
-        for (Node node: board.getChildren()) {
+    private void addColouringListener(Board board) {
+        for (Node node : board.getChildren()) {
             if (isPiece(node)) {
                 node.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> colourTheme.highlightPiece((Piece) node, ((Piece) node).getzLevel()));
+                        event -> colourTheme.highlightPiece((Piece) node, ((Piece) node).getVerticalLevel()));
                 node.addEventFilter(MouseEvent.MOUSE_ENTERED,
                         event -> board.highlightTiles((Piece) node));
                 node.addEventFilter(MouseEvent.MOUSE_EXITED,
-                        event -> colourTheme.unhighlightTiles(board, ((Piece) node).getzLevel()));
+                        event -> colourTheme.unhighlightTiles(board, ((Piece) node).getVerticalLevel()));
             }
         }
+    }
+
+    public void addColouringListener() {
+        addColouringListener(topBoard);
+        addColouringListener(middleBoard);
+        addColouringListener(bottomBoard);
     }
 }

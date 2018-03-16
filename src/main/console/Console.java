@@ -95,10 +95,10 @@ public class Console extends AnchorPane {
             VBox vBox = new VBox();
 
             for (int j = 0; j < 5; j++) {
-                final int boardLevel = i;
+                final int verticalLevel = i;
                 final int colourThemeNumber = j;
                 colourThemeButtons[i][j] = new Button("0" + colourThemeNumber);
-                colourThemeButtons[i][j].setOnMouseClicked(event -> changeColourTheme(boardLevel, colourThemeNumber));
+                colourThemeButtons[i][j].setOnMouseClicked(event -> changeColourTheme(verticalLevel, colourThemeNumber));
                 vBox.getChildren().add(colourThemeButtons[i][j]);
             }
 
@@ -121,18 +121,18 @@ public class Console extends AnchorPane {
         setBottomAnchor(hBox, 0.0);
     }
 
-    private void changeColourTheme(int zLevel, int colourThemeNumber) {
+    private void changeColourTheme(int verticalLevel, int colourThemeNumber) {
         colourTheme.setColourTheme(colourThemeNumber);
 
-        switch(zLevel) {
+        switch(verticalLevel) {
             case 0:
-                colourTheme.paintByTheme(topBoard, zLevel);
+                colourTheme.paintByTheme(topBoard, verticalLevel);
                 break;
             case 1:
-                colourTheme.paintByTheme(middleBoard, zLevel);
+                colourTheme.paintByTheme(middleBoard, verticalLevel);
                 break;
             case 2:
-                colourTheme.paintByTheme(bottomBoard, zLevel);
+                colourTheme.paintByTheme(bottomBoard, verticalLevel);
                 break;
         }
     }

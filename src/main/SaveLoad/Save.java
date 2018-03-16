@@ -30,7 +30,7 @@ public class Save implements Serializable {
 
     /**
      * Saves who's turn it is for the moment the user saves the game.
-     * @param whiteTurn
+     * @param whiteTurn true if it is the white user's turn
      */
     public void saveTurn(boolean whiteTurn) {
         this.whiteTurn = whiteTurn;
@@ -44,7 +44,11 @@ public class Save implements Serializable {
         return whiteTurn;
     }
 
-    /**  */
+    /**
+     * Saves a user's pieces for the current game.
+     * @param pieces pieces of a user. A user can be black or white.
+     * @param white  true if this pieces to save belong to the white user. 
+     */
     public void savePieces(ArrayList<Piece> pieces, boolean white) {
         ArrayList<PieceSaver> readyToSave = new ArrayList<>();
 
@@ -53,7 +57,7 @@ public class Save implements Serializable {
             int row = p.getRowIndex();
             char type = p.getType();
             boolean firstMove = p.isNeverMoved();
-            int zLevel = p.getzLevel();
+            int zLevel = p.getVerticalLevel();
 
             PieceSaver ps = new PieceSaver(white, type, firstMove, col, row, zLevel);
 

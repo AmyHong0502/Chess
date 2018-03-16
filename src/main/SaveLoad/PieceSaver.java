@@ -23,6 +23,7 @@ public class PieceSaver implements Serializable {
     /** True if this piece to save is white. */
     private final boolean white;
 
+    /** Indicator for vertical-3D level of a board to save. */
     private final int zLevel;
 
     /** True if this piece to save has never moved. */
@@ -79,7 +80,13 @@ public class PieceSaver implements Serializable {
         return rowIndex;
     }
 
-    public int getzLevel() { return zLevel; }
+    /**
+     * Returns vertical-3D level (z-Level) of this saved board.
+     * @return vertical-3D level (z-Level) of this saved board.
+     */
+    public int getzLevel() { 
+        return zLevel; 
+    }
 
     /**
      * Returns true if this saved piece never moved from the beginning of this 

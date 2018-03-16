@@ -30,8 +30,8 @@ public abstract class Piece extends Text implements Movement {
     /** True if this piece is highlighted. */
     private boolean highlighted;
 
-    /** 3D level of the board where this piece is located. */
-    private int zLevel;
+    /** vertical-3D level of the board where this piece is located. */
+    private int verticalLevel;
 
     /**
      * Constructor of this Piece.
@@ -40,12 +40,12 @@ public abstract class Piece extends Text implements Movement {
      *                     Pawn, Knight, Rook, Bishop, Queen, or King
      * @param columnIndex Column index of this piece on the chessboard
      * @param rowIndex    Row index of this piece on the chessboard
-     * @param zLevel      3D level of the board where this piece is located
+     * @param verticalLevel vertical-3D level of the board where this piece is located
      * @param neverMoved  True if this piece never moved 
      *                     from the beginning of the current game
      */
     Piece(final boolean white, final char type,
-          int columnIndex, int rowIndex, int zLevel, boolean neverMoved) {
+          int columnIndex, int rowIndex, int verticalLevel, boolean neverMoved) {
         super();
         this.white = white;
         this.type = type;
@@ -53,7 +53,7 @@ public abstract class Piece extends Text implements Movement {
         highlighted = false;
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
-        this.zLevel = zLevel;
+        this.verticalLevel = verticalLevel;
     }
 
     public void initialSetup() {
@@ -157,18 +157,18 @@ public abstract class Piece extends Text implements Movement {
     }
 
     /**
-     * Sets 3D level of the board where this piece is located.
-     * @param zLevel 3D level of the board where this piece is located
+     * Sets 3D vertical level of the board where this piece is located.
+     * @param verticalLevel 3D vertical level of the board where this piece is located
      */
-    public void setzLevel(int zLevel) {
-        this.zLevel = zLevel;
+    public void setVerticalLevel(int verticalLevel) {
+        this.verticalLevel = verticalLevel;
     }
 
     /**
-     * Returns 3D level of the board where this piece is located.
-     * @return 3D level of the board where this piece is located
+     * Returns 3D vertical level of the board where this piece is located.
+     * @return 3D vertical level of the board where this piece is located
      */
-    public int getzLevel() {
-        return zLevel;
+    public int getVerticalLevel() {
+        return verticalLevel;
     }
 }

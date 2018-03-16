@@ -16,20 +16,37 @@ import java.util.Iterator;
 
 public class Board3D extends HBox {
 
+    /** Clicked piece to move or capture other player's piece. */
     private Piece clickedPiece;
 
+    /** Board on the top level. verticalLevel of the board is 0. */
     private Board topBoard;
 
+    /** Board on the middle level. verticalLevel of the board is 1. */
     private Board middleBoard;
 
+    /** Board on the bottom level. verticalLevel of the board is 2. */
     private Board bottomBoard;
 
+    /** Player with black pieces. */
     private Player blackPlayer;
 
+    /** Player with white pieces. */
     private Player whitePlayer;
 
+    /** ColourTheme object for colouring. */
     private ColourTheme colourTheme;
 
+    /**
+     * Constructor of this Board3D.
+     * 
+     * @param blackPlayer Player with black pieces
+     * @param whitePlayer Player with white pieces
+     * @param topBoard    Board on the top level
+     * @param middleBoard Board on the middle level
+     * @param bottomBoard Board on the bottom level 
+     * @param colourTheme ColourTheme object for colouring
+     */
     public Board3D(Player blackPlayer, Player whitePlayer,
                    Board topBoard, Board middleBoard, Board bottomBoard,
                    ColourTheme colourTheme) {
@@ -48,18 +65,33 @@ public class Board3D extends HBox {
         clickedPiece = null;
     }
 
+    /**
+     * Gives every piece and tile a click-listener and draw all pieces 
+     * on top, middle, and bottom board.
+     */
     public void initialSetup() {
         drawPieces();
         initializeClickListener(blackPlayer.getPieces(), whitePlayer.getPieces());
     }
 
+    /**
+     * Draws pieces on top, middle, and bottom board.
+     */
     private void drawPieces() {
         topBoard.drawPieces();
         middleBoard.drawPieces();
         bottomBoard.drawPieces();
     }
 
-    private void initializeClickListener(final ArrayList<Piece> blackPieces, final ArrayList<Piece> whitePieces) {
+    /**
+     * Gives click-listener every tile and piece for 
+     * selecting and moving pieces.
+     * 
+     * @param blackPieces Black pieces
+     * @param whitePieces White pieces
+     */
+    private void initializeClickListener(final ArrayList<Piece> blackPieces, 
+                                         final ArrayList<Piece> whitePieces) {
         for (Piece p : blackPieces) {
             p.addEventFilter(MouseEvent.MOUSE_CLICKED,
                     event -> selectPiece(p));
@@ -73,21 +105,21 @@ public class Board3D extends HBox {
         for (Node node : topBoard.getChildren()) {
             if (node.getClass().equals(Tile.class)) {
                 node.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> tryToMoveClickedPiece(((Tile) node).getzLevel(),
+                        event -> tryToMoveClickedPiece(((Tile) node).getVerticalLevel(),
                                 GridPane.getColumnIndex(node), GridPane.getRowIndex(node)));
             }
         }
         for (Node node : middleBoard.getChildren()) {
             if (node.getClass().equals(Tile.class)) {
                 node.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> tryToMoveClickedPiece(((Tile) node).getzLevel(),
+                        event -> tryToMoveClickedPiece(((Tile) node).getVerticalLevel(),
                                 GridPane.getColumnIndex(node), GridPane.getRowIndex(node)));
             }
         }
         for (Node node : bottomBoard.getChildren()) {
             if (node.getClass().equals(Tile.class)) {
                 node.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> tryToMoveClickedPiece(((Tile) node).getzLevel(),
+                        event -> tryToMoveClickedPiece(((Tile) node).getVerticalLevel(),
                                 GridPane.getColumnIndex(node), GridPane.getRowIndex(node)));
             }
         }
@@ -99,38 +131,52 @@ public class Board3D extends HBox {
 
         if (turn) {
             for (Piece p : pieces) {
-                colourTheme.unhighlightPiece(p, p.getzLevel());
+                colourTheme.unhighlightPiece(p, p.getVerticalLevel());
             }
 
             clickedPiece = piece;
-            colourTheme.highlightPiece(clickedPiece, clickedPiece.getzLevel());
+            colourTheme.highlightPiece(clickedPiece, clickedPiece.getVerticalLevel());
         } else {
             tryToCapture(piece);
         }
     }
 
+    /**
+     * Tries to capture other player's piece.
+     * @param prey a piece to capture
+     */
     private void tryToCapture(Piece prey) {
         if (clickedPiece == null) {
             return;
         }
 
-        final int predatorZLevel = clickedPiece.getzLevel();
-        final int preyZLevel = prey.getzLevel();
+        final int predatorVerticalLevel = clickedPiece.getVerticalLevel();
+        final int preyVerticalLevel = prey.getVerticalLevel();
 
-        if (isAllowedToMove(clickedPiece.capturable(), predatorZLevel, preyZLevel,
-                prey.getColumnIndex(), prey.getRowIndex())) {
-            capturePrey(prey.getzLevel(), prey.getColumnIndex(), prey.getRowIndex());
+        if (isAllowedToMove(clickedPiece.capturable(), 
+                            predatorVerticalLevel, preyVerticalLevel,
+                            prey.getColumnIndex(), prey.getRowIndex())) {
+            capturePrey(prey.getVerticalLevel(), prey.getColumnIndex(), prey.getRowIndex());
         }
     }
 
-    private void capturePrey(final int preyZLevel, final int preyColumnIndex, final int preyRowIndex) {
+    /**
+     * Captures a piece and move to the piece's location. 
+     * A player consumes their turn after capturing.
+     * 
+     * @param preyVerticalLevel      vertical-3D level of a piece to capture
+     * @param preyColumnIndex column index of a piece to capture
+     * @param preyRowIndex    row index of a piece to capture
+     */
+    private void capturePrey(final int preyVerticalLevel,
+                             final int preyColumnIndex, final int preyRowIndex) {
         if (clickedPiece == null) {
             return;
         }
 
         Piece prey = null;
 
-        switch (preyZLevel) {
+        switch (preyVerticalLevel) {
             case 0:
                 prey = topBoard.findPieceByIndex(preyColumnIndex, preyRowIndex);
                 break;
@@ -153,15 +199,24 @@ public class Board3D extends HBox {
             }
         }
 
-        moveClickedPiece(preyZLevel, preyColumnIndex, preyRowIndex);
+        moveClickedPiece(preyVerticalLevel, preyColumnIndex, preyRowIndex);
         refreshPiecesOnBoards();
         switchTurn();
     }
 
+    /**
+     * Returns true if it is allowed to move to given location.
+     * @param movable         array of allowed locations 
+     * @param srcVerticalLevel       starting vertical-3D level
+     * @param destVerticalLevel      destination's vertical-3D level
+     * @param destColumnIndex destination's column index
+     * @param destRowIndex    destination's row index
+     * @return true if it is allowed to move to given location
+     */
     private boolean isAllowedToMove(final int[][] movable,
-                                    final int srcZLevel, final int destZLevel,
+                                    final int srcVerticalLevel, final int destVerticalLevel,
                                     final int destColumnIndex, final int destRowIndex) {
-        if (Math.abs(srcZLevel - destZLevel) > 1) {
+        if (Math.abs(srcVerticalLevel - destVerticalLevel) > 1) {
             return false;
         }
 
@@ -173,6 +228,9 @@ public class Board3D extends HBox {
         return false;
     }
 
+    /**
+     * Ends current turn and starts the other user's turn.
+     */
     private void switchTurn() {
         if (whitePlayer.isMyTurn()) {
             whitePlayer.finishMyTurn();
@@ -183,7 +241,13 @@ public class Board3D extends HBox {
         }
     }
 
-    private void tryToMoveClickedPiece(final int destZLevel, final int destColumnIndex, final int destRowIndex) {
+    /**
+     * Tries to move clicked piece to given location.
+     * @param destVerticalLevel      destination's vertical level
+     * @param destColumnIndex destination's column index
+     * @param destRowIndex    destination's row index
+     */
+    private void tryToMoveClickedPiece(final int destVerticalLevel, final int destColumnIndex, final int destRowIndex) {
         if (clickedPiece == null) {
             return;
         }
@@ -194,8 +258,8 @@ public class Board3D extends HBox {
         if (turn) {
             final int[][] movable = clickedPiece.movable();
 
-            if (isAllowedToMove(movable, clickedPiece.getzLevel(), destZLevel, destColumnIndex, destRowIndex)) {
-                moveClickedPiece(destZLevel, destColumnIndex, destRowIndex);
+            if (isAllowedToMove(movable, clickedPiece.getVerticalLevel(), destVerticalLevel, destColumnIndex, destRowIndex)) {
+                moveClickedPiece(destVerticalLevel, destColumnIndex, destRowIndex);
                 switchTurn();
             }
         }
@@ -203,7 +267,7 @@ public class Board3D extends HBox {
     }
 
     private void moveClickedPiece(final int destzLevel, final int destColumnIndex, final int destRowIndex) {
-        clickedPiece.setzLevel(destzLevel);
+        clickedPiece.setVerticalLevel(destzLevel);
         clickedPiece.setColumnIndex(destColumnIndex);
         clickedPiece.setRowIndex(destRowIndex);
 
@@ -213,12 +277,15 @@ public class Board3D extends HBox {
             clickedPiece.setNeverMoved(false);
         }
 
-        colourTheme.unhighlightPiece(clickedPiece, clickedPiece.getzLevel());
+        colourTheme.unhighlightPiece(clickedPiece, clickedPiece.getVerticalLevel());
         clickedPiece = null;
 
         refreshPiecesOnBoards();
     }
 
+    /**
+     * Redraw pieces on every board: top, middle, and bottom.
+     */
     private void refreshPiecesOnBoards() {
         topBoard.refreshPieces();
         middleBoard.refreshPieces();

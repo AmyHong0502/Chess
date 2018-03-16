@@ -62,15 +62,15 @@ public class Player extends Node {
         return pieces;
     }
 
-    public ArrayList<Piece> getPieces(final int zlevel) {
-        ArrayList<Piece> piecesOnZlevel = new ArrayList<>();
+    public ArrayList<Piece> getPieces(final int verticalLevel) {
+        ArrayList<Piece> piecesOnVLevel = new ArrayList<>();
         for (Piece p: pieces) {
-            if (p.getzLevel() == zlevel) {
-                piecesOnZlevel.add(p);
+            if (p.getVerticalLevel() == verticalLevel) {
+                piecesOnVLevel.add(p);
             }
         }
 
-        return piecesOnZlevel;
+        return piecesOnVLevel;
     }
 
     private void initializePieces() {

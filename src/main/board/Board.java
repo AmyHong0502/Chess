@@ -10,36 +10,28 @@ import java.util.ArrayList;
 
 public class Board extends GridPane {
 
-    /**
-     * Number of cells in a row/cell.
-     */
+    /** Number of cells in a row/cell. */
     public static final int NUMBER_OF_CELLS = 8;
 
-    private final int zLevel;
+    private final int verticalLevel;
 
     private int tileLength;
 
-    /**
-     * Black player.
-     */
+    /** Black player. */
     private Player blackPlayer;
 
-    /**
-     * White player.
-     */
+    /** White player. */
     private Player whitePlayer;
 
-    /**
-     * ColourTheme object for colouring.
-     */
+    /** ColourTheme object for colouring. */
     private ColourTheme colourTheme;
 
-    public Board(Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, final int zLevel) {
+    public Board(Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, final int verticalLevel) {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
 
         this.colourTheme = colourTheme;
-        this.zLevel = zLevel;
+        this.verticalLevel = verticalLevel;
 
         putTiles();
     }
@@ -51,15 +43,15 @@ public class Board extends GridPane {
 
                 tileLength = 60;
 
-                Tile tile = new Tile(zLevel, tileLength, white);
+                Tile tile = new Tile(verticalLevel, tileLength, white);
                 add(tile, column, row);
             }
         }
     }
 
     void drawPieces() {
-        ArrayList<Piece> blackPieces = blackPlayer.getPieces(zLevel);
-        ArrayList<Piece> whitePieces = whitePlayer.getPieces(zLevel);
+        ArrayList<Piece> blackPieces = blackPlayer.getPieces(verticalLevel);
+        ArrayList<Piece> whitePieces = whitePlayer.getPieces(verticalLevel);
 
         for (Piece piece : blackPieces) {
             add(piece, piece.getColumnIndex(), piece.getRowIndex());
@@ -127,7 +119,7 @@ public class Board extends GridPane {
                 int row = location[1];
 
                 Tile tile = findTileByIndex(col, row);
-                colourTheme.highlightTile(tile, zLevel);
+                colourTheme.highlightTile(tile, verticalLevel);
             }
         }
     }
