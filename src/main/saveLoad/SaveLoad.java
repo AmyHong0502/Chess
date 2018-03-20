@@ -1,4 +1,4 @@
-package main.SaveLoad;
+package main.saveLoad;
 
 import main.pieces.*;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Saves current game's turn and pieces for future usage.
  * @author Amy
  */
-public class Save implements Serializable {
+public class SaveLoad implements Serializable {
     
     /** Black player's pieces. */
     private ArrayList<PieceSaver> blackSavedPieces;
@@ -21,9 +21,9 @@ public class Save implements Serializable {
     private boolean whiteTurn;
 
     /**
-     * Constructor of this Save.
+     * Constructor of this SaveLoad.
      */
-    public Save() {
+    public SaveLoad() {
         blackSavedPieces = new ArrayList<>();
         whiteSavedPieces = new ArrayList<>();
     }

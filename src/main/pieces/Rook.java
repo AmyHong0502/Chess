@@ -15,8 +15,8 @@ public class Rook extends Piece {
         setText(Character.toString(type));
     }
 
-    public Rook(boolean white, int colIndex, int rowIndex, int zLevel, boolean neverMoved) {
-        super(white, '\u265C', colIndex, rowIndex, zLevel, neverMoved);
+    public Rook(boolean white, int colIndex, int rowIndex, int verticalLevel, boolean neverMoved) {
+        super(white, '\u265C', colIndex, rowIndex, verticalLevel, neverMoved);
         setText(Character.toString(type));
     }
 

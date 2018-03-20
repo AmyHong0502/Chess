@@ -1,4 +1,4 @@
-package main.SaveLoad;
+package main.saveLoad;
 
 import java.io.Serializable;
 
@@ -86,9 +86,9 @@ public class PieceSaver implements Serializable {
     }
 
     /**
-     * Returns vertical-3D level (z-Level) of this saved board.
+     * Returns vertical-3D level of this saved board.
      * 
-     * @return vertical-3D level (z-Level) of this saved board.
+     * @return vertical-3D level of this saved board.
      */
     public int getVerticalLevel() {
         return verticalLevel;
