@@ -13,19 +13,29 @@ public class Board extends GridPane {
     /** Number of cells in a row/cell. */
     public static final int NUMBER_OF_CELLS = 8;
 
+    /** Vertical-3D level of this board. */
     private final int verticalLevel;
 
+    /** Length of tiles on this board. */
     private int tileLength;
 
-    /** Black player. */
+    /** Player who has black pieces. */
     private Player blackPlayer;
 
-    /** White player. */
+    /** Player who has white pieces. */
     private Player whitePlayer;
 
     /** ColourTheme object for colouring. */
     private ColourTheme colourTheme;
 
+    /**
+     * Constructor of this board.
+     *
+     * @param blackPlayer   Player who has black pieces
+     * @param whitePlayer   Player who has white pieces
+     * @param colourTheme   ColourTheme object for colouring
+     * @param verticalLevel Vertical-3D level of this board
+     */
     public Board(Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, final int verticalLevel) {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
@@ -124,10 +134,28 @@ public class Board extends GridPane {
         }
     }
 
+
+    /**
+     * Returns vertical level of this board: 0 for top, 1 for middle, and 2 for bottom board.
+     *
+     * @return vertical level of this board
+     */
+    public int getVerticalLevel() {
+        return verticalLevel;
+    }
+
     /**
      * Refreshes the display of pieces on this board.
      */
     public void refreshPieces() {
+        removePiecesFromBoard();
+        drawPieces();
+    }
+
+    /**
+     * Removes all pieces on this board. The pieces still belong to the player and contain this board's vertical level information but this program does not draw the pieces on this board anymore.
+     */
+    public void removePiecesFromBoard() {
         ArrayList<Piece> piecesOnBoard = new ArrayList<>();
 
         for (Node node: getChildren()) {
@@ -137,7 +165,6 @@ public class Board extends GridPane {
         }
 
         getChildren().removeAll(piecesOnBoard);
-        drawPieces();
     }
 
 }

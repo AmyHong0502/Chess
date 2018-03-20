@@ -19,14 +19,8 @@ public class Board3D extends HBox {
     /** Clicked piece to move or capture other player's piece. */
     private Piece clickedPiece;
 
-    /** Board on the top level. verticalLevel of the board is 0. */
-    private Board topBoard;
-
-    /** Board on the middle level. verticalLevel of the board is 1. */
-    private Board middleBoard;
-
-    /** Board on the bottom level. verticalLevel of the board is 2. */
-    private Board bottomBoard;
+    /** Boards on this 3D chessboard. */
+    private Board[] boards;
 
     /** Player with black pieces. */
     private Player blackPlayer;
@@ -39,22 +33,16 @@ public class Board3D extends HBox {
      * 
      * @param blackPlayer Player with black pieces
      * @param whitePlayer Player with white pieces
-     * @param topBoard    Board on the top level
-     * @param middleBoard Board on the middle level
-     * @param bottomBoard Board on the bottom level
+     * @param boards      Board on this 3D chessboard
      */
-    public Board3D(Player blackPlayer, Player whitePlayer,
-                   Board topBoard, Board middleBoard, Board bottomBoard) {
+    public Board3D(Player blackPlayer, Player whitePlayer, Board[] boards) {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
+        this.boards = boards;
 
-        this.topBoard = topBoard;
-        this.middleBoard = middleBoard;
-        this.bottomBoard = bottomBoard;
-
-        getChildren().add(0, topBoard);
-        getChildren().add(1, middleBoard);
-        getChildren().add(2, bottomBoard);
+        for (int i = 0; i < boards.length; i++) {
+            getChildren().add(i, boards[i]);
+        }
 
         clickedPiece = null;
     }
@@ -72,9 +60,9 @@ public class Board3D extends HBox {
      * Draws pieces on top, middle, and bottom board.
      */
     private void drawPieces() {
-        topBoard.drawPieces();
-        middleBoard.drawPieces();
-        bottomBoard.drawPieces();
+        for (int i = 0; i < boards.length; i++) {
+            boards[i].drawPieces();
+        }
     }
 
     /**
@@ -96,25 +84,13 @@ public class Board3D extends HBox {
                     event -> selectPiece(p));
         }
 
-        for (Node node : topBoard.getChildren()) {
-            if (node.getClass().equals(Tile.class)) {
-                node.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> tryToMoveClickedPiece(((Tile) node).getVerticalLevel(),
-                                GridPane.getColumnIndex(node), GridPane.getRowIndex(node)));
-            }
-        }
-        for (Node node : middleBoard.getChildren()) {
-            if (node.getClass().equals(Tile.class)) {
-                node.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> tryToMoveClickedPiece(((Tile) node).getVerticalLevel(),
-                                GridPane.getColumnIndex(node), GridPane.getRowIndex(node)));
-            }
-        }
-        for (Node node : bottomBoard.getChildren()) {
-            if (node.getClass().equals(Tile.class)) {
-                node.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                        event -> tryToMoveClickedPiece(((Tile) node).getVerticalLevel(),
-                                GridPane.getColumnIndex(node), GridPane.getRowIndex(node)));
+        for (int i = 0; i < boards.length; i++) {
+            for (Node node : boards[i].getChildren()) {
+                if (node.getClass().equals(Tile.class)) {
+                    node.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                            event -> tryToMoveClickedPiece(((Tile) node).getVerticalLevel(),
+                                    GridPane.getColumnIndex(node), GridPane.getRowIndex(node)));
+                }
             }
         }
     }
@@ -177,13 +153,13 @@ public class Board3D extends HBox {
 
         switch (preyVerticalLevel) {
             case 0:
-                prey = topBoard.findPieceByIndex(preyColumnIndex, preyRowIndex);
+                prey = boards[0].findPieceByIndex(preyColumnIndex, preyRowIndex);
                 break;
             case 1:
-                prey = middleBoard.findPieceByIndex(preyColumnIndex, preyRowIndex);
+                prey = boards[1].findPieceByIndex(preyColumnIndex, preyRowIndex);
                 break;
             case 2:
-                prey = bottomBoard.findPieceByIndex(preyColumnIndex, preyRowIndex);
+                prey = boards[2].findPieceByIndex(preyColumnIndex, preyRowIndex);
                 break;
         }
 
@@ -304,9 +280,24 @@ public class Board3D extends HBox {
      * Redraw pieces on every board: top, middle, and bottom.
      */
     public void refreshPiecesOnBoards() {
-        topBoard.refreshPieces();
-        middleBoard.refreshPieces();
-        bottomBoard.refreshPieces();
+        for (int i = 0; i < boards.length; i++) {
+            boards[i].refreshPieces();
+        }
+    }
+
+    /**
+     * Returns boards on this 3D chessboard.
+     *
+     * @return boards on this 3D chessboard
+     */
+    public Board[] getBoards() {
+        return boards;
+    }
+
+    public void removePiecesFromBoards() {
+        for (int i = 0; i < boards.length; i++) {
+            boards[i].removePiecesFromBoard();
+        }
     }
 
 }

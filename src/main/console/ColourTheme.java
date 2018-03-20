@@ -131,9 +131,30 @@ public class ColourTheme {
         }
     }
 
-    public void paintByTheme(Board board, final int verticalLevel) {
+    /**
+     * Paints a given vertical level's board by current theme number.
+     *
+     * @param board board to paint
+     */
+    public void paintByTheme(Board board) {
+        final int verticalLevel = board.getVerticalLevel();
+
         for (Node node : board.getChildren()) {
             paintDefault(node, verticalLevel);
         }
     }
+
+    /**
+     * Paints a given vertical level's board by current theme number.
+     *
+     * @param boards boards to paint
+     */
+    public void paintByTheme(final Board[] boards) {
+        for (int i = 0; i < boards.length; i++) {
+            for (Node node : boards[i].getChildren()) {
+                paintDefault(node, i);
+            }
+        }
+    }
+
 }

@@ -17,15 +17,10 @@ public class ChessGame extends Application {
 
     private BorderPane borderPane;
 
-    /** Board on the top level. verticalLevel of the board is 0. */
-    private Board topBoard;
+    /** Boards on a 3D chessboard. */
+    private Board[] boards;
 
-    /** Board on the middle level. verticalLevel of the board is 1. */
-    private Board middleBoard;
-
-    /** Board on the bottom level. verticalLevel of the board is 2. */
-    private Board bottomBoard;
-
+    /** 3D chessboard. */
     private Board3D board3D;
 
     /** Player with black pieces. */
@@ -36,6 +31,7 @@ public class ChessGame extends Application {
 
     private Console console;
 
+    /** ColourTheme object for colouring. */
     private ColourTheme colourTheme;
 
     private EventController eventController;
@@ -50,25 +46,29 @@ public class ChessGame extends Application {
 
         colourTheme = new ColourTheme();
 
-        topBoard = new Board(blackPlayer, whitePlayer, colourTheme, 0);
-        middleBoard = new Board(blackPlayer, whitePlayer, colourTheme, 1);
-        bottomBoard = new Board(blackPlayer, whitePlayer, colourTheme, 2);
-        board3D = new Board3D(blackPlayer, whitePlayer, topBoard, middleBoard, bottomBoard);
+        boards = initializeBoards();
+        board3D = new Board3D(blackPlayer, whitePlayer, boards);
         board3D.initialSetup();
 
-        eventController = new EventController(topBoard, middleBoard, bottomBoard, colourTheme, blackPlayer, whitePlayer);
-        eventController.addColouringListener();
-        console = new Console(board3D, topBoard, middleBoard, bottomBoard, blackPlayer, whitePlayer, colourTheme, eventController);
+        eventController = new EventController(boards, colourTheme, blackPlayer, whitePlayer);
+        eventController.addColouringListeners();
+        console = new Console(board3D, boards, blackPlayer, whitePlayer, colourTheme, eventController);
         console.initialSetup();
 
         borderPane.setRight(console);
         borderPane.setCenter(board3D);
 
-        colourTheme.paintByTheme(topBoard, 0);
-        colourTheme.paintByTheme(middleBoard, 1);
-        colourTheme.paintByTheme(bottomBoard, 2);
+        colourTheme.paintByTheme(boards);
 
         root.getChildren().addAll(borderPane);
+    }
+
+    private Board[] initializeBoards() {
+        Board topBoard = new Board(blackPlayer, whitePlayer, colourTheme, 0);
+        Board middleBoard = new Board(blackPlayer, whitePlayer, colourTheme, 1);
+        Board bottomBoard = new Board(blackPlayer, whitePlayer, colourTheme, 2);
+
+        return new Board[] {topBoard, middleBoard, bottomBoard};
     }
 
     @Override

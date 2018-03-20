@@ -6,30 +6,20 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import main.Player;
-import main.SaveLoad.Save;
+import main.pieces.Piece;
+import main.saveLoad.SaveLoad;
 import main.board.Board;
 import main.board.Board3D;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Console extends AnchorPane {
 
     private Board3D board3D;
 
-    /**
-     * Chess board on the top of this gameboard.
-     */
-    private Board topBoard;
-
-    /**
-     * Chess board on the middle level of this gameboard.
-     */
-    private Board middleBoard;
-
-    /**
-     * Chess board on the bottom of this gameboard.
-     */
-    private Board bottomBoard;
+    /** Chess boards on the 3D chessboard. */
+    private Board[] boards;
 
     /**
      * Button to save this game.
@@ -37,7 +27,7 @@ public class Console extends AnchorPane {
     private Button saveButton;
 
     /**
-     * Button to load the saved game.
+     * Button to loadGame the saved game.
      */
     private Button loadButton;
 
@@ -63,20 +53,15 @@ public class Console extends AnchorPane {
     /**
      * Constructor of this Console.
      * 
-     * @param topBoard    Chess board on the top of this gameboard
-     * @param middleBoard Chess board on the middle level of this gameboard
-     * @param bottomBoard Chess board on the bottom of this gameboard
+     * @param boards      Chess boards on the 3D chessboard
      * @param blackPlayer Player using black pieces
      * @param whitePlayer Player using white pieces
      */
-    public Console(Board3D board3D, 
-                   Board topBoard, Board middleBoard, Board bottomBoard, 
+    public Console(Board3D board3D, Board[] boards,
                    Player blackPlayer, Player whitePlayer, 
                    ColourTheme colourTheme, EventController eventController) {
         this.board3D = board3D;
-        this.topBoard = topBoard;
-        this.middleBoard = middleBoard;
-        this.bottomBoard = bottomBoard;
+        this.boards = boards;
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
         this.colourTheme = colourTheme;
@@ -122,7 +107,7 @@ public class Console extends AnchorPane {
         hBox.getChildren().addAll(saveButton, loadButton);
 
         saveButton.setOnMouseClicked(event -> saveGame());
-        loadButton.setOnMouseClicked(event -> load());
+        loadButton.setOnMouseClicked(event -> loadGame());
 
         hBox.setPadding(new Insets(0, 10, 10, 10));
         hBox.setSpacing(10);
@@ -137,13 +122,13 @@ public class Console extends AnchorPane {
 
         switch(verticalLevel) {
             case 0:
-                colourTheme.paintByTheme(topBoard, verticalLevel);
+                colourTheme.paintByTheme(boards[0]);
                 break;
             case 1:
-                colourTheme.paintByTheme(middleBoard, verticalLevel);
+                colourTheme.paintByTheme(boards[1]);
                 break;
             case 2:
-                colourTheme.paintByTheme(bottomBoard, verticalLevel);
+                colourTheme.paintByTheme(boards[2]);
                 break;
         }
     }
@@ -156,7 +141,7 @@ public class Console extends AnchorPane {
             FileOutputStream f = new FileOutputStream("SaveChessGame.txt");
             ObjectOutput out = new ObjectOutputStream(f);
 
-            Save saveFile = new Save();
+            SaveLoad saveFile = new SaveLoad();
             saveFile.savePieces(blackPlayer.getPieces(), false);
             saveFile.savePieces(whitePlayer.getPieces(), true);
             saveFile.saveTurn(whitePlayer.isMyTurn());
@@ -178,15 +163,15 @@ public class Console extends AnchorPane {
     /**
      * Loads saved game's turn and pieces.
      */
-    private void load() {
+    private void loadGame() {
         try {
             FileInputStream fi = new FileInputStream("SaveChessGame.txt");
             ObjectInput in = new ObjectInputStream(fi);
 
-            Save saveFile = (Save) in.readObject();
+            SaveLoad loadFile = (SaveLoad) in.readObject();
             in.close();
 
-            boolean whiteTurn = saveFile.loadTurn();
+            boolean whiteTurn = loadFile.loadTurn();
 
             if (whiteTurn) {
                 blackPlayer.finishMyTurn();
@@ -196,23 +181,14 @@ public class Console extends AnchorPane {
                 blackPlayer.startMyTurn();
             }
 
-            topBoard.getChildren().clear();
-            middleBoard.getChildren().clear();
-            bottomBoard.getChildren().clear();
+            replacePieces(loadFile.loadPieces(false), loadFile.loadPieces(true));
+            board3D.removePiecesFromBoards();
+            board3D.initialSetup();
+            eventController.addColouringListeners();
 
-            blackPlayer.setPieces(saveFile.loadPieces(false));
-            whitePlayer.setPieces(saveFile.loadPieces(true));
-            board3D.refreshPiecesOnBoards();
+            colourTheme.paintByTheme(boards);
 
-            topBoard.putTiles();
-            middleBoard.putTiles();
-            bottomBoard.putTiles();
-
-            colourTheme.paintByTheme(topBoard, 0);
-            colourTheme.paintByTheme(middleBoard, 1);
-            colourTheme.paintByTheme(bottomBoard, 2);
-
-            eventController.addColouringListener();
+            eventController.addColouringListeners();
         } catch (FileNotFoundException e) {
             System.out.println("FNFE");
         } catch (IOException e) {
@@ -223,6 +199,12 @@ public class Console extends AnchorPane {
         }
 
         System.out.println("Loaded.");
+    }
+
+    private void replacePieces(ArrayList<Piece> blackPieces, ArrayList<Piece> whitePieces) {
+//        board3D.removePiecesFromBoards();
+        blackPlayer.setPieces(blackPieces);
+        whitePlayer.setPieces(whitePieces);
     }
 
 }
