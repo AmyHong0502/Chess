@@ -1,15 +1,15 @@
-package main;
+package me.amyhong;
 
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import main.board.Board;
-import main.board.Board3D;
-import main.console.ColourTheme;
-import main.console.Console;
-import main.console.EventController;
+import me.amyhong.board.Board;
+import me.amyhong.board.Board3D;
+import me.amyhong.console.ColourTheme;
+import me.amyhong.console.Console;
+import me.amyhong.console.EventController;
 
 public class ChessGame extends Application {
 
@@ -52,7 +52,7 @@ public class ChessGame extends Application {
 
         eventController = new EventController(boards, colourTheme, blackPlayer, whitePlayer);
         eventController.addColouringListeners();
-        console = new Console(board3D, boards, blackPlayer, whitePlayer, colourTheme, eventController);
+        console = new Console(board3D, blackPlayer, whitePlayer, colourTheme, eventController);
         console.initialSetup();
 
         borderPane.setRight(console);

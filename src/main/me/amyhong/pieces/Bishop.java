@@ -1,6 +1,7 @@
-package main.pieces;
+package me.amyhong.pieces;
 
-import main.board.Board;
+
+import me.amyhong.board.Board;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,16 @@ public class Bishop extends Piece {
     @Override
     public int[][] capturable() {
         return movable();
+    }
+
+    @Override
+    int[][] movableThisBoard() {
+        return new int[0][];
+    }
+
+    @Override
+    int[][] movableOtherBoards() {
+        return new int[0][];
     }
 
     @Override
@@ -125,6 +136,26 @@ public class Bishop extends Piece {
         }
 
         return result;
+    }
+
+    int[][] movableUp(final int destVerticalLevel) {
+        int col = super.getColumnIndex();
+        int row = super.getRowIndex();
+
+        ArrayList<int[]> result = new ArrayList<>();
+        result.add(new int[] {col + 1, row + 1});
+        result.add(new int[] {col + 1, row - 1});
+        result.add(new int[] {col - 1, row + 1});
+        result.add(new int[] {col - 1, row - 1});
+
+        for (int[] cell : result) {
+            if (cell[0] < 0 || cell[0] > 7
+                    || cell[1] < 0 || cell[1] > 7) {
+                result.remove(cell);
+            }
+        }
+
+        return result.toArray(new int[result.size()][2]);
     }
 
     @Override

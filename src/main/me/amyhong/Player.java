@@ -1,7 +1,7 @@
-package main;
+package me.amyhong;
 
 import javafx.scene.Node;
-import main.pieces.*;
+import me.amyhong.pieces.*;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package main;
+package me.amyhong;
 
 public interface Movement {
 

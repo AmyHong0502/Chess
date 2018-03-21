@@ -1,4 +1,4 @@
-package main.pieces;
+package me.amyhong.pieces;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +45,16 @@ public class Queen extends Piece {
         }
 
         return result;
+    }
+
+    @Override
+    int[][] movableThisBoard() {
+        return new int[0][];
+    }
+
+    @Override
+    int[][] movableOtherBoards() {
+        return new int[0][];
     }
 
     @Override

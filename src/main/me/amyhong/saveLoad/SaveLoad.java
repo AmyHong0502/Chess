@@ -1,6 +1,6 @@
-package main.saveLoad;
+package me.amyhong.saveLoad;
 
-import main.pieces.*;
+import me.amyhong.pieces.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -77,8 +77,8 @@ public class SaveLoad implements Serializable {
     /**
      * Loads pieces to continue the saved game.
      * 
-     * @param whitePlayer   true if desired pieces belongs to the white player. 
-     * @return              Saved pieces for the given player.
+     * @param whitePlayer true if desired pieces belongs to the white player.
+     * @return Saved pieces for the given player.
      */
     public ArrayList<Piece> loadPieces(boolean whitePlayer) {
         ArrayList<Piece> loadedPieces = new ArrayList<>();
@@ -100,17 +100,17 @@ public class SaveLoad implements Serializable {
                           new Pawn(white, columnIndex, rowIndex, verticalLevel, neverMoved));
                     break;
                 case '\u265E': // Knight
-                  loadedPieces.add(new Knight(white, columnIndex, rowIndex, verticalLevel));
+                    loadedPieces.add(new Knight(white, columnIndex, rowIndex, verticalLevel));
                     break;
                 case '\u265C': // Rook
                     loadedPieces.add(
                           new Rook(white, columnIndex, rowIndex, verticalLevel, neverMoved));
                     break;
                 case '\u265D': // Bishop
-                  loadedPieces.add(new Bishop(white, columnIndex, rowIndex, verticalLevel));
+                    loadedPieces.add(new Bishop(white, columnIndex, rowIndex, verticalLevel));
                     break;
                 case '\u265B': // Queen
-                   loadedPieces.add(new Queen(white, columnIndex, rowIndex, verticalLevel));
+                    loadedPieces.add(new Queen(white, columnIndex, rowIndex, verticalLevel));
                     break;
                 case '\u265A': // King
                     loadedPieces.add(
@@ -119,8 +119,8 @@ public class SaveLoad implements Serializable {
             }
         }
 
-        for (Piece p: loadedPieces) {
-            p.initialSetup();
+        for (Piece piece: loadedPieces) {
+            piece.initialSetup();
         }
 
         return loadedPieces;

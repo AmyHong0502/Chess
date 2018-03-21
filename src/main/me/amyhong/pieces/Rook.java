@@ -1,6 +1,6 @@
-package main.pieces;
+package me.amyhong.pieces;
 
-import main.board.Board;
+import me.amyhong.board.Board;
 
 public class Rook extends Piece {
 
@@ -23,6 +23,16 @@ public class Rook extends Piece {
     @Override
     public int[][] capturable() {
         return movable();
+    }
+
+    @Override
+    int[][] movableThisBoard() {
+        return new int[0][];
+    }
+
+    @Override
+    int[][] movableOtherBoards() {
+        return new int[0][];
     }
 
     @Override
@@ -109,6 +119,7 @@ public class Rook extends Piece {
 
         return result;
     }
+
 
     @Override
     public int[][] searchPath(final int destColumnIndex, 

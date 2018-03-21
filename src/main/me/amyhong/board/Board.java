@@ -1,10 +1,10 @@
-package main.board;
+package me.amyhong.board;
 
 import javafx.scene.Node;
 import javafx.scene.layout.*;
-import main.Player;
-import main.console.ColourTheme;
-import main.pieces.*;
+import me.amyhong.Player;
+import me.amyhong.console.ColourTheme;
+import me.amyhong.pieces.Piece;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,8 @@ public class Board extends GridPane {
      * @param colourTheme   ColourTheme object for colouring
      * @param verticalLevel Vertical-3D level of this board
      */
-    public Board(Player blackPlayer, Player whitePlayer, ColourTheme colourTheme, final int verticalLevel) {
+    public Board(Player blackPlayer, Player whitePlayer,
+                 ColourTheme colourTheme, final int verticalLevel) {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
 
@@ -46,7 +47,7 @@ public class Board extends GridPane {
         putTiles();
     }
 
-    public void putTiles() {
+    private void putTiles() {
         for (int row = 0; row < NUMBER_OF_CELLS; row++) {
             for (int column = 0; column < NUMBER_OF_CELLS; column++) {
                 boolean white = (row + column) % 2 == 0;
@@ -59,6 +60,9 @@ public class Board extends GridPane {
         }
     }
 
+    /**
+     * Draws pieces on this board.
+     */
     void drawPieces() {
         ArrayList<Piece> blackPieces = blackPlayer.getPieces(verticalLevel);
         ArrayList<Piece> whitePieces = whitePlayer.getPieces(verticalLevel);
@@ -72,10 +76,18 @@ public class Board extends GridPane {
         }
     }
 
+    /**
+     * Returns a tile on given column/row index.
+     *
+     * @param columnIndex column index to find a tile
+     * @param rowIndex    row index to find a tile
+     * @return Tile on the given column/row index if there is a tile; otherwise returns null.
+     */
     private Tile findTileByIndex(final int columnIndex, final int rowIndex) {
         for (Node node : getChildren()) {
             if (node.getClass().equals(Tile.class)) {
-                if (GridPane.getColumnIndex(node) == columnIndex && GridPane.getRowIndex(node) == rowIndex) {
+                if (GridPane.getColumnIndex(node) == columnIndex 
+                        && GridPane.getRowIndex(node) == rowIndex) {
                     return (Tile) node;
                 }
             }
@@ -84,6 +96,13 @@ public class Board extends GridPane {
         return null;
     }
 
+    /**
+     * Returns a piece on given column/row index.
+     *
+     * @param columnIndex column index to find a piece
+     * @param rowIndex    row index to find a piece
+     * @return Piece on the given column/row index if there is a piece; otherwise returns null.
+     */
     Piece findPieceByIndex(final int columnIndex, final int rowIndex) {
         ArrayList<Piece> blackPieces = blackPlayer.getPieces();
         ArrayList<Piece> whitePieces = whitePlayer.getPieces();
@@ -119,7 +138,8 @@ public class Board extends GridPane {
     }
 
     public void highlightTiles(final Piece piece) {
-        boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
+        boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() 
+                                       : blackPlayer.isMyTurn();
 
         if (turn) {
             int[][] movable = piece.movable();
@@ -136,7 +156,8 @@ public class Board extends GridPane {
 
 
     /**
-     * Returns vertical level of this board: 0 for top, 1 for middle, and 2 for bottom board.
+     * Returns vertical level of this board: 
+     * 0 for top, the largest number for bottom board.
      *
      * @return vertical level of this board
      */
@@ -153,7 +174,9 @@ public class Board extends GridPane {
     }
 
     /**
-     * Removes all pieces on this board. The pieces still belong to the player and contain this board's vertical level information but this program does not draw the pieces on this board anymore.
+     * Removes all pieces on this board. The pieces still belong to the player 
+     * and contain this board's vertical level information but this program does
+     * not draw the pieces on this board anymore.
      */
     public void removePiecesFromBoard() {
         ArrayList<Piece> piecesOnBoard = new ArrayList<>();

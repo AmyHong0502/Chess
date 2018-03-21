@@ -1,11 +1,14 @@
-package main.pieces;
+package me.amyhong.pieces;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import main.Movement;
+import me.amyhong.Movement;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public abstract class Piece extends Text implements Movement {
     
@@ -177,5 +180,15 @@ public abstract class Piece extends Text implements Movement {
                 || obj.getClass().equals(Bishop.class)
                 || obj.getClass().equals(Queen.class)
                 || obj.getClass().equals(King.class);
+    }
+
+    abstract int[][] movableThisBoard();
+    abstract int[][] movableOtherBoards();
+
+    public int[][] movable() {
+        ArrayList<int[]> result = new ArrayList<>(Arrays.asList(movableThisBoard()));
+        result.addAll(new ArrayList<>(Arrays.asList(movableOtherBoards())));
+
+        return result.toArray(new int[result.size()][3]);
     }
 }

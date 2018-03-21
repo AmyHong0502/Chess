@@ -1,4 +1,4 @@
-package main.pieces;
+package me.amyhong.pieces;
 
 import java.util.ArrayList;
 
@@ -10,20 +10,30 @@ public class King extends Piece {
      */
     private final char type = '\u265A';
 
-    public King(boolean white, int colIndex, int rowIndex, int zLevel) {
-        super(white, '\u265A', colIndex, rowIndex, zLevel, true);
+    public King(boolean white, int colIndex, int rowIndex, int verticalLevel) {
+        super(white, '\u265A', colIndex, rowIndex, verticalLevel, true);
         setText(Character.toString(type));
     }
 
     public King(boolean white, int colIndex, int rowIndex,
-                                     int zLevel, boolean neverMoved) {
-        super(white, '\u265A', colIndex, rowIndex, zLevel, neverMoved);
+                                     int verticalLevel, boolean neverMoved) {
+        super(white, '\u265A', colIndex, rowIndex, verticalLevel, neverMoved);
         setText(Character.toString(type));
     }
 
     @Override
     public int[][] capturable() {
         return movable();
+    }
+
+    @Override
+    int[][] movableThisBoard() {
+        return new int[0][];
+    }
+
+    @Override
+    int[][] movableOtherBoards() {
+        return new int[0][];
     }
 
     @Override

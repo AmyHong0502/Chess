@@ -1,67 +1,63 @@
-package main.console;
+package me.amyhong.console;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import main.Player;
-import main.pieces.Piece;
-import main.saveLoad.SaveLoad;
-import main.board.Board;
-import main.board.Board3D;
+import me.amyhong.Player;
+import me.amyhong.board.Board;
+import me.amyhong.board.Board3D;
+import me.amyhong.pieces.Piece;
+import me.amyhong.saveLoad.SaveLoad;
 
 import java.io.*;
 import java.util.ArrayList;
 
 public class Console extends AnchorPane {
 
+    /** 3D chessboard. */
     private Board3D board3D;
 
-    /** Chess boards on the 3D chessboard. */
-    private Board[] boards;
-
-    /**
-     * Button to save this game.
-     */
+    /** Button to save this game. */
     private Button saveButton;
 
-    /**
-     * Button to loadGame the saved game.
-     */
+    /** Button to loadGame the saved game. */
     private Button loadButton;
+
+    /** Button to terminate this game and start a new game. */
+    private Button newGameButton;
 
     private HBox colourButtonsHBox;
 
     private HBox hBox;
 
+    /** ColourTheme object for colouring. */
     private ColourTheme colourTheme;
 
+    /** Array of buttons for colouring boards. */
     private Button colourThemeButtons[][];
-    /**
-     * Player using black pieces.
-     */
+
+    /** Player using black pieces. */
     private Player blackPlayer;
 
-    /**
-     * Player using white pieces.
-     */
+    /** Player using white pieces. */
     private Player whitePlayer;
 
     private EventController eventController;
 
     /**
      * Constructor of this Console.
-     * 
-     * @param boards      Chess boards on the 3D chessboard
-     * @param blackPlayer Player using black pieces
-     * @param whitePlayer Player using white pieces
+     *
+     * @param board3D         3D chessboard
+     * @param blackPlayer     Player using black pieces
+     * @param whitePlayer     Player using white pieces
+     * @param colourTheme     ColourTheme object for colouring
+     * @param eventController
      */
-    public Console(Board3D board3D, Board[] boards,
-                   Player blackPlayer, Player whitePlayer, 
+    public Console(Board3D board3D, Player blackPlayer, Player whitePlayer,
                    ColourTheme colourTheme, EventController eventController) {
         this.board3D = board3D;
-        this.boards = boards;
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
         this.colourTheme = colourTheme;
@@ -73,6 +69,7 @@ public class Console extends AnchorPane {
         hBox = new HBox();
         saveButton = new Button("Save");
         loadButton = new Button("Load");
+        newGameButton = new Button("New game");
 
         getChildren().addAll(colourButtonsHBox, hBox);
     }
@@ -118,19 +115,9 @@ public class Console extends AnchorPane {
     }
 
     private void changeColourTheme(int verticalLevel, int colourThemeNumber) {
-        colourTheme.setColourTheme(colourThemeNumber);
-
-        switch(verticalLevel) {
-            case 0:
-                colourTheme.paintByTheme(boards[0]);
-                break;
-            case 1:
-                colourTheme.paintByTheme(boards[1]);
-                break;
-            case 2:
-                colourTheme.paintByTheme(boards[2]);
-                break;
-        }
+        Board[] boards = board3D.getBoards();
+        colourTheme.setColourTheme(colourThemeNumber, verticalLevel);
+        colourTheme.paintByTheme(boards[verticalLevel]);
     }
 
     /**
@@ -182,13 +169,9 @@ public class Console extends AnchorPane {
             }
 
             replacePieces(loadFile.loadPieces(false), loadFile.loadPieces(true));
-            board3D.removePiecesFromBoards();
             board3D.initialSetup();
             eventController.addColouringListeners();
-
-            colourTheme.paintByTheme(boards);
-
-            eventController.addColouringListeners();
+            colourTheme.paintByTheme(board3D.getBoards());
         } catch (FileNotFoundException e) {
             System.out.println("FNFE");
         } catch (IOException e) {
@@ -201,8 +184,14 @@ public class Console extends AnchorPane {
         System.out.println("Loaded.");
     }
 
+    /**
+     * Removes current pieces from black and white players and set new-loaded pieces for each player.
+     *
+     * @param blackPieces black player's pieces
+     * @param whitePieces white player's pieces
+     */
     private void replacePieces(ArrayList<Piece> blackPieces, ArrayList<Piece> whitePieces) {
-//        board3D.removePiecesFromBoards();
+        board3D.removePiecesFromBoards();
         blackPlayer.setPieces(blackPieces);
         whitePlayer.setPieces(whitePieces);
     }

@@ -1,9 +1,10 @@
-package main.saveLoad;
+package me.amyhong.saveLoad;
 
 import java.io.Serializable;
 
 /**
  * Saves one piece per each PieceSaver object.
+ *
  * @author Amy
  */
 public class PieceSaver implements Serializable {

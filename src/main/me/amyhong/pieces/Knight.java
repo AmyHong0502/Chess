@@ -1,4 +1,4 @@
-package main.pieces;
+package me.amyhong.pieces;
 
 import java.util.ArrayList;
 
@@ -18,6 +18,16 @@ public class Knight extends Piece {
     @Override
     public int[][] capturable() {
         return movable();
+    }
+
+    @Override
+    int[][] movableThisBoard() {
+        return new int[0][];
+    }
+
+    @Override
+    int[][] movableOtherBoards() {
+        return new int[0][];
     }
 
     @Override

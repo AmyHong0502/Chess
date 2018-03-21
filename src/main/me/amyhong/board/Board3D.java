@@ -1,15 +1,15 @@
-package main.board;
+package me.amyhong.board;
 
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import main.Player;
-import main.console.ColourTheme;
-import main.pieces.King;
-import main.pieces.Pawn;
-import main.pieces.Piece;
-import main.pieces.Rook;
+import me.amyhong.Player;
+import me.amyhong.console.ColourTheme;
+import me.amyhong.pieces.King;
+import me.amyhong.pieces.Pawn;
+import me.amyhong.pieces.Piece;
+import me.amyhong.pieces.Rook;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,11 +57,11 @@ public class Board3D extends HBox {
     }
 
     /**
-     * Draws pieces on top, middle, and bottom board.
+     * Draws pieces on every board.
      */
     private void drawPieces() {
-        for (int i = 0; i < boards.length; i++) {
-            boards[i].drawPieces();
+        for (Board board : boards) {
+            board.drawPieces();
         }
     }
 
@@ -72,7 +72,7 @@ public class Board3D extends HBox {
      * @param blackPieces Black pieces
      * @param whitePieces White pieces
      */
-    private void initializeClickListener(final ArrayList<Piece> blackPieces, 
+    private void initializeClickListener(final ArrayList<Piece> blackPieces,
                                          final ArrayList<Piece> whitePieces) {
         for (Piece p : blackPieces) {
             p.addEventFilter(MouseEvent.MOUSE_CLICKED,
@@ -84,8 +84,8 @@ public class Board3D extends HBox {
                     event -> selectPiece(p));
         }
 
-        for (int i = 0; i < boards.length; i++) {
-            for (Node node : boards[i].getChildren()) {
+        for (Board board : boards) {
+            for (Node node : board.getChildren()) {
                 if (node.getClass().equals(Tile.class)) {
                     node.addEventFilter(MouseEvent.MOUSE_CLICKED,
                             event -> tryToMoveClickedPiece(((Tile) node).getVerticalLevel(),
@@ -104,7 +104,8 @@ public class Board3D extends HBox {
      *              or piece to capture
      */
     private void selectPiece(Piece piece) {
-        boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() : blackPlayer.isMyTurn();
+        boolean turn = piece.isWhite() ? whitePlayer.isMyTurn() 
+                                       : blackPlayer.isMyTurn();
 
         if (turn) {
             clickedPiece = piece;
@@ -149,19 +150,7 @@ public class Board3D extends HBox {
             return;
         }
 
-        Piece prey = null;
-
-        switch (preyVerticalLevel) {
-            case 0:
-                prey = boards[0].findPieceByIndex(preyColumnIndex, preyRowIndex);
-                break;
-            case 1:
-                prey = boards[1].findPieceByIndex(preyColumnIndex, preyRowIndex);
-                break;
-            case 2:
-                prey = boards[2].findPieceByIndex(preyColumnIndex, preyRowIndex);
-                break;
-        }
+        Piece prey = boards[preyVerticalLevel].findPieceByIndex(preyColumnIndex, preyRowIndex);
 
         ArrayList<Piece> preyPieces = clickedPiece.isWhite() ? blackPlayer.getPieces()
                                                              : whitePlayer.getPieces();
@@ -280,8 +269,8 @@ public class Board3D extends HBox {
      * Redraw pieces on every board: top, middle, and bottom.
      */
     public void refreshPiecesOnBoards() {
-        for (int i = 0; i < boards.length; i++) {
-            boards[i].refreshPieces();
+        for (Board board : boards) {
+            board.refreshPieces();
         }
     }
 
@@ -294,9 +283,14 @@ public class Board3D extends HBox {
         return boards;
     }
 
+    /**
+     * Removes all pieces on all boards on this 3D board. The pieces still 
+     * belong to the player and contain the board's vertical level information 
+     * but this program does not draw the pieces on this 3D board anymore.
+     */
     public void removePiecesFromBoards() {
-        for (int i = 0; i < boards.length; i++) {
-            boards[i].removePiecesFromBoard();
+        for (Board board : boards) {
+            board.removePiecesFromBoard();
         }
     }
 

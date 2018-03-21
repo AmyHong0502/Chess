@@ -1,10 +1,10 @@
-package main.console;
+package me.amyhong.console;
 
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import main.board.Board;
-import main.board.Tile;
-import main.pieces.*;
+import me.amyhong.board.Board;
+import me.amyhong.board.Tile;
+import me.amyhong.pieces.Piece;
 
 import java.util.ArrayList;
 
@@ -18,9 +18,7 @@ public class ColourTheme {
     private static final Color tileDark[] = {Color.web("0x2F3138"), Color.web("0x252c41"), Color.web("0x141414"), Color.web("0x004e66"), Color.web("0x1c140d")};
     private static final Color tileHighlight[] = {Color.web("0xF99"), Color.web("0x22f9ef"), Color.web("0x883d94"), Color.web("0xe1eef6"), Color.web("0x99f19e")};
 
-    private int themeNumberTop;
-    private int themeNumberMiddle;
-    private int themeNumberBottom;
+    private int themeNumbers[] = new int[3];
 
     public ColourTheme() {
         setColourTheme(4);
@@ -31,44 +29,68 @@ public class ColourTheme {
     }
 
     public ColourTheme(final int themeNumberTop, final int themeNumberMiddle, final int themeNumberBottom) {
-        this.themeNumberTop = themeNumberTop;
-        this.themeNumberMiddle = themeNumberMiddle;
-        this.themeNumberBottom = themeNumberBottom;
+        themeNumbers[0] = themeNumberTop;
+        themeNumbers[1] = themeNumberMiddle;
+        themeNumbers[2] = themeNumberBottom;
     }
 
+    /**
+     * Sets colour theme number for every board.
+     *
+     * @param themeNumber theme number to set
+     */
     public void setColourTheme(final int themeNumber) {
-        themeNumberTop = themeNumber;
-        themeNumberMiddle = themeNumber;
-        themeNumberBottom = themeNumber;
+        for (int i = 0; i < themeNumbers.length; i++) {
+            themeNumbers[i] = themeNumber;
+        }
     }
 
-    private static boolean isPiece(Object obj) {
-        return obj.getClass().equals(Piece.class)
-                || obj.getClass().equals(Pawn.class)
-                || obj.getClass().equals(Knight.class)
-                || obj.getClass().equals(Rook.class)
-                || obj.getClass().equals(Bishop.class)
-                || obj.getClass().equals(Queen.class)
-                || obj.getClass().equals(King.class);
+    /**
+     * Sets colour theme number for every board.
+     *
+     * @param themeNumber theme number to set
+     */
+    public void setColourTheme(final int themeNumber, final int verticalLevel) {
+        themeNumbers[verticalLevel] = themeNumber;
     }
 
-    private Color findDefaultColour(final Object objectToPaint, final boolean white, final int verticalLevel) throws IllegalArgumentException {
-        final boolean piece = isPiece(objectToPaint);
+    /**
+     * Returns normal-unhighlighted colour of the given object to paint.
+     *
+     * @param objectToPaint object to paint
+     * @param white         true if the given object is white
+     * @param verticalLevel vertical level of a chessboard where given object is located
+     * @return normal-unhighlight colour of the given object to paint
+     * @throws IllegalArgumentException if the given object is not piece or tile
+     */
+    private Color findUnhighlightColour(final Object objectToPaint,
+                                        final boolean white, final int verticalLevel)
+            throws IllegalArgumentException {
+        final boolean piece = Piece.isPiece(objectToPaint);
         final boolean tile = objectToPaint.getClass().equals(Tile.class);
-        final int themeNumber = verticalLevel == 0 ? themeNumberTop : verticalLevel == 1 ? themeNumberMiddle : themeNumberBottom;
+        final int themeNumber = themeNumbers[verticalLevel];
 
         if (!(piece || tile)) {
             throw new IllegalArgumentException("Given object to paint is not piece or tile.");
         }
         return white ? (piece ? pieceWhite[0] : tileLight[themeNumber])
-                    : (piece ? pieceBlack[0] : tileDark[themeNumber]);
+                : (piece ? pieceBlack[0] : tileDark[themeNumber]);
 
     }
 
-    private Color findHighlightColour(final Object objectToPaint, final int verticalLevel) throws IllegalArgumentException {
-        final boolean piece = isPiece(objectToPaint);
+    /**
+     * Returns highlighted colour of the given object to paint.
+     *
+     * @param objectToPaint object to paint
+     * @param verticalLevel vertical level of a chessboard where given object is located
+     * @return highlight colour of the given object to paint
+     * @throws IllegalArgumentException if the given object is not piece or tile
+     */
+    private Color findHighlightColour(final Object objectToPaint, final int verticalLevel)
+            throws IllegalArgumentException {
+        final boolean piece = Piece.isPiece(objectToPaint);
         final boolean tile = objectToPaint.getClass().equals(Tile.class);
-        final int themeNumber = verticalLevel == 0 ? themeNumberTop : verticalLevel == 1 ? themeNumberMiddle : themeNumberBottom;
+        final int themeNumber = themeNumbers[verticalLevel];
 
         if (!(piece || tile)) {
             throw new IllegalArgumentException("Given object to paint is not piece or tile.");
@@ -76,13 +98,20 @@ public class ColourTheme {
         return piece ? pieceClicked[themeNumber] : tileHighlight[themeNumber];
     }
 
-    public void paintDefault(Object objectToPaint, final int verticalLevel) {
-        if (isPiece(objectToPaint)) {
+    /**
+     * Paints given object with normal-unhighlight colour.
+     *
+     * @param objectToPaint object to paint
+     * @param verticalLevel vertical level of a chessboard where the given object is located
+     * @throws IllegalArgumentException if the given object to paint is not piece or tile
+     */
+    public void unhighlight(Object objectToPaint, final int verticalLevel) throws IllegalArgumentException {
+        if (Piece.isPiece(objectToPaint)) {
             ((Piece) objectToPaint).setFill(
-                    findDefaultColour(objectToPaint,((Piece) objectToPaint).isWhite(), verticalLevel));
+                    findUnhighlightColour(objectToPaint, ((Piece) objectToPaint).isWhite(), verticalLevel));
         } else if (objectToPaint.getClass().equals(Tile.class)) {
             ((Tile) objectToPaint).setFill(
-                    findDefaultColour(objectToPaint, ((Tile) objectToPaint).isWhite(), verticalLevel));
+                    findUnhighlightColour(objectToPaint, ((Tile) objectToPaint).isWhite(), verticalLevel));
         } else {
             throw new IllegalArgumentException("Given object to paint is not piece or tile.");
         }
@@ -95,15 +124,15 @@ public class ColourTheme {
 
     public void unhighlightPiece(Piece piece, final int verticalLevel) {
         piece.setHighlighted(false);
-        paintDefault(piece, verticalLevel);
+        unhighlight(piece, verticalLevel);
     }
 
     public void unhighlightPieces(ArrayList<Piece> pieces) {
-        for (Piece p: pieces) {
+        for (Piece p : pieces) {
             p.setHighlighted(false);
-            paintDefault(p, 0);
-            paintDefault(p, 1);
-            paintDefault(p, 2);
+            unhighlight(p, 0);
+            unhighlight(p, 1);
+            unhighlight(p, 2);
         }
     }
 
@@ -113,20 +142,20 @@ public class ColourTheme {
         if (tile.isHighlighted()) {
             tile.setFill(findHighlightColour(tile, verticalLevel));
         } else {
-            paintDefault(tile, verticalLevel);
+            unhighlight(tile, verticalLevel);
         }
     }
 
     public void unhighlightTiles(Tile tile, final int verticalLevel) {
         tile.setHighlighted(false);
-        paintDefault(tile, verticalLevel);
+        unhighlight(tile, verticalLevel);
     }
 
     public void unhighlightTiles(Board board, final int verticalLevel) {
         for (Node node : board.getChildren()) {
             if (node.getClass().equals(Tile.class)) {
                 ((Tile) node).setHighlighted(false);
-                paintDefault(node, verticalLevel);
+                unhighlight(node, verticalLevel);
             }
         }
     }
@@ -140,7 +169,7 @@ public class ColourTheme {
         final int verticalLevel = board.getVerticalLevel();
 
         for (Node node : board.getChildren()) {
-            paintDefault(node, verticalLevel);
+            unhighlight(node, verticalLevel);
         }
     }
 
@@ -152,7 +181,7 @@ public class ColourTheme {
     public void paintByTheme(final Board[] boards) {
         for (int i = 0; i < boards.length; i++) {
             for (Node node : boards[i].getChildren()) {
-                paintDefault(node, i);
+                unhighlight(node, i);
             }
         }
     }
