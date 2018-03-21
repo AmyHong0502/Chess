@@ -99,21 +99,24 @@ public class ColourTheme {
     }
 
     /**
-     * Paints given object with normal-unhighlight colour.
+     * Returns true if successfully paints given object with normal-unhighlight colour.
      *
      * @param objectToPaint object to paint
      * @param verticalLevel vertical level of a chessboard where the given object is located
-     * @throws IllegalArgumentException if the given object to paint is not piece or tile
+     * @return true if successfully paints given object with normal-unhighlight colour.
+     *              If the given object to paint is not piece or tile, returns false.
      */
-    public void unhighlight(Object objectToPaint, final int verticalLevel) throws IllegalArgumentException {
+    public boolean unhighlight(Object objectToPaint, final int verticalLevel) {
         if (Piece.isPiece(objectToPaint)) {
             ((Piece) objectToPaint).setFill(
                     findUnhighlightColour(objectToPaint, ((Piece) objectToPaint).isWhite(), verticalLevel));
+            return true;
         } else if (objectToPaint.getClass().equals(Tile.class)) {
             ((Tile) objectToPaint).setFill(
                     findUnhighlightColour(objectToPaint, ((Tile) objectToPaint).isWhite(), verticalLevel));
+            return true;
         } else {
-            throw new IllegalArgumentException("Given object to paint is not piece or tile.");
+            return false;
         }
     }
 
